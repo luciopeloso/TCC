@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
 
@@ -23,6 +24,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     private val auth = FirebaseAuth.getInstance()
+    private  val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +46,14 @@ class RegisterFragment : Fragment() {
 
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
+            val name = binding.editFirstName.text.toString()
             val lastName = binding.editLastName.text.toString()
             val acessType = binding.spinnerAccessType.selectedItem
 
             if (email.isEmpty() ||
                 password.isEmpty() ||
                 lastName.isEmpty() ||
+                name.isEmpty() ||
                 acessType == 0) {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
                 snackbar.setBackgroundTint(Color.RED)
@@ -66,6 +70,21 @@ class RegisterFragment : Fragment() {
                         snackbar.show()
                         binding.editEmail.setText("")
                         binding.editPassword.setText("")
+
+                        val custumerMap = hashMapOf(
+                            "name" to name,
+                            "lastName" to lastName,
+                            "email" to email,
+                            "acessType" to acessType
+                        )
+
+                        db.collection("Customer").document(name).set(custumerMap)
+                            .addOnCompleteListener{
+                                //todo
+                            }.addOnFailureListener{
+                                //todo
+                            }
+
                         navigationToLogin()
 
                     }

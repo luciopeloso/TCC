@@ -23,11 +23,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/green_leaf"
-                android:title="@string/app_toolbar_title"
-                android:titleTextColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/ibLogout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sistema Agro"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"/>
+
+            </androidx.appcompat.widget.Toolbar>
 
             <ImageButton
                 android:id="@+id/ibLogout"
