@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TCC</string>
+    <string name="app_toolbar_title">Sistema Agro</string>
+    <string name="ERROR_UNEXPECTED">Um erro inesperado ocorreu. Tente novamente mais tarde.</string>
+    <string name="ERROR_LOAD_TASK">Erro ao carregar a tarefa.</string>
+    <string name="ERROR_INTERNET_CONNECTION">Conexão à internet necessária para uso da applicação.</string>
+
+    <string-array name="type_customers">
+        <item>Selecione seu tipo de acesso</item>
+        <item>Propietário</item>
+        <item>Gerente</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="page_home">Inicio</string>
+    <string name="page_entries">Entradas</string>
+
+</resources>

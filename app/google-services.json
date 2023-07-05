@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "143501478371",
+    "project_id": "sistema-agro-tcc",
+    "storage_bucket": "sistema-agro-tcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143501478371:android:ee1f787f18f229a47db8d6",
+        "android_client_info": {
+          "package_name": "com.example.tcc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143501478371-4ckh8lqtuot0b6pqc1v5mfpkfbeb89th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEA1MHDnJFFOv_xcIHdSnmrgWfRW4sCZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143501478371-4ckh8lqtuot0b6pqc1v5mfpkfbeb89th.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
