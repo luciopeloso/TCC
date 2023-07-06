@@ -68,8 +68,8 @@ class RegisterFragment : Fragment() {
                         val snackbar = Snackbar.make(it, "Sucesso ao cadastrar usuário!", Snackbar.LENGTH_SHORT)
                         snackbar.setBackgroundTint(Color.BLUE)
                         snackbar.show()
-                        binding.editEmail.setText("")
-                        binding.editPassword.setText("")
+                        //binding.editEmail.setText("")
+                        //binding.editPassword.setText("")
 
                         val custumerMap = hashMapOf(
                             "name" to name,
@@ -78,7 +78,8 @@ class RegisterFragment : Fragment() {
                             "acessType" to acessType
                         )
 
-                        db.collection("Customer").document(name).set(custumerMap)
+                        db.collection("Customer")
+                            .add(custumerMap)
                             .addOnCompleteListener{
                                 //todo
                             }.addOnFailureListener{
@@ -86,7 +87,6 @@ class RegisterFragment : Fragment() {
                             }
 
                         navigationToLogin()
-
                     }
                 }.addOnFailureListener { exception ->
                     val snackbar = Snackbar.make(it, validateFields(exception), Snackbar.LENGTH_SHORT)
