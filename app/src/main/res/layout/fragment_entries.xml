@@ -13,80 +13,108 @@
         android:layout_gravity="fill_vertical"
         android:layout_margin="16dp">
 
-        <TextView
-            android:id="@+id/text_propiety"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_margin="16dp"
-            android:text="Propriedade:"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout_spinners"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/spinner_propiety"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_margin="14dp"
-            app:layout_constraintStart_toEndOf="@+id/text_propiety"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/text_propiety"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:text="Propriedade:"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_area"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Talhão: "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_propiety" />
+            <Spinner
+                android:id="@+id/spinner_propiety"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="14dp"
+                app:layout_constraintStart_toEndOf="@+id/text_propiety"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinner_area"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_margin="14dp"
-            app:layout_constraintStart_toEndOf="@+id/text_area"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_propiety" />
+            <TextView
+                android:id="@+id/text_area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Talhão: "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_propiety" />
 
-        <TextView
-            android:id="@+id/text_year"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Safra(ano): "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_area" />
+            <Spinner
+                android:id="@+id/spinner_area"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_margin="14dp"
+                app:layout_constraintStart_toEndOf="@+id/text_area"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_propiety" />
 
-        <Spinner
-            android:id="@+id/spinner_year"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_margin="12dp"
-            app:layout_constraintStart_toEndOf="@+id/text_year"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_area" />
+            <TextView
+                android:id="@+id/text_crop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Cultivo: "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_area" />
 
+            <Spinner
+                android:id="@+id/spinner_crop"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_margin="12dp"
+                app:layout_constraintStart_toEndOf="@+id/text_crop"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_area" />
+
+            <TextView
+                android:id="@+id/text_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Safra(ano): "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_crop" />
+
+            <Spinner
+                android:id="@+id/spinner_year"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_margin="12dp"
+                app:layout_constraintStart_toEndOf="@+id/text_year"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_crop" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RadioGroup
-            android:id="@+id/daily_weekly_button_view"
+            android:id="@+id/radio_group_entries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout_spinners">
 
 
             <RadioButton
-                android:id="@+id/radio0"
+                android:id="@+id/radio_budgeted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/radio_flat_selector"
@@ -101,7 +129,7 @@
                 android:textColor="@color/radio_flat_text_selector" />
 
             <RadioButton
-                android:id="@+id/radio1"
+                android:id="@+id/radio_foreseen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/radio_flat_selector"
@@ -116,8 +144,201 @@
 
         </RadioGroup>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_dropdown_entries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_group_entries">
+
+            <LinearLayout
+                android:id="@+id/layout_product"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="240dp"
+                    android:text="Produto"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_seeds"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_product">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="220dp"
+                    android:text="Sementes"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_seeds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_cdpe"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_seeds">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="35dp"
+                    android:text="Capina, Dessecação e Pós emergência"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_cdpe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_fif"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_cdpe">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="73dp"
+                    android:text="Fungicidas, Inseticidas e Foliares"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_fif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_operations"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_fif">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="215dp"
+                    android:text="Operações"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_operations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_descritive"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_operations">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="222dp"
+                    android:text="Descritivo"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/image_descritive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_drop_down" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </ScrollView>
