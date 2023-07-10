@@ -32,10 +32,6 @@ class LoginFragment : Fragment() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        if(currentUser != null){
-            navigationToHome()
-        }
-
         initClicks()
     }
 

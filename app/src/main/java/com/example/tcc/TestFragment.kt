@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.tcc.databinding.FragmentTestBinding
 
+
 class TestFragment : Fragment() {
 
     private var _binding: FragmentTestBinding? = null

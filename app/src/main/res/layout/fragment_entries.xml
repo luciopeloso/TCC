@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/text_propiety"
+                android:id="@+id/text_property"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="16dp"
@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_margin="14dp"
-                app:layout_constraintStart_toEndOf="@+id/text_propiety"
+                app:layout_constraintStart_toEndOf="@+id/text_property"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -49,7 +49,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_propiety" />
+                app:layout_constraintTop_toBottomOf="@id/text_property" />
 
             <Spinner
                 android:id="@+id/spinner_area"
@@ -146,199 +146,33 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_dropdown_entries"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radio_group_entries">
 
-            <LinearLayout
-                android:id="@+id/layout_product"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEntries"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="240dp"
-                    android:text="Produto"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_seeds"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_product">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="220dp"
-                    android:text="Sementes"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_seeds"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_cdpe"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_seeds">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="35dp"
-                    android:text="Capina, Dessecação e Pós emergência"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_cdpe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_fif"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_cdpe">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="73dp"
-                    android:text="Fungicidas, Inseticidas e Foliares"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_fif"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_operations"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_fif">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="215dp"
-                    android:text="Operações"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_operations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_descritive"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_margin="16dp"
-                android:background="@color/gray"
-                android:orientation="horizontal"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_operations">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="222dp"
-                    android:text="Descritivo"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/image_descritive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_drop_down" />
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/button_edit_entries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar Entradas"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

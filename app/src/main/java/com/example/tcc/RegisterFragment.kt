@@ -75,7 +75,7 @@ class RegisterFragment : Fragment() {
                             "name" to name,
                             "lastName" to lastName,
                             "email" to email,
-                            "acessType" to acessType
+                            "acessType" to acessType,
                         )
 
                         db.collection("Customer")
@@ -85,8 +85,9 @@ class RegisterFragment : Fragment() {
                             }.addOnFailureListener{
                                 //todo
                             }
-
+                        auth.signOut()
                         navigationToLogin()
+
                     }
                 }.addOnFailureListener { exception ->
                     val snackbar = Snackbar.make(it, validateFields(exception), Snackbar.LENGTH_SHORT)

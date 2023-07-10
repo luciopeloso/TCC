@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -50,8 +49,7 @@ class HomeFragment : Fragment() {
         binding.viewPager.adapter = adapter
 
         adapter.addFragment(TestFragment(), R.string.page_home)
-        adapter.addFragment(TestFragment(), R.string.page_entries)
-
+        adapter.addFragment(EntriesFragment(), R.string.page_entries)
 
         binding.viewPager.offscreenPageLimit = adapter.itemCount
 

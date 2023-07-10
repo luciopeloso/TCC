@@ -8,25 +8,32 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.databinding.FragmentEntriesBinding
+import com.example.tcc.databinding.FragmentHomeBinding
+import com.example.tcc.databinding.FragmentManageEntriesBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-class EntriesFragment : Fragment() {
+class ManageEntriesFragment : Fragment() {
 
-    private var _binding: FragmentEntriesBinding? = null
+    private var _binding: FragmentManageEntriesBinding? = null
     private val binding get() = _binding!!
+    private lateinit var auth: FirebaseAuth
 
-    private lateinit var entryAdapter: EntryAdapter
+    private lateinit var entryAdapter: EntryManagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        _binding = FragmentEntriesBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentManageEntriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
 
         val listData: MutableList<ParentData> = ArrayList()
 
@@ -56,26 +63,29 @@ class EntriesFragment : Fragment() {
         listData.add(parentObj3)
         listData.add(parentObj4)
 
-        binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvEntries.setHasFixedSize(true)
-        entryAdapter = EntryAdapter(requireContext(), listData)
+        binding.rvEntriesManager.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesManager.setHasFixedSize(true)
+        entryAdapter = EntryManagerAdapter(requireContext(), listData)
 
-        initclicks()
+        initClicks()
 
-        binding.rvEntries.adapter = entryAdapter
-
+        binding.rvEntriesManager.adapter = entryAdapter
     }
 
-    private fun initclicks() {
-        binding.buttonEditEntries.setOnClickListener{
-            findNavController().navigate(R.id.action_homeFragment_to_manageEntriesFragment)
+    private fun initClicks() {
+        binding.ibLogout.setOnClickListener{
+            auth.signOut()
+            findNavController().navigate(R.id.action_manageEntriesFragment_to_loginFragment)
+        }
+        binding.ibBack.setOnClickListener{
+            findNavController().navigate(R.id.action_manageEntriesFragment_to_homeFragment)
+
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 
 }
-
