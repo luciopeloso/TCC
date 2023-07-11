@@ -2,15 +2,16 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    tools:context=".RegisterFragment">
+    tools:context=".RegisterFragment"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/green_leaf"
         android:padding="32dp">
 
@@ -19,14 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingBottom="60dp"
             android:text="Cadastro"
             android:textColor="@color/black"
             android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/text_first_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_first_name"
@@ -191,33 +191,47 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_confirmation" />
 
-        <Button
-            android:id="@+id/button_signIn"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_buttons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:text="Cadastrar"
-            android:textColor="@color/green_leaf"
-            android:textSize="16sp"
-            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_back"
-            tools:ignore="VisualLintButtonSize" />
 
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:text="Voltar"
-            android:textColor="@color/green_leaf"
-            android:textSize="16sp"
-            android:layout_margin="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_signIn"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="VisualLintButtonSize" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_access_type">
+
+            <Button
+                android:id="@+id/button_signIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/gray"
+                android:text="Cadastrar"
+                android:textColor="@color/green_leaf"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/button_back"
+                tools:ignore="VisualLintButtonSize" />
+
+            <Button
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/gray"
+                android:text="Voltar"
+                android:textColor="@color/green_leaf"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/button_signIn"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="VisualLintButtonSize" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
