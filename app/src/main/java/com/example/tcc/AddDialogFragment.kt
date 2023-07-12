@@ -17,6 +17,10 @@ class AddDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
     private  val db = FirebaseFirestore.getInstance()
 
+    companion object {
+        const val TAG = "addAreaDialog"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

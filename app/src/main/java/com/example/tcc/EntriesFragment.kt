@@ -94,5 +94,10 @@ class EntriesFragment : Fragment() {
         _binding = null
     }
 
+    fun handleAddAreaDialog(){
+        val dialog = AddDialogFragment()
+        dialog.show(childFragmentManager, AddDialogFragment.TAG)
+    }
+
 }
 

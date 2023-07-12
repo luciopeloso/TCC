@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val dialog = DialogsHandler()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -41,9 +39,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
                 component?.setOnClickListener{
                     expandOrCollapseParentItem(dataList,position)
                 }
-                add?.setOnClickListener{
-                    dialog.handleAddAreaDialog()
-                }
+
             }
         } else {
             holder as ChildViewHolder

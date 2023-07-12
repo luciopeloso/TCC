@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:background="@drawable/bg_bottom_sheet"
+    android:background="@drawable/bg_add_entry"
     android:orientation="vertical">
 
     <TextView
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="Adicionar tipo"
         android:textColor="@color/black"
-        android:textSize="32sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
             android:paddingLeft="8dp"
             android:text="Nome:"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +64,7 @@
             android:paddingLeft="8dp"
             android:text="Área(hectares):"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_name" />
@@ -87,6 +87,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
+        android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
