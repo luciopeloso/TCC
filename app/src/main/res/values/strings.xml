@@ -16,4 +16,8 @@
     <string name="page_home">Inicio</string>
     <string name="page_entries">Entradas</string>
 
+    <!--    BottomSheet-->
+    <string name="text_title_bottom_sheet">Atenção</string>
+    <string name="text_button_bottom_sheet">Entendi</string>
+
 </resources>

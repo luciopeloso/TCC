@@ -9,64 +9,69 @@
     android:layout_margin="16dp"
     android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/entry_child"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
-
-
-<!--    <LinearLayout-->
+<!--    <TextView-->
 <!--        android:id="@+id/entry_child"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="14sp"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.099"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:gravity="center_horizontal">-->
+<!--        app:layout_constraintVertical_bias="0.036" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="4dp"-->
-<!--            android:background="@drawable/text_view_border"-->
-<!--            android:text="descrição" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="4dp"-->
-<!--            android:background="@drawable/text_view_border"-->
-<!--            android:text="unidade" />-->
+    <LinearLayout
+        android:id="@+id/entry_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal">
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="4dp"-->
-<!--            android:background="@drawable/text_view_border"-->
-<!--            android:text="quantidade" />-->
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="@drawable/text_view_border"
+            android:text="descrição" />
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="4dp"-->
-<!--            android:background="@drawable/text_view_border"-->
-<!--            android:text="preço" />-->
+        <TextView
+            android:id="@+id/text_unity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="@drawable/text_view_border"
+            android:text="unidade" />
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="4dp"-->
-<!--            android:background="@drawable/text_view_border"-->
-<!--            android:text="total/há" />-->
+        <TextView
+            android:id="@+id/text_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="@drawable/text_view_border"
+            android:text="quantidade" />
 
-<!--    </LinearLayout>-->
+        <TextView
+            android:id="@+id/text_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="@drawable/text_view_border"
+            android:text="preço" />
+
+        <TextView
+            android:id="@+id/text_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:background="@drawable/text_view_border"
+            android:text="total/há" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@ class EntriesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentEntriesBinding.inflate(inflater, container, false)
         return binding.root
@@ -31,25 +31,36 @@ class EntriesFragment : Fragment() {
         val listData: MutableList<ParentData> = ArrayList()
 
         val parentData: Array<String> =
-            arrayOf("Andhra Pradesh", "Telangana", "Karnataka", "TamilNadu")
-        val childDataData1: MutableList<ChildData> = mutableListOf(
-            ChildData("Anathapur"),
-            ChildData("Chittoor"),
-            ChildData("Nellore"),
-            ChildData("Guntur")
-        )
-        val childDataData2: MutableList<ChildData> = mutableListOf(
-            ChildData("Rajanna Sircilla"),
-            ChildData("Karimnagar"),
-            ChildData("Siddipet")
-        )
-        val childDataData3: MutableList<ChildData> =
-            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
+            arrayOf("Produto",
+                    "Sementes",
+                    "Capina, dessecação e pós emergência",
+                    "Fungicidas, Inseticidas e Foliares",
+                    "Operações",
+                    "Descritivo")
 
-        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
-        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
+//        val childDataData1: MutableList<ChildData> = mutableListOf(
+//            ChildData("Anathapur"),
+//            ChildData("Chittoor"),
+//            ChildData("Nellore"),
+//            ChildData("Guntur")
+//        )
+//        val childDataData2: MutableList<ChildData> = mutableListOf(
+//            ChildData("Rajanna Sircilla"),
+//            ChildData("Karimnagar"),
+//            ChildData("Siddipet")
+//        )
+//        val childDataData3: MutableList<ChildData> =
+//            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
+
+//        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
+//        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
+//        val parentObj3 = ParentData(parentTitle = parentData[2])
+//        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
+
+        val parentObj1 = ParentData(parentTitle = parentData[0])
+        val parentObj2 = ParentData(parentTitle = parentData[1])
         val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
+        val parentObj4 = ParentData(parentTitle = parentData[1])
 
         listData.add(parentObj1)
         listData.add(parentObj2)
@@ -60,13 +71,19 @@ class EntriesFragment : Fragment() {
         binding.rvEntries.setHasFixedSize(true)
         entryAdapter = EntryAdapter(requireContext(), listData)
 
+
         initclicks()
 
         binding.rvEntries.adapter = entryAdapter
 
     }
 
+    fun handleDialog(){
+
+    }
+
     private fun initclicks() {
+
         binding.buttonEditEntries.setOnClickListener{
             findNavController().navigate(R.id.action_homeFragment_to_manageEntriesFragment)
         }

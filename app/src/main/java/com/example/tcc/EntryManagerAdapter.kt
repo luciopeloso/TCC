@@ -1,17 +1,21 @@
 package com.example.tcc
 
 import android.content.Context
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val dialog = DialogsHandler()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -21,6 +25,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         } else {
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.entry_child_adapter, parent,false)
             ChildViewHolder(rowView)
+
         }
     }
 
@@ -36,16 +41,23 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
                 component?.setOnClickListener{
                     expandOrCollapseParentItem(dataList,position)
                 }
+                add?.setOnClickListener{
+                    dialog.handleAddAreaDialog()
+                }
             }
         } else {
             holder as ChildViewHolder
 
             holder.apply {
-                val singleService = dataList.subList.first()
-                childTV?.text =singleService.childTitle
+                val singleService = dataList.subList?.first()
+                //childTV?.text =singleService.childTitle
             }
         }
     }
+
+    private fun addEntry() {
+    }
+
     private fun expandOrCollapseParentItem(singleBoarding: ParentData,position: Int) {
 
         if (singleBoarding.isExpanded) {
@@ -62,7 +74,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         var nextPosition = position
         if(currentBoardingRow.type==AppConstants.Constants.PARENT){
 
-            services.forEach { service ->
+            services?.forEach { service ->
                 val parentModel =  ParentData()
                 parentModel.type = AppConstants.Constants.CHILD
                 val subList : ArrayList<ChildData> = ArrayList()
@@ -79,7 +91,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         val services = currentBoardingRow.subList
         list[position].isExpanded = false
         if(list[position].type==AppConstants.Constants.PARENT){
-            services.forEach { _ ->
+            services?.forEach { _ ->
                 list.removeAt(position + 1)
             }
             notifyDataSetChanged()
@@ -96,9 +108,14 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         val component = row.findViewById(R.id.item_parent) as ConstraintLayout?
         val parentTV = row.findViewById(R.id.parent_Title) as TextView?
         val downIV  = row.findViewById(R.id.down_iv) as ImageView?
+        val add  = row.findViewById(R.id.image_add) as ImageView?
     }
     class ChildViewHolder(row: View) : RecyclerView.ViewHolder(row) {
-        val childTV = row.findViewById(R.id.entry_child) as TextView?
+        //val childTV = row.findViewById(R.id.entry_child) as TextView?
+        val description = row.findViewById(R.id.text_description) as TextView?
+        val unity = row.findViewById(R.id.text_unity) as TextView?
+        val price = row.findViewById(R.id.text_price) as TextView?
+        val total = row.findViewById(R.id.text_total) as TextView?
 
     }
 }
