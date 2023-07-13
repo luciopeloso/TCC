@@ -1,6 +1,7 @@
 package com.example.tcc
 
-data class ChildData(val description:String,
-                        val unity:String,
-                        val quantity:Int,
-                        val price: Long)
+data class ChildData(val type: String,
+                     val description:String,
+                     val quantity:Int,
+                     val unity:String,
+                     val price: Long)

@@ -30,13 +30,13 @@ class EntriesFragment : Fragment() {
 
         val listData: MutableList<ParentData> = ArrayList()
 
-        val parentData: Array<String> =
-            arrayOf("Produto",
-                    "Sementes",
-                    "Capina, dessecação e pós emergência",
-                    "Fungicidas, Inseticidas e Foliares",
-                    "Operações",
-                    "Descritivo")
+        val parentData: MutableList<String> =
+            mutableListOf("Produto",
+                "Sementes",
+                "Capina, dessecação e pós emergência",
+                "Fungicidas, Inseticidas e Foliares",
+                "Operações",
+                "Descritivo")
 
 //        val childDataData1: MutableList<ChildData> = mutableListOf(
 //            ChildData("Anathapur"),
@@ -78,9 +78,6 @@ class EntriesFragment : Fragment() {
 
     }
 
-    fun handleDialog(){
-
-    }
 
     private fun initclicks() {
 

@@ -51,9 +51,6 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         }
     }
 
-    private fun addEntry() {
-    }
-
     private fun expandOrCollapseParentItem(singleBoarding: ParentData,position: Int) {
 
         if (singleBoarding.isExpanded) {

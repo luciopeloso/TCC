@@ -100,6 +100,7 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
     }
     class ChildViewHolder(row: View) : RecyclerView.ViewHolder(row) {
         //val childTV = row.findViewById(R.id.entry_child) as TextView?
+        val type = row.findViewById(R.id.parent_Title) as TextView?
         val description = row.findViewById(R.id.text_description) as TextView?
         val unity = row.findViewById(R.id.text_unity) as TextView?
         val price = row.findViewById(R.id.text_price) as TextView?
