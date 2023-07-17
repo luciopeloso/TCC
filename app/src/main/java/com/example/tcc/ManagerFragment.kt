@@ -18,7 +18,9 @@ class ManagerFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var entryAdapter: EntryManagerAdapter
+    //private lateinit var entryAdapter: EntryManagerAdapter
+
+    private var dialog = AddDialogFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +79,6 @@ class ManagerFragment : Fragment() {
 //        binding.rvEntriesManager.setHasFixedSize(true)
 //        entryAdapter = EntryManagerAdapter(requireContext(), listData)
 
-        configTablayout()
 
         initClicks()
 
@@ -93,23 +94,12 @@ class ManagerFragment : Fragment() {
             findNavController().navigate(R.id.action_manageEntriesFragment_to_homeFragment)
 
         }
+        binding.buttonAdd.setOnClickListener{
+            dialog.show(childFragmentManager, AddDialogFragment.TAG)
+        }
+
     }
 
-    private fun configTablayout() {
-        val adapter = ViewPagerAdapter(requireActivity())
-        binding.viewPager.adapter = adapter
-
-        adapter.addFragment(ManagePropertyFragment(), R.string.page_properties)
-        adapter.addFragment(ManageEntriesFragment(), R.string.page_property_entries)
-
-        binding.viewPager.offscreenPageLimit = adapter.itemCount
-
-        TabLayoutMediator(
-            binding.tabLayout, binding.viewPager
-        ) { tab, position ->
-            tab.text = getString(adapter.getTitle(position))
-        }.attach()
-    }
 
     override fun onDestroy() {
         super.onDestroy()

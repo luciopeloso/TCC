@@ -8,11 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 
 class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private  val db = FirebaseFirestore.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -20,7 +17,7 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.entry_parent_adapter, parent,false)
             GroupViewHolder(rowView)
         } else {
-            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.entry_child_adapter, parent,false)
+            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
             ChildViewHolder(rowView)
         }
     }

@@ -49,6 +49,10 @@
         <action
             android:id="@+id/action_homeFragment_to_manageEntriesFragment"
             app:destination="@id/manageEntriesFragment" />
+        <argument
+            android:name="user"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/manageEntriesFragment"

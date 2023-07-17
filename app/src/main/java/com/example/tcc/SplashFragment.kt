@@ -3,15 +3,16 @@ package com.example.tcc
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.tcc.R
 import com.example.tcc.databinding.FragmentSplashBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -21,6 +22,7 @@ class SplashFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,16 +36,23 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         Handler(Looper.getMainLooper()).postDelayed(this::checkAuth, 2000)
+
 
     }
 
     private fun checkAuth() {
         auth = Firebase.auth
+
         if (auth.currentUser == null) {
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         } else {
-            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+            val action = SplashFragmentDirections
+                .actionSplashFragmentToHomeFragment(auth.currentUser?.email)
+
+            findNavController().navigate(action)
         }
     }
 

@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,7 +18,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_manager_parent_adapter, parent,false)
             GroupViewHolder(rowView)
         } else {
-            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.entry_child_adapter, parent,false)
+            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
             ChildViewHolder(rowView)
 
         }
@@ -101,7 +98,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         val component = row.findViewById(R.id.item_parent) as ConstraintLayout?
         val parentTV = row.findViewById(R.id.parent_Title) as TextView?
         val downIV  = row.findViewById(R.id.down_iv) as ImageView?
-        val add  = row.findViewById(R.id.image_add) as ImageView?
+        //val add  = row.findViewById(R.id.ic_add) as ImageView?
     }
     class ChildViewHolder(row: View) : RecyclerView.ViewHolder(row) {
         //val childTV = row.findViewById(R.id.entry_child) as TextView?

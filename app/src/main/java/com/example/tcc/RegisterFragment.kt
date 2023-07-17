@@ -2,11 +2,15 @@ package com.example.tcc
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.tcc.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
@@ -17,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
+import kotlin.concurrent.thread
 
 
 class RegisterFragment : Fragment() {
@@ -25,6 +30,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
     private val auth = FirebaseAuth.getInstance()
     private  val db = FirebaseFirestore.getInstance()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +54,13 @@ class RegisterFragment : Fragment() {
             val password = binding.editPassword.text.toString()
             val name = binding.editFirstName.text.toString()
             val lastName = binding.editLastName.text.toString()
-            val acessType = binding.spinnerAccessType.selectedItem
+            val acessType = binding.spinnerAccessType.selectedItem.toString()
 
             if (email.isEmpty() ||
                 password.isEmpty() ||
                 lastName.isEmpty() ||
                 name.isEmpty() ||
-                acessType == 0) {
+                acessType == "0") {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
                 snackbar.setBackgroundTint(Color.RED)
                 snackbar.show()
@@ -64,31 +70,18 @@ class RegisterFragment : Fragment() {
                 snackbar.show()
             } else {
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { signIn ->
-                    if(signIn.isSuccessful){
-                        val snackbar = Snackbar.make(it, "Sucesso ao cadastrar usuário!", Snackbar.LENGTH_SHORT)
+
+                    if(signIn.isSuccessful) {
+                        var snackbar = Snackbar.make(it, "Sucesso ao cadastrar usuário!", Snackbar.LENGTH_SHORT)
                         snackbar.setBackgroundTint(Color.BLUE)
                         snackbar.show()
                         //binding.editEmail.setText("")
                         //binding.editPassword.setText("")
-
-                        val custumerMap = hashMapOf(
-                            "name" to name,
-                            "lastName" to lastName,
-                            "email" to email,
-                            "acessType" to acessType,
-                        )
-
-                        db.collection("Customer")
-                            .add(custumerMap)
-                            .addOnCompleteListener{
-                                //todo
-                            }.addOnFailureListener{
-                                //todo
-                            }
-                        auth.signOut()
+                        dataBaseSubmit(name, lastName, email, acessType)
                         navigationToLogin()
 
                     }
+
                 }.addOnFailureListener { exception ->
                     val snackbar = Snackbar.make(it, validateFields(exception), Snackbar.LENGTH_SHORT)
                     snackbar.setBackgroundTint(Color.BLUE)
@@ -107,10 +100,40 @@ class RegisterFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_dropdown_item,list)
 
         binding.spinnerAccessType.adapter = adapter
-
     }
 
+    private fun dataBaseSubmit(name: String,lastName: String,email:String,acessType:String){
+
+        val custumerMap = hashMapOf(
+            "name" to name,
+            "lastName" to lastName,
+            "email" to email,
+            "acessType" to acessType
+        )
+
+        //auth.currentUser?.uid.toString()
+
+        db.collection("Customer").document(auth.currentUser?.uid.toString())
+            .set(custumerMap)
+            .addOnCompleteListener{
+                Log.d("db","sucesso ao cadastrar!")
+
+                while(!it.isSuccessful){
+
+                }
+
+            }.addOnFailureListener{
+                Log.d("db","Falha!")
+            }
+
+    }
     private fun navigationToLogin(){
+        thread {
+            Thread.sleep(1000)
+            auth.signOut()
+        }
+
+
         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
     }
     private fun validateFields(exception: Exception): String{
