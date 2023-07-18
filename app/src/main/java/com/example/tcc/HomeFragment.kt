@@ -18,7 +18,7 @@ import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
 
-    private val args: HomeFragmentArgs by navArgs()
+    //private val args: HomeFragmentArgs by navArgs()
     private var userID = ""
 
     private var _binding: FragmentHomeBinding? = null
@@ -42,12 +42,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
         auth = Firebase.auth
 
-        userID = db.collection("Customer").whereEqualTo("email", args.user.toString()).toString()
+        //userID = db.collection("Customer").whereEqualTo("email", args.user.toString()).toString()
 
-        user = db.collection("Customer").whereEqualTo("email", args.user.toString()).toString()
+        //user = db.collection("Customer").whereEqualTo("email", args.user.toString()).toString()
 
         configTablayout()
 

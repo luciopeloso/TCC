@@ -14,7 +14,7 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if(viewType== AppConstants.Constants.PARENT){
-            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.entry_parent_adapter, parent,false)
+            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_parent, parent,false)
             GroupViewHolder(rowView)
         } else {
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
