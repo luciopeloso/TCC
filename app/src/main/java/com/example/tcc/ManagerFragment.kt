@@ -10,6 +10,7 @@ import com.example.tcc.databinding.FragmentManagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class ManagerFragment : Fragment() {
@@ -17,10 +18,11 @@ class ManagerFragment : Fragment() {
     private var _binding: FragmentManagerBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
+    private  val db = FirebaseFirestore.getInstance()
 
     //private lateinit var entryAdapter: EntryManagerAdapter
 
-    private var dialog = AddDialogFragment()
+    private var dialog = AddDialogFragment("Propriedade")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +102,10 @@ class ManagerFragment : Fragment() {
 
     }
 
+
+    private fun getEntries(){
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()

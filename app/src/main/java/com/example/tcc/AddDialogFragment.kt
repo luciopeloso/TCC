@@ -1,5 +1,6 @@
 package com.example.tcc
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +12,12 @@ import com.example.tcc.databinding.FragmentAddAreaDialogBinding
 import com.example.tcc.databinding.FragmentEntriesBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddDialogFragment : DialogFragment() {
+class AddDialogFragment(type: String) : DialogFragment() {
 
     private var _binding: FragmentAddAreaDialogBinding? = null
     private val binding get() = _binding!!
     private  val db = FirebaseFirestore.getInstance()
+    private val _type: String = type
 
     companion object {
         const val TAG = "addAreaDialog"
@@ -30,9 +32,11 @@ class AddDialogFragment : DialogFragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.textTitle.text = "Adicionar $_type"
         initClicks()
     }
 
