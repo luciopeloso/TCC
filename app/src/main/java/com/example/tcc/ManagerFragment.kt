@@ -22,6 +22,9 @@ class ManagerFragment : Fragment() {
 
     //private lateinit var entryAdapter: EntryManagerAdapter
 
+
+    private lateinit var adapter : EntryManagePropertyAdapter
+
     private var dialog = AddDialogFragment("Propriedade")
 
     override fun onCreateView(
@@ -39,6 +42,20 @@ class ManagerFragment : Fragment() {
         auth = Firebase.auth
 
         val listData: MutableList<ParentData> = ArrayList()
+
+        val listener = object : EntryListener{
+
+            override fun onListClick(selected: Boolean) {
+                if(selected){
+                    binding.buttonEdit.visibility = View.VISIBLE
+                    binding.buttonEdit.visibility = View.VISIBLE
+                } else {
+                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonEdit.visibility = View.INVISIBLE
+                }
+            }
+        }
+        adapter.attachListener(listener)
 
         val parentData: Array<String> =
             arrayOf("Produto",
@@ -99,7 +116,6 @@ class ManagerFragment : Fragment() {
         binding.buttonAdd.setOnClickListener{
             dialog.show(childFragmentManager, AddDialogFragment.TAG)
         }
-
     }
 
 

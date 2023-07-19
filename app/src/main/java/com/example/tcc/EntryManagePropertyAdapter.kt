@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.databinding.ItemEntryPropertyBinding
 
 class EntryManagePropertyAdapter(private val context: Context,
-                                 private val propertyList: List<Property>,):
+                                 private val propertyList: List<Property>
+                                 ):
     RecyclerView.Adapter<EntryManagePropertyAdapter.MyViewHolder>() {
 
-
+    private lateinit var listener: EntryListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             ItemEntryPropertyBinding.inflate(
@@ -22,9 +23,7 @@ class EntryManagePropertyAdapter(private val context: Context,
         )
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = propertyList.size
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -33,6 +32,18 @@ class EntryManagePropertyAdapter(private val context: Context,
         holder.binding.textDescription.text = property.name
         holder.binding.textDimension.text = "${property.dimension} hectares"
 
+        holder.binding.entryProperty.setOnClickListener{
+            if(!property.selected){
+                property.selected = true
+                holder.binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
+                listener.onListClick(true)
+            }
+        }
+
+    }
+
+    fun attachListener(entryListener: EntryListener) {
+        listener = entryListener
     }
 
     inner class MyViewHolder(val binding: ItemEntryPropertyBinding) :
