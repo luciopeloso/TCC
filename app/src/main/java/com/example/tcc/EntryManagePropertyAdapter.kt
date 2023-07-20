@@ -15,7 +15,7 @@ class EntryManagePropertyAdapter(private val context: Context,
 
     private lateinit var listener: EntryListener
 
-    private var positionSelected = -1
+    private var positionSelected = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -40,7 +40,7 @@ class EntryManagePropertyAdapter(private val context: Context,
         holder.binding.entryProperty.setOnClickListener{
             if(!property.selected){
 
-                if(positionSelected != -1){
+                if(positionSelected != RecyclerView.NO_POSITION){
                     propertyList[positionSelected].selected = false
                 }
                 positionSelected = position
