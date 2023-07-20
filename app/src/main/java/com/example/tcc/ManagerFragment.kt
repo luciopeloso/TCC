@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.databinding.FragmentManagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,10 @@ class ManagerFragment : Fragment() {
 
     private var _binding: FragmentManagerBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var entryAdapter: EntryManagePropertyAdapter
+    private val taskList = mutableListOf<Property>()
+
     private lateinit var auth: FirebaseAuth
     private  val db = FirebaseFirestore.getInstance()
 
@@ -116,6 +121,13 @@ class ManagerFragment : Fragment() {
         binding.buttonAdd.setOnClickListener{
             dialog.show(childFragmentManager, AddDialogFragment.TAG)
         }
+    }
+
+    private fun initAdapter() {
+        binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPropertyEntries.setHasFixedSize(true)
+        entryAdapter = EntryManagePropertyAdapter(requireContext(), taskList)
+        binding.rvPropertyEntries.adapter = entryAdapter
     }
 
 
