@@ -20,17 +20,16 @@ class ManagerFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var entryAdapter: EntryManagePropertyAdapter
-    private val taskList = mutableListOf<Property>()
+    private val propertyList = mutableListOf<Property>()
 
     private lateinit var auth: FirebaseAuth
     private  val db = FirebaseFirestore.getInstance()
 
-    //private lateinit var entryAdapter: EntryManagerAdapter
 
+    //private lateinit var adapter : EntryManagePropertyAdapter
 
-    private lateinit var adapter : EntryManagePropertyAdapter
-
-    private var dialog = AddDialogFragment("Propriedade")
+    private var dialogAdd = AddDialogFragment("Propriedade")
+    private var dialogEdit = AddDialogFragment("Propriedade")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +43,14 @@ class ManagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPropertyEntries.setHasFixedSize(true)
+        entryAdapter = EntryManagePropertyAdapter(requireContext(), propertyList)
+        binding.rvPropertyEntries.adapter = entryAdapter
+
         auth = Firebase.auth
 
-        val listData: MutableList<ParentData> = ArrayList()
-
         val listener = object : EntryListener{
-
             override fun onListClick(selected: Boolean) {
                 if(selected){
                     binding.buttonEdit.visibility = View.VISIBLE
@@ -60,9 +61,9 @@ class ManagerFragment : Fragment() {
                 }
             }
         }
-        adapter.attachListener(listener)
+        entryAdapter.attachListener(listener)
 
-        val parentData: Array<String> =
+        /*val parentData: Array<String> =
             arrayOf("Produto",
                 "Sementes",
                 "Capina, dessecação e pós emergência",
@@ -70,24 +71,24 @@ class ManagerFragment : Fragment() {
                 "Operações",
                 "Descritivo")
 
-//        val childDataData1: MutableList<ChildData> = mutableListOf(
-//            ChildData("Anathapur"),
-//            ChildData("Chittoor"),
-//            ChildData("Nellore"),
-//            ChildData("Guntur")
-//        )
-//        val childDataData2: MutableList<ChildData> = mutableListOf(
-//            ChildData("Rajanna Sircilla"),
-//            ChildData("Karimnagar"),
-//            ChildData("Siddipet")
-//        )
-//        val childDataData3: MutableList<ChildData> =
-//            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
+        val childDataData1: MutableList<ChildData> = mutableListOf(
+            ChildData("Anathapur"),
+            ChildData("Chittoor"),
+            ChildData("Nellore"),
+            ChildData("Guntur")
+        )
+        val childDataData2: MutableList<ChildData> = mutableListOf(
+            ChildData("Rajanna Sircilla"),
+            ChildData("Karimnagar"),
+            ChildData("Siddipet")
+        )
+        val childDataData3: MutableList<ChildData> =
+            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
 
-//        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
-//        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
-//        val parentObj3 = ParentData(parentTitle = parentData[2])
-//        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
+        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
+        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
+        val parentObj3 = ParentData(parentTitle = parentData[2])
+        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
 
         val parentObj1 = ParentData(parentTitle = parentData[0])
         val parentObj2 = ParentData(parentTitle = parentData[1])
@@ -97,12 +98,11 @@ class ManagerFragment : Fragment() {
         listData.add(parentObj1)
         listData.add(parentObj2)
         listData.add(parentObj3)
-        listData.add(parentObj4)
+        listData.add(parentObj4)*/
 
 //        binding.rvEntriesManager.layoutManager = LinearLayoutManager(requireContext())
 //        binding.rvEntriesManager.setHasFixedSize(true)
 //        entryAdapter = EntryManagerAdapter(requireContext(), listData)
-
 
         initClicks()
 
@@ -119,17 +119,9 @@ class ManagerFragment : Fragment() {
 
         }
         binding.buttonAdd.setOnClickListener{
-            dialog.show(childFragmentManager, AddDialogFragment.TAG)
+            dialogAdd.show(childFragmentManager, AddDialogFragment.TAG)
         }
     }
-
-    private fun initAdapter() {
-        binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvPropertyEntries.setHasFixedSize(true)
-        entryAdapter = EntryManagePropertyAdapter(requireContext(), taskList)
-        binding.rvPropertyEntries.adapter = entryAdapter
-    }
-
 
     private fun getEntries(){
 

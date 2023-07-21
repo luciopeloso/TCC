@@ -133,6 +133,7 @@ class RegisterFragment : Fragment() {
             auth.signOut()
         }
 
+        //auth.signOut()
 
         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
     }
