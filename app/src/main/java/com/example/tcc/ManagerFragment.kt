@@ -1,6 +1,7 @@
 package com.example.tcc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,11 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.databinding.FragmentManagerBinding
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 
 class ManagerFragment : Fragment() {
@@ -19,14 +21,11 @@ class ManagerFragment : Fragment() {
     private var _binding: FragmentManagerBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var entryAdapter: EntryManagePropertyAdapter
+    private val entryAdapter = EntryManagePropertyAdapter()
     private val propertyList = mutableListOf<Property>()
 
     private lateinit var auth: FirebaseAuth
     private  val db = FirebaseFirestore.getInstance()
-
-
-    //private lateinit var adapter : EntryManagePropertyAdapter
 
     private var dialogAdd = AddDialogFragment("Propriedade")
     private var dialogEdit = AddDialogFragment("Propriedade")
@@ -43,70 +42,29 @@ class ManagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = Firebase.auth
+
         binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvPropertyEntries.setHasFixedSize(true)
-        entryAdapter = EntryManagePropertyAdapter(requireContext(), propertyList)
         binding.rvPropertyEntries.adapter = entryAdapter
-
-        auth = Firebase.auth
 
         val listener = object : EntryListener{
             override fun onListClick(selected: Boolean) {
                 if(selected){
                     binding.buttonEdit.visibility = View.VISIBLE
-                    binding.buttonEdit.visibility = View.VISIBLE
+                    binding.buttonGo.visibility = View.VISIBLE
                 } else {
                     binding.buttonEdit.visibility = View.INVISIBLE
-                    binding.buttonEdit.visibility = View.INVISIBLE
+                    binding.buttonGo.visibility = View.INVISIBLE
                 }
             }
         }
         entryAdapter.attachListener(listener)
 
-        /*val parentData: Array<String> =
-            arrayOf("Produto",
-                "Sementes",
-                "Capina, dessecação e pós emergência",
-                "Fungicidas, Inseticidas e Foliares",
-                "Operações",
-                "Descritivo")
-
-        val childDataData1: MutableList<ChildData> = mutableListOf(
-            ChildData("Anathapur"),
-            ChildData("Chittoor"),
-            ChildData("Nellore"),
-            ChildData("Guntur")
-        )
-        val childDataData2: MutableList<ChildData> = mutableListOf(
-            ChildData("Rajanna Sircilla"),
-            ChildData("Karimnagar"),
-            ChildData("Siddipet")
-        )
-        val childDataData3: MutableList<ChildData> =
-            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
-
-        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
-        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
-        val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
-
-        val parentObj1 = ParentData(parentTitle = parentData[0])
-        val parentObj2 = ParentData(parentTitle = parentData[1])
-        val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[1])
-
-        listData.add(parentObj1)
-        listData.add(parentObj2)
-        listData.add(parentObj3)
-        listData.add(parentObj4)*/
-
-//        binding.rvEntriesManager.layoutManager = LinearLayoutManager(requireContext())
-//        binding.rvEntriesManager.setHasFixedSize(true)
-//        entryAdapter = EntryManagerAdapter(requireContext(), listData)
+        getEntries()
 
         initClicks()
 
-//        binding.rvEntriesManager.adapter = entryAdapter
     }
 
     private fun initClicks() {
@@ -125,7 +83,27 @@ class ManagerFragment : Fragment() {
 
     private fun getEntries(){
 
+        db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+            .addSnapshotListener{ snapshot,e ->
+                if(e==null){
+                    val documents = snapshot?.documents
+                    if(documents != null){
+                        propertyList.clear()
+
+                        for(document in documents){
+                            val name = document.get("name").toString()
+                            val dimension = document.get("dimension")
+                            val newProperty =  Property(name, dimension as Long)
+
+                            propertyList.add(newProperty)
+                            entryAdapter.updateProperties(propertyList)
+                        }
+
+                    }
+                }
+            }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

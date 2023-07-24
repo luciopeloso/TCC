@@ -4,64 +4,75 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.databinding.ItemEntryPropertyBinding
 
-class EntryManagePropertyAdapter(private val context: Context,
-                                 private val propertyList: List<Property>
-                                 ):
+class EntryManagePropertyAdapter:
     RecyclerView.Adapter<EntryManagePropertyAdapter.MyViewHolder>() {
 
     private lateinit var listener: EntryListener
+    private var propertyList: List<Property> = mutableListOf()
 
     private var positionSelected = RecyclerView.NO_POSITION
+    private var positionActual = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
-            ItemEntryPropertyBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        val inflater = LayoutInflater.from(parent.context)
+        val itemBinding = ItemEntryPropertyBinding.inflate(inflater, parent, false)
+        return MyViewHolder(itemBinding,listener)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        if(positionSelected == position){
+            holder.selectedBg()
+        } else {
+            holder.unselectedBg()
+        }
+        holder.bindData(propertyList[position], position)
     }
 
     override fun getItemCount() = propertyList.size
 
-    @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        val property = propertyList[position]
-
-
-        holder.binding.textDescription.text = property.name
-        holder.binding.textDimension.text = "${property.dimension} hectares"
-
-        holder.binding.entryProperty.setOnClickListener{
-            if(!property.selected){
-
-                if(positionSelected != RecyclerView.NO_POSITION){
-                    propertyList[positionSelected].selected = false
-                }
-                positionSelected = position
-                property.selected = true
-                holder.binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-                listener.onListClick(true)
-            } else {
-                holder.binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
-                property.selected = false
-                listener.onListClick(false)
-            }
-        }
-
+    fun updateProperties(list: List<Property>) {
+        propertyList = list
+        notifyDataSetChanged()
     }
-
-
 
     fun attachListener(entryListener: EntryListener) {
         listener = entryListener
     }
 
-    inner class MyViewHolder(val binding: ItemEntryPropertyBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class MyViewHolder(private val binding: ItemEntryPropertyBinding, val listener: EntryListener) :
+    RecyclerView.ViewHolder(binding.root) {
+
+        fun bindData(property: Property, position: Int) {
+            binding.textDescription.text = property.name
+            binding.textDimension.text = "${property.dimension} hectares"
+
+            binding.entryProperty.setOnClickListener {
+
+                if(positionSelected==position){
+                    positionSelected=RecyclerView.NO_POSITION
+                    listener.onListClick(false)
+                    notifyDataSetChanged()
+
+                }
+                positionSelected = position
+                listener.onListClick(true)
+                notifyDataSetChanged()
+
+            }
+        }
+
+        fun selectedBg(){
+            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
+        }
+
+        fun unselectedBg(){
+            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
+        }
+    }
+
 }
