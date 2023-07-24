@@ -15,8 +15,7 @@ class EntryManagePropertyAdapter:
     private lateinit var listener: EntryListener
     private var propertyList: List<Property> = mutableListOf()
 
-    private var positionSelected = RecyclerView.NO_POSITION
-    private var positionActual = RecyclerView.NO_POSITION
+    var positionSelected = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -47,6 +46,8 @@ class EntryManagePropertyAdapter:
     inner class MyViewHolder(private val binding: ItemEntryPropertyBinding, val listener: EntryListener) :
     RecyclerView.ViewHolder(binding.root) {
 
+
+        @SuppressLint("SetTextI18n")
         fun bindData(property: Property, position: Int) {
             binding.textDescription.text = property.name
             binding.textDimension.text = "${property.dimension} hectares"

@@ -1,30 +1,26 @@
 package com.example.tcc
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
 import com.example.tcc.databinding.FragmentAddAreaDialogBinding
-import com.example.tcc.databinding.FragmentEntriesBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddDialogFragment(type: String) : DialogFragment() {
+class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
 
     private var _binding: FragmentAddAreaDialogBinding? = null
     private val binding get() = _binding!!
     private  val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private val _type: String = type
+
+    private val _property = Property(null,null)
 
     companion object {
         const val TAG = "addAreaDialog"
@@ -43,7 +39,7 @@ class AddDialogFragment(type: String) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textTitle.text = "Adicionar $_type"
+        binding.textTitle.text = "Adicionar Propriedade"
         initClicks()
     }
 
@@ -53,7 +49,6 @@ class AddDialogFragment(type: String) : DialogFragment() {
         }
 
         binding.buttonSubmit.setOnClickListener{
-            if(_type == "Propriedade"){
                 val name = binding.editName.text.toString()
                 val dimension = binding.editArea.text.toString()
 
@@ -64,7 +59,7 @@ class AddDialogFragment(type: String) : DialogFragment() {
                 } else {
                     addProperty(name, dimension.toLong())
                 }
-            }
+
         }
     }
 

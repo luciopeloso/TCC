@@ -1,7 +1,6 @@
 package com.example.tcc
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,6 @@ import com.example.tcc.databinding.FragmentManagerBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 
 class ManagerFragment : Fragment() {
@@ -27,8 +24,9 @@ class ManagerFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private  val db = FirebaseFirestore.getInstance()
 
-    private var dialogAdd = AddDialogFragment("Propriedade")
-    private var dialogEdit = AddDialogFragment("Propriedade")
+    private lateinit var dialogAdd : AddPropertyDialogFragment
+    //private var dialogEdit = AddPropertyDialogFragment()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,12 +75,20 @@ class ManagerFragment : Fragment() {
 
         }
         binding.buttonAdd.setOnClickListener{
-            dialogAdd.show(childFragmentManager, AddDialogFragment.TAG)
+            dialogAdd = AddPropertyDialogFragment(null)
+            dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
+        }
+
+        binding.buttonEdit.setOnClickListener {
+            val name = propertyList[entryAdapter.positionSelected].name
+            val dimension = propertyList[entryAdapter.positionSelected].dimension
+
+            dialogAdd = AddPropertyDialogFragment(propertyList[entryAdapter.positionSelected])
+            dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
         }
     }
 
     private fun getEntries(){
-
         db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
             .addSnapshotListener{ snapshot,e ->
                 if(e==null){
