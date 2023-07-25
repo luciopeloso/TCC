@@ -99,7 +99,8 @@ class ManagerFragment : Fragment() {
                         for(document in documents){
                             val name = document.get("name").toString()
                             val dimension = document.get("dimension")
-                            val newProperty =  Property(name, dimension as Long)
+                            val localization = document.get("localization").toString()
+                            val newProperty =  Property(name, dimension as Long,localization)
 
                             propertyList.add(newProperty)
                             entryAdapter.updateProperties(propertyList)

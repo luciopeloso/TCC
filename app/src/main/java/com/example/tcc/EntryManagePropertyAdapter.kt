@@ -51,6 +51,7 @@ class EntryManagePropertyAdapter:
         fun bindData(property: Property, position: Int) {
             binding.textDescription.text = property.name
             binding.textDimension.text = "${property.dimension} hectares"
+            binding.textLocation.text = property.location
 
             binding.entryProperty.setOnClickListener {
 

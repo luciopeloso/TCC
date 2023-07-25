@@ -61,6 +61,25 @@
             app:layout_constraintStart_toEndOf="@+id/text_show_dimension"
             app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
+        <TextView
+            android:id="@+id/text_show_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Localização:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_show_dimension" />
+
+        <TextView
+            android:id="@+id/text_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@+id/text_show_location"
+            app:layout_constraintTop_toBottomOf="@+id/text_dimension" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

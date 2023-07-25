@@ -20,7 +20,7 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
     private  val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private val _property = Property(null,null)
+    private val _property = Property(null,null, null)
 
     companion object {
         const val TAG = "addAreaDialog"
@@ -39,6 +39,15 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(property != null){
+            _property.name = property.name
+            _property.dimension = property.dimension
+            _property.location = property.location
+            binding.editName.setText(_property.name.toString())
+            binding.editArea.setText(_property.dimension.toString())
+            binding.editLocalization.setText(_property.location.toString())
+        }
+
         binding.textTitle.text = "Adicionar Propriedade"
         initClicks()
     }
@@ -51,27 +60,39 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
         binding.buttonSubmit.setOnClickListener{
                 val name = binding.editName.text.toString()
                 val dimension = binding.editArea.text.toString()
+                val localization = binding.editLocalization.text.toString()
 
-                if(name.isEmpty() || dimension.isEmpty()){
+                if(name.isEmpty() || dimension.isEmpty() || localization.isEmpty()){
                     val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
                     snackbar.setBackgroundTint(Color.RED)
                     snackbar.show()
                 } else {
-                    addProperty(name, dimension.toLong())
+                    if(property != null){
+                        editProperty(name, dimension.toLong())
+                    } else {
+                        addProperty(name, dimension.toLong(),localization)
+                    }
+
                 }
 
         }
     }
 
-    private fun addProperty(name: String, dimension: Long) {
+    private fun editProperty(name: String, toLong: Long) {
+        //db.collection("Property").get()
+    }
+
+    private fun addProperty(name: String, dimension: Long, localization: String) {
 
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())
 
         val areas: ArrayList<String> = ArrayList()
 
+
         val propertyMap = hashMapOf(
             "name" to name,
+            "localization" to localization,
             "dimension" to dimension,
             "dimension_left" to dimension,
             "users" to users,

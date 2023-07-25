@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_margin="16dp"
         android:text="Adicionar tipo"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -25,6 +26,7 @@
         android:id="@+id/constraint_entries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +67,6 @@
             android:text="Área(hectares):"
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
@@ -76,9 +77,34 @@
             android:layout_margin="8dp"
             android:hint="Dimensão da área"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_area"
             app:layout_constraintTop_toBottomOf="@+id/edit_name" />
+
+        <TextView
+            android:id="@+id/text_localization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="Localização:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_area" />
+
+        <EditText
+            android:id="@+id/edit_localization"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:hint="Localização da propriedade"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_localization"
+            app:layout_constraintTop_toBottomOf="@+id/edit_area" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,15 +126,6 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:text="Voltar" />
-
-        <Button
-            android:id="@+id/button_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:text="Excluir"
-            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_submit"
