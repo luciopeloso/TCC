@@ -1,6 +1,7 @@
 package com.example.tcc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -101,6 +102,8 @@ class ManagerFragment : Fragment() {
                             val dimension = document.get("dimension")
                             val localization = document.get("localization").toString()
                             val newProperty =  Property(name, dimension as Long,localization)
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
 
                             propertyList.add(newProperty)
                             entryAdapter.updateProperties(propertyList)
