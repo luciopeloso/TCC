@@ -81,8 +81,8 @@ class ManagerFragment : Fragment() {
         }
 
         binding.buttonEdit.setOnClickListener {
-            val name = propertyList[entryAdapter.positionSelected].name
-            val dimension = propertyList[entryAdapter.positionSelected].dimension
+            //val name = propertyList[entryAdapter.positionSelected].name
+            //val dimension = propertyList[entryAdapter.positionSelected].dimension
 
             dialogAdd = AddPropertyDialogFragment(propertyList[entryAdapter.positionSelected])
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)

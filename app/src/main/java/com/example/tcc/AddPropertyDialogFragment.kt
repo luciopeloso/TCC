@@ -14,14 +14,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
+class AddPropertyDialogFragment(private val property: Property?) : DialogFragment() {
 
     private var _binding: FragmentAddAreaDialogBinding? = null
     private val binding get() = _binding!!
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private val _property = Property(null, null, null)
+    private val newProperty = Property(null, null, null)
 
     companion object {
         const val TAG = "addAreaDialog"
@@ -41,13 +41,13 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (property != null) {
-            _property.name = property.name
-            _property.dimension = property.dimension
-            _property.location = property.location
+            newProperty.name = property.name
+            newProperty.dimension = property.dimension
+            newProperty.location = property.location
 
-            binding.editName.setText(_property.name.toString())
-            binding.editArea.setText(_property.dimension.toString())
-            binding.editLocalization.setText(_property.location.toString())
+            binding.editName.setText(newProperty.name.toString())
+            binding.editArea.setText(newProperty.dimension.toString())
+            binding.editLocalization.setText(newProperty.location.toString())
         }
 
         binding.textTitle.text = "Adicionar Propriedade"
@@ -70,7 +70,7 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
                 snackbar.show()
             } else {
                 if (property != null) {
-                    editProperty(name, dimension.toLong(), localization)
+                    editProperty(property,newProperty)
                 } else {
                     addProperty(name, dimension.toLong(), localization)
                 }
@@ -78,25 +78,29 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
         }
     }
 
-    private fun editProperty(name: String, dimension: Long, location: String) {
+    private fun editProperty(oldProperty: Property, newProperty: Property) {
 
         var docRef = ""
+        var _name = ""
+        var _dimension = ""
 
-        db.collection("Property").get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                if (document.get("name").toString() == name &&
-                    document.get("dimension") == dimension &&
-                    document.get("localization").toString() == location
-                ){
-                    //Problema na referência
-                    docRef = document.id
+        db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+            .addSnapshotListener{ snapshot,e ->
+                if(e==null){
+                    val documents = snapshot?.documents
+                    if(documents != null){
+
+                        for(document in documents){
+                            //AJUSTAR PASSAGEM DE PARAMETROS
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                        }
+
+                    }
                 }
             }
-        }.addOnFailureListener {
-            Toast.makeText(requireContext(),"Não foi possível editar a Propriedade!", Toast.LENGTH_SHORT).show()
-        }
 
-        db.collection("Property")
+        /*db.collection("Property")
             .document(docRef)
             .update(
                 mapOf(
@@ -108,7 +112,7 @@ class AddPropertyDialogFragment(val property: Property?) : DialogFragment() {
                 Toast.makeText(requireContext(),"Sucesso ao editar propriedade!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 Toast.makeText(requireContext(),"Erro! Tente mais tarde!", Toast.LENGTH_SHORT).show()
-            }
+            }*/
     }
 
     private fun addProperty(name: String, dimension: Long, localization: String) {
