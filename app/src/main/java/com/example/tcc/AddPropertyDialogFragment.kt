@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tcc.databinding.FragmentAddAreaDialogBinding
 import com.google.android.material.snackbar.Snackbar
@@ -41,13 +40,9 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         super.onViewCreated(view, savedInstanceState)
 
         if (property != null) {
-            newProperty.name = property.name
-            newProperty.dimension = property.dimension
-            newProperty.location = property.location
-
-            binding.editName.setText(newProperty.name.toString())
-            binding.editArea.setText(newProperty.dimension.toString())
-            binding.editLocalization.setText(newProperty.location.toString())
+            binding.editName.setText(property.name.toString())
+            binding.editArea.setText(property.dimension.toString())
+            binding.editLocalization.setText(property.location.toString())
         }
 
         binding.textTitle.text = "Adicionar Propriedade"
@@ -70,7 +65,10 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
                 snackbar.show()
             } else {
                 if (property != null) {
-                    editProperty(property,newProperty)
+                    newProperty.name = name
+                    newProperty.dimension = dimension.toLong()
+                    newProperty.location = localization
+                    editProperty(property, newProperty)
                 } else {
                     addProperty(name, dimension.toLong(), localization)
                 }
@@ -79,40 +77,35 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
     }
 
     private fun editProperty(oldProperty: Property, newProperty: Property) {
-
-        var docRef = ""
-        var _name = ""
-        var _dimension = ""
+        val name = oldProperty.name
+        val dimension = oldProperty.dimension
+        val location = oldProperty.location
 
         db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
-            .addSnapshotListener{ snapshot,e ->
-                if(e==null){
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
                     val documents = snapshot?.documents
-                    if(documents != null){
-
-                        for(document in documents){
-                            //AJUSTAR PASSAGEM DE PARAMETROS
-                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
-
+                    if (documents != null) {
+                        for (document in documents) {
+                            if (document.get("name") == name &&
+                                document.get("dimension") == dimension &&
+                                document.get("localization") == location
+                            ) {
+                                db.collection("Property")
+                                    .document(document.id)
+                                    .update(
+                                        mapOf(
+                                            "name" to newProperty.name,
+                                            "dimension" to newProperty.dimension,
+                                            "localization" to newProperty.location
+                                        )
+                                    )
+                            }
                         }
-
                     }
                 }
             }
-
-        /*db.collection("Property")
-            .document(docRef)
-            .update(
-                mapOf(
-                    "name" to name,
-                    "dimension" to dimension,
-                    "localization" to location
-                )
-            ).addOnSuccessListener {
-                Toast.makeText(requireContext(),"Sucesso ao editar propriedade!", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(requireContext(),"Erro! Tente mais tarde!", Toast.LENGTH_SHORT).show()
-            }*/
+        dismiss()
     }
 
     private fun addProperty(name: String, dimension: Long, localization: String) {
