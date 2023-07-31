@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".EntryAdapter"
+    tools:context=".ui.adapter.EntryAdapter"
     android:layout_margin="16dp"
     android:layout_gravity="center_horizontal">
 

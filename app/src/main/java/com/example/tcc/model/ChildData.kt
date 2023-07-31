@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.model
 
 data class ChildData(val type: String?,
                      val description:String?,

@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.ui.adapter
 
 interface EntryListener {
 

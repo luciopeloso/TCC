@@ -1,8 +1,9 @@
-package com.example.tcc
+package com.example.tcc.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
+import com.example.tcc.R
 import com.example.tcc.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

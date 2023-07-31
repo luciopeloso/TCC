@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.tcc.SplashFragment"
+        android:name="com.example.tcc.ui.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.tcc.LoginFragment"
+        android:name="com.example.tcc.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.tcc.RegisterFragment"
+        android:name="com.example.tcc.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.tcc.HomeFragment"
+        android:name="com.example.tcc.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/manageEntriesFragment"
-        android:name="com.example.tcc.ManagerFragment"
+        android:name="com.example.tcc.ui.ManagerFragment"
         android:label="fragment_manage_entries"
         tools:layout="@layout/fragment_manager" >
         <action

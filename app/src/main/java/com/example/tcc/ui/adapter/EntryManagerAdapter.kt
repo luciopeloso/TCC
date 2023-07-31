@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tcc.helper.AppConstants
+import com.example.tcc.model.ChildData
+import com.example.tcc.model.ParentData
+import com.example.tcc.R
 
 class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -48,7 +52,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         }
     }
 
-    private fun expandOrCollapseParentItem(singleBoarding: ParentData,position: Int) {
+    private fun expandOrCollapseParentItem(singleBoarding: ParentData, position: Int) {
 
         if (singleBoarding.isExpanded) {
             collapseParentRow(position)
@@ -62,7 +66,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         val services = currentBoardingRow.subList
         currentBoardingRow.isExpanded = true
         var nextPosition = position
-        if(currentBoardingRow.type==AppConstants.Constants.PARENT){
+        if(currentBoardingRow.type== AppConstants.Constants.PARENT){
 
             services?.forEach { service ->
                 val parentModel =  ParentData()
@@ -80,7 +84,7 @@ class EntryManagerAdapter(var mContext: Context, val list: MutableList<ParentDat
         val currentBoardingRow = list[position]
         val services = currentBoardingRow.subList
         list[position].isExpanded = false
-        if(list[position].type==AppConstants.Constants.PARENT){
+        if(list[position].type== AppConstants.Constants.PARENT){
             services?.forEach { _ ->
                 list.removeAt(position + 1)
             }

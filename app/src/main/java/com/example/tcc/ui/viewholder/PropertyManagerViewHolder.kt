@@ -1,8 +1,11 @@
-package com.example.tcc
+package com.example.tcc.ui.viewholder
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tcc.model.Property
+import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryPropertyBinding
+import com.example.tcc.ui.adapter.EntryListener
 
 class PropertyManagerViewHolder(private val binding: ItemEntryPropertyBinding, val listener: EntryListener) :
 RecyclerView.ViewHolder(binding.root) {

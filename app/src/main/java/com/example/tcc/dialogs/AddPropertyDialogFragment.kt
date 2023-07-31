@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.dialogs
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.tcc.databinding.FragmentAddAreaDialogBinding
+import com.example.tcc.model.Property
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

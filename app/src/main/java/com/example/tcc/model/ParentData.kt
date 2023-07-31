@@ -1,4 +1,6 @@
-package com.example.tcc
+package com.example.tcc.model
+
+import com.example.tcc.helper.AppConstants
 
 data class ParentData(
     val parentTitle:String?=null,

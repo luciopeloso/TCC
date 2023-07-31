@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.helper
 
 class AppConstants private constructor() {
 

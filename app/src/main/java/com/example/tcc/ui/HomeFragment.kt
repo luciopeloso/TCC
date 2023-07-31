@@ -1,4 +1,4 @@
-package com.example.tcc
+package com.example.tcc.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
+import com.example.tcc.R
 import com.example.tcc.databinding.FragmentHomeBinding
-import com.google.android.material.tabs.TabLayout
+import com.example.tcc.ui.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

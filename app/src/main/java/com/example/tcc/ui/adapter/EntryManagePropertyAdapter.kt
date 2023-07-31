@@ -1,12 +1,11 @@
-package com.example.tcc
+package com.example.tcc.ui.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tcc.model.Property
+import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryPropertyBinding
 
 class EntryManagePropertyAdapter:
