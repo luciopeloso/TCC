@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.model.Property
 import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryPropertyBinding
-import com.example.tcc.ui.adapter.EntryListener
+import com.example.tcc.ui.listeners.EntryListener
 
 class PropertyManagerViewHolder(private val binding: ItemEntryPropertyBinding, val listener: EntryListener) :
 RecyclerView.ViewHolder(binding.root) {

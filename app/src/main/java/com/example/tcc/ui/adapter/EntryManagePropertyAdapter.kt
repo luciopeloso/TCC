@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.model.Property
 import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryPropertyBinding
+import com.example.tcc.ui.listeners.EntryListener
 
 class EntryManagePropertyAdapter:
     RecyclerView.Adapter<EntryManagePropertyAdapter.MyViewHolder>() {

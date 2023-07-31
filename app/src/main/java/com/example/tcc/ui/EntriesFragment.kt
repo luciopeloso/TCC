@@ -74,7 +74,6 @@ class EntriesFragment : Fragment() {
         binding.rvEntries.setHasFixedSize(true)
         entryAdapter = EntryAdapter(requireContext(), listData)
 
-
         initclicks()
 
         binding.rvEntries.adapter = entryAdapter

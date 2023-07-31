@@ -12,7 +12,7 @@ import com.example.tcc.R
 import com.example.tcc.databinding.FragmentManagerBinding
 import com.example.tcc.dialogs.AddPropertyDialogFragment
 import com.example.tcc.model.Property
-import com.example.tcc.ui.adapter.EntryListener
+import com.example.tcc.ui.listeners.EntryListener
 import com.example.tcc.ui.adapter.EntryManagePropertyAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -106,16 +106,13 @@ class ManagerFragment : Fragment() {
 
                             for (document in documents) {
 
-                                Log.d(
-                                    "db",
-                                    "NAME: ${property.name} DIMENSION: ${property.dimension}"
-                                )
-
                                 if (document.get("name") == property.name &&
                                     document.get("dimension") == property.dimension &&
                                     document.get("localization") == property.location
                                 ) {
-                                    //INSERIR ID PARA ARGUMENTO
+                                    /*val action = ManagerFragmentDirections
+                                        .actionManageEntriesFragmentToAreaManagerFragment(document.id)
+                                    findNavController().navigate(action)*/
                                 }
                             }
 

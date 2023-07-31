@@ -68,15 +68,10 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
 
         }
-
     }
 
     private fun navigationToHome(email: String){
-
-        val action = LoginFragmentDirections
-            .actionLoginFragmentToHomeFragment(email)
-
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
     }
 
     override fun onDestroyView() {
