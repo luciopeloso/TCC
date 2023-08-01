@@ -11,7 +11,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/entry_property"
+        android:id="@+id/entry_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/text_view_border"
@@ -21,6 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <TextView
             android:id="@+id/text_show_descripion"
@@ -61,22 +62,22 @@
             app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
         <TextView
-            android:id="@+id/text_show_location"
+            android:id="@+id/text_show_culture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="Localização:"
+            android:text="Cultura:"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_show_dimension" />
 
         <TextView
-            android:id="@+id/text_location"
+            android:id="@+id/text_culture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text=""
-            app:layout_constraintStart_toEndOf="@+id/text_show_location"
+            app:layout_constraintStart_toEndOf="@+id/text_show_culture"
             app:layout_constraintTop_toBottomOf="@+id/text_dimension" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
