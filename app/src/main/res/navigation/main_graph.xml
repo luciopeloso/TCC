@@ -71,7 +71,10 @@
         android:label="fragment_area_manager"
         tools:layout="@layout/fragment_area_manager" >
         <argument
-            android:name="propertyId"
+            android:name="propId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_areaManagerFragment_to_manageEntriesFragment"
+            app:destination="@id/manageEntriesFragment" />
     </fragment>
 </navigation>

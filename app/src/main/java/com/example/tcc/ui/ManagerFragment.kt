@@ -110,9 +110,9 @@ class ManagerFragment : Fragment() {
                                     document.get("dimension") == property.dimension &&
                                     document.get("localization") == property.location
                                 ) {
-                                    /*val action = ManagerFragmentDirections
+                                    val action = ManagerFragmentDirections
                                         .actionManageEntriesFragmentToAreaManagerFragment(document.id)
-                                    findNavController().navigate(action)*/
+                                    findNavController().navigate(action)
                                 }
                             }
 

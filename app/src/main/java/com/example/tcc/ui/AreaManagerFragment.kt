@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentAreaManagerBinding
 import com.example.tcc.databinding.FragmentManagerBinding
+import com.example.tcc.dialogs.AddAreaDialogFragment
 import com.example.tcc.dialogs.AddPropertyDialogFragment
 import com.example.tcc.model.Area
 import com.example.tcc.model.Property
@@ -24,7 +26,7 @@ import com.google.firebase.ktx.Firebase
 
 class AreaManagerFragment : Fragment() {
 
-    private val args: AreaManagerFragmentArgs? by navArgs()
+    private val args: AreaManagerFragmentArgs by navArgs()
 
     private var _binding: FragmentAreaManagerBinding? = null
     private val binding get() = _binding!!
@@ -35,7 +37,7 @@ class AreaManagerFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
-    private lateinit var dialogAdd: AddPropertyDialogFragment
+    private lateinit var dialogAdd: AddAreaDialogFragment
 
     private val area = Area(null, null, null)
 
@@ -52,7 +54,7 @@ class AreaManagerFragment : Fragment() {
 
         auth = Firebase.auth
 
-        Log.d("db", "ID Propiedade: ${args?.propertyId}")
+        Log.d("db", "ID Propiedade: ${args.propId}")
 
         binding.rvAreaEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAreaEntries.setHasFixedSize(true)
@@ -80,11 +82,72 @@ class AreaManagerFragment : Fragment() {
     }
 
     private fun initClicks() {
-        TODO("Not yet implemented")
+        binding.ibLogout.setOnClickListener {
+            auth.signOut()
+            findNavController().navigate(R.id.action_manageEntriesFragment_to_loginFragment)
+        }
+        binding.ibBack.setOnClickListener {
+            findNavController().navigate(R.id.action_areaManagerFragment_to_manageEntriesFragment)
+
+        }
+        binding.buttonAdd.setOnClickListener {
+            dialogAdd = AddAreaDialogFragment(null, args.propId)
+            dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
+        }
+
+        binding.buttonEdit.setOnClickListener {
+            dialogAdd = AddAreaDialogFragment(areaList[entryAdapter.positionSelected], args.propId)
+            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+        }
+
+        binding.buttonGo.setOnClickListener {
+
+            db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        val documents = snapshot?.documents
+                        if (documents != null) {
+                            areaList.clear()
+
+                            for (document in documents) {
+
+                                if (document.get("name") == area.name &&
+                                    document.get("dimension") == area.dimension &&
+                                    document.get("crop") == area.crop
+                                ) {
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+        }
     }
 
     private fun getEntries() {
-        TODO("Not yet implemented")
+        db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        areaList.clear()
+
+                        for (document in documents) {
+                            val name = document.get("name").toString()
+                            val dimension = document.get("dimension")
+                            val crop = document.get("crop").toString()
+                            val newArea = Area(name, dimension as Long, crop)
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                            areaList.add(newArea)
+                            entryAdapter.updateAreas(areaList)
+                        }
+
+                    }
+                }
+            }
     }
 
     override fun onDestroy() {

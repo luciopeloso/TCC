@@ -41,7 +41,7 @@ class SplashFragment : Fragment() {
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         } else {
             val action = SplashFragmentDirections
-                .actionSplashFragmentToHomeFragment(auth.currentUser?.email)
+                .actionSplashFragmentToHomeFragment()
             findNavController().navigate(action)
         }
     }

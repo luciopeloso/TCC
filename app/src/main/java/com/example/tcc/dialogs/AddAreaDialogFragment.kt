@@ -1,5 +1,6 @@
 package com.example.tcc.dialogs
 
+import android.R
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -7,24 +8,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import com.example.tcc.databinding.FragmentAddAreaDialogBinding
 import com.example.tcc.databinding.FragmentAddPropertyDialogBinding
+import com.example.tcc.model.Area
 import com.example.tcc.model.Property
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddPropertyDialogFragment(private val property: Property?) : DialogFragment() {
+class AddAreaDialogFragment(private val area: Area?, private val propertyID: String?) : DialogFragment() {
 
-    private var _binding: FragmentAddPropertyDialogBinding? = null
+    private var _binding: FragmentAddAreaDialogBinding? = null
     private val binding get() = _binding!!
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private val newProperty = Property(null, null, null)
+    private val newArea = Area(null, null, null)
 
     companion object {
-        const val TAG = "addPropertyDialog"
+        const val TAG = "addAreaDialog"
     }
 
     override fun onCreateView(
@@ -32,7 +36,7 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddPropertyDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentAddAreaDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,10 +44,19 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (property != null) {
-            binding.editName.setText(property.name.toString())
-            binding.editArea.setText(property.dimension.toString())
-            binding.editLocalization.setText(property.location.toString())
+        val list = listOf("Selecione a cultura", "Café", "Soja", "Milho")
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item,list)
+
+        binding.spinnerCrop.adapter = adapter
+
+        if (area != null) {
+
+            val selected = area.crop.toString()
+            val spinnerPosition: Int = adapter.getPosition(selected)
+            binding.spinnerCrop.setSelection(spinnerPosition)
+            binding.editName.setText(area.name.toString())
+            binding.editArea.setText(area.dimension.toString())
+
         }
 
         binding.textTitle.text = "Adicionar Propriedade"
@@ -58,31 +71,32 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         binding.buttonSubmit.setOnClickListener {
             val name = binding.editName.text.toString()
             val dimension = binding.editArea.text.toString()
-            val localization = binding.editLocalization.text.toString()
+            val crop = binding.spinnerCrop.selectedItem.toString()
 
-            if (name.isEmpty() || dimension.isEmpty() || localization.isEmpty()) {
+            if (name.isEmpty() || dimension.isEmpty() || crop == "0") {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
                 snackbar.setBackgroundTint(Color.RED)
                 snackbar.show()
             } else {
-                if (property != null) {
-                    newProperty.name = name
-                    newProperty.dimension = dimension.toLong()
-                    newProperty.location = localization
-                    editProperty(property, newProperty)
+                if (area != null) {
+                    newArea.name = name
+                    newArea.dimension = dimension.toLong()
+                    newArea.crop = crop
+                    editProperty(area, newArea)
                 } else {
-                    addProperty(name, dimension.toLong(), localization)
+                    addProperty(name, dimension.toLong(), crop)
                 }
             }
         }
     }
 
-    private fun editProperty(oldProperty: Property, newProperty: Property) {
+
+    private fun editProperty(oldProperty: Area, newProperty: Area) {
         val name = oldProperty.name
         val dimension = oldProperty.dimension
-        val location = oldProperty.location
+        val crop = oldProperty.crop
 
-        db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+        db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents
@@ -90,15 +104,15 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
                         for (document in documents) {
                             if (document.get("name") == name &&
                                 document.get("dimension") == dimension &&
-                                document.get("localization") == location
+                                document.get("crop") == crop
                             ) {
-                                db.collection("Property")
+                                db.collection("Area")
                                     .document(document.id)
                                     .update(
                                         mapOf(
                                             "name" to newProperty.name,
                                             "dimension" to newProperty.dimension,
-                                            "localization" to newProperty.location
+                                            "crop" to newProperty.crop
                                         )
                                     )
                             }
@@ -109,24 +123,24 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         dismiss()
     }
 
-    private fun addProperty(name: String, dimension: Long, localization: String) {
+    private fun addProperty(name: String, dimension: Long, crop: String) {
 
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())
 
-        val areas: ArrayList<String> = ArrayList()
+        val vintages: ArrayList<String> = ArrayList()
 
 
         val propertyMap = hashMapOf(
             "name" to name,
-            "localization" to localization,
+            "crop" to crop,
             "dimension" to dimension,
-            "dimension_left" to dimension,
+            "property" to propertyID,
             "users" to users,
-            "areas" to areas
+            "vintages" to vintages
         )
 
-        db.collection("Property").add(propertyMap).addOnCompleteListener {
+        db.collection("Area").add(propertyMap).addOnCompleteListener {
             Log.d("db", "sucesso ao cadastrar!")
             binding.editName.setText("")
             binding.editArea.setText("")
@@ -136,4 +150,5 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
             Log.d("db", "Falha!")
         }
     }
+
 }
