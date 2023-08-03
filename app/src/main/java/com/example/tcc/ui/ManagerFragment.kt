@@ -113,6 +113,7 @@ class ManagerFragment : Fragment() {
                                     val action = ManagerFragmentDirections
                                         .actionManageEntriesFragmentToAreaManagerFragment(document.id)
                                     findNavController().navigate(action)
+
                                 }
                             }
 

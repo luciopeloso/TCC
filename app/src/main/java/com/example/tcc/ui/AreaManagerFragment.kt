@@ -115,7 +115,7 @@ class AreaManagerFragment : Fragment() {
                                     document.get("dimension") == area.dimension &&
                                     document.get("crop") == area.crop
                                 ) {
-
+                                    //AVANÇAR NA FRAGMENT
                                 }
                             }
 
@@ -126,7 +126,7 @@ class AreaManagerFragment : Fragment() {
     }
 
     private fun getEntries() {
-        db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+        db.collection("Area").whereEqualTo("property", args.propId)
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents

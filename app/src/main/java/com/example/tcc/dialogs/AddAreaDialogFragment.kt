@@ -16,6 +16,8 @@ import com.example.tcc.model.Area
 import com.example.tcc.model.Property
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddAreaDialogFragment(private val area: Area?, private val propertyID: String?) : DialogFragment() {
@@ -82,16 +84,19 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                     newArea.name = name
                     newArea.dimension = dimension.toLong()
                     newArea.crop = crop
-                    editProperty(area, newArea)
+                    editArea(area, newArea)
                 } else {
-                    addProperty(name, dimension.toLong(), crop)
+                    addArea(name, dimension.toLong(), crop)
+
+                    dismiss()
+
                 }
             }
         }
     }
 
 
-    private fun editProperty(oldProperty: Area, newProperty: Area) {
+    private fun editArea(oldProperty: Area, newProperty: Area) {
         val name = oldProperty.name
         val dimension = oldProperty.dimension
         val crop = oldProperty.crop
@@ -120,10 +125,10 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                     }
                 }
             }
-        dismiss()
+        //dismiss()
     }
 
-    private fun addProperty(name: String, dimension: Long, crop: String) {
+    private fun addArea(name: String, dimension: Long, crop: String) {
 
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())
@@ -140,14 +145,34 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
             "vintages" to vintages
         )
 
-        db.collection("Area").add(propertyMap).addOnCompleteListener {
-            Log.d("db", "sucesso ao cadastrar!")
+        db.collection("Area").add(propertyMap).addOnSuccessListener { documentReference ->
+
+            db.collection("Property").document(propertyID.toString())
+                .update("areas", FieldValue.arrayUnion(documentReference.id))
+
+            /*db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+                .addSnapshotListener { snapshot, e ->
+                    if (e == null) {
+                        val documents = snapshot?.documents
+                        if (documents != null) {
+                            for (document in documents) {
+                                if (document.get("name") == name &&
+                                    document.get("dimension") == dimension &&
+                                    document.get("crop") == crop
+                                ) {
+                                    db.collection("Property").document(propertyID.toString()).update("areas", FieldValue.arrayUnion(document.id))
+                                }
+                            }
+                        }
+                    }
+                }*/
+            //Log.d("db", "sucesso ao cadastrar!")
             binding.editName.setText("")
             binding.editArea.setText("")
             dismiss()
 
         }.addOnFailureListener {
-            Log.d("db", "Falha!")
+            //Log.d("db", "Falha!")
         }
     }
 

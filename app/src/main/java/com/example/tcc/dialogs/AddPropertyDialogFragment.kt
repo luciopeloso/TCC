@@ -127,13 +127,13 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         )
 
         db.collection("Property").add(propertyMap).addOnCompleteListener {
-            Log.d("db", "sucesso ao cadastrar!")
+            //Log.d("db", "sucesso ao cadastrar!")
             binding.editName.setText("")
             binding.editArea.setText("")
             dismiss()
 
         }.addOnFailureListener {
-            Log.d("db", "Falha!")
+            //Log.d("db", "Falha!")
         }
     }
 }
