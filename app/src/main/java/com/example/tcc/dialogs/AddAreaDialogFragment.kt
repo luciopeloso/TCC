@@ -146,30 +146,12 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
         )
 
         db.collection("Area").add(propertyMap).addOnSuccessListener { documentReference ->
-
             db.collection("Property").document(propertyID.toString())
-                .update("areas", FieldValue.arrayUnion(documentReference.id))
-
-            /*db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
-                .addSnapshotListener { snapshot, e ->
-                    if (e == null) {
-                        val documents = snapshot?.documents
-                        if (documents != null) {
-                            for (document in documents) {
-                                if (document.get("name") == name &&
-                                    document.get("dimension") == dimension &&
-                                    document.get("crop") == crop
-                                ) {
-                                    db.collection("Property").document(propertyID.toString()).update("areas", FieldValue.arrayUnion(document.id))
-                                }
-                            }
-                        }
-                    }
-                }*/
-            //Log.d("db", "sucesso ao cadastrar!")
-            binding.editName.setText("")
-            binding.editArea.setText("")
-            dismiss()
+                .update("areas", FieldValue.arrayUnion(documentReference.id)).addOnSuccessListener {
+                    binding.editName.setText("")
+                    binding.editArea.setText("")
+                    dismiss()
+                }
 
         }.addOnFailureListener {
             //Log.d("db", "Falha!")

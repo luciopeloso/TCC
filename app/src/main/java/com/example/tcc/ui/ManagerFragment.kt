@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.R
@@ -79,10 +83,10 @@ class ManagerFragment : Fragment() {
     private fun initClicks() {
         binding.ibLogout.setOnClickListener {
             auth.signOut()
-            findNavController().navigate(R.id.action_manageEntriesFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_managerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            findNavController().navigate(R.id.action_manageEntriesFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_managerFragment_to_homeFragment)
 
         }
         binding.buttonAdd.setOnClickListener {
@@ -110,16 +114,22 @@ class ManagerFragment : Fragment() {
                                     document.get("dimension") == property.dimension &&
                                     document.get("localization") == property.location
                                 ) {
-                                    val action = ManagerFragmentDirections
-                                        .actionManageEntriesFragmentToAreaManagerFragment(document.id)
-                                    findNavController().navigate(action)
-
+                                    navigate(ManagerFragmentDirections.actionManagerFragmentToAreaManagerFragment(document.id))
                                 }
                             }
 
                         }
                     }
                 }
+        }
+    }
+
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
         }
     }
 

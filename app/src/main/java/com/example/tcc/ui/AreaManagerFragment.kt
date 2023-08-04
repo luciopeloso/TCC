@@ -26,7 +26,7 @@ import com.google.firebase.ktx.Firebase
 
 class AreaManagerFragment : Fragment() {
 
-    private val args: AreaManagerFragmentArgs by navArgs()
+    private val args: AreaManagerFragmentArgs? by navArgs()
 
     private var _binding: FragmentAreaManagerBinding? = null
     private val binding get() = _binding!!
@@ -54,7 +54,7 @@ class AreaManagerFragment : Fragment() {
 
         auth = Firebase.auth
 
-        Log.d("db", "ID Propiedade: ${args.propId}")
+        Log.d("db", "ID Propiedade: ${args?.propId}")
 
         binding.rvAreaEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAreaEntries.setHasFixedSize(true)
@@ -84,19 +84,19 @@ class AreaManagerFragment : Fragment() {
     private fun initClicks() {
         binding.ibLogout.setOnClickListener {
             auth.signOut()
-            findNavController().navigate(R.id.action_manageEntriesFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_areaManagerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            findNavController().navigate(R.id.action_areaManagerFragment_to_manageEntriesFragment)
+            findNavController().navigate(R.id.action_areaManagerFragment_to_managerFragment)
 
         }
         binding.buttonAdd.setOnClickListener {
-            dialogAdd = AddAreaDialogFragment(null, args.propId)
+            dialogAdd = AddAreaDialogFragment(null, args?.propId)
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
         }
 
         binding.buttonEdit.setOnClickListener {
-            dialogAdd = AddAreaDialogFragment(areaList[entryAdapter.positionSelected], args.propId)
+            dialogAdd = AddAreaDialogFragment(areaList[entryAdapter.positionSelected], args?.propId)
             dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
         }
 
@@ -126,7 +126,7 @@ class AreaManagerFragment : Fragment() {
     }
 
     private fun getEntries() {
-        db.collection("Area").whereEqualTo("property", args.propId)
+        db.collection("Area").whereEqualTo("property", args?.propId)
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents

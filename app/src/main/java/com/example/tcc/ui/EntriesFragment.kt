@@ -84,7 +84,7 @@ class EntriesFragment : Fragment() {
     private fun initclicks() {
 
         binding.buttonEditEntries.setOnClickListener{
-            findNavController().navigate(R.id.action_homeFragment_to_manageEntriesFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_managerFragment)
         }
     }
 
