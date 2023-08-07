@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tcc.databinding.FragmentAddAreaDialogBinding
 import com.example.tcc.databinding.FragmentAddPropertyDialogBinding
@@ -20,7 +21,8 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddAreaDialogFragment(private val area: Area?, private val propertyID: String?) : DialogFragment() {
+class AddAreaDialogFragment(private val area: Area?, private val propertyID: String?) :
+    DialogFragment() {
 
     private var _binding: FragmentAddAreaDialogBinding? = null
     private val binding get() = _binding!!
@@ -47,7 +49,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
         super.onViewCreated(view, savedInstanceState)
 
         val list = listOf("Selecione a cultura", "Café", "Soja", "Milho")
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item,list)
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, list)
 
         binding.spinnerCrop.adapter = adapter
 
@@ -87,9 +89,6 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                     editArea(area, newArea)
                 } else {
                     addArea(name, dimension.toLong(), crop)
-
-                    dismiss()
-
                 }
             }
         }
@@ -125,7 +124,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                     }
                 }
             }
-        //dismiss()
+
     }
 
     private fun addArea(name: String, dimension: Long, crop: String) {
@@ -145,17 +144,33 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
             "vintages" to vintages
         )
 
-        db.collection("Area").add(propertyMap).addOnSuccessListener { documentReference ->
-            db.collection("Property").document(propertyID.toString())
-                .update("areas", FieldValue.arrayUnion(documentReference.id)).addOnSuccessListener {
-                    binding.editName.setText("")
-                    binding.editArea.setText("")
-                    dismiss()
-                }
+        db.collection("Property").document(propertyID.toString())
+            .get().addOnSuccessListener { document ->
 
-        }.addOnFailureListener {
-            //Log.d("db", "Falha!")
-        }
+                if (dimension > document.getLong("dimension_left")!!) {
+                    Toast.makeText(requireContext(), "dimensão não compatível!", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    db.collection("Area").add(propertyMap)
+                        .addOnSuccessListener { documentReference ->
+                            db.collection("Property").document(propertyID.toString())
+                                .update("areas", FieldValue.arrayUnion(documentReference.id))
+                                .addOnSuccessListener {
+
+                                    db.collection("Property").document(propertyID.toString())
+                                        .update("dimension_left", FieldValue.increment(-dimension))
+
+                                    binding.editName.setText("")
+                                    binding.editArea.setText("")
+                                    dismiss()
+                                }
+                        }.addOnFailureListener {
+                            //Log.d("db", "Falha!")
+                        }
+                }
+            }
     }
 
 }
+
+
