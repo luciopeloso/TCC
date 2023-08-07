@@ -95,36 +95,53 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
     }
 
 
-    private fun editArea(oldProperty: Area, newProperty: Area) {
-        val name = oldProperty.name
-        val dimension = oldProperty.dimension
-        val crop = oldProperty.crop
+    private fun editArea(oldArea: Area, newArea: Area) {
+        val name = oldArea.name
+        val dimension = oldArea.dimension
+        val crop = oldArea.crop
 
-        db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
-            .addSnapshotListener { snapshot, e ->
-                if (e == null) {
-                    val documents = snapshot?.documents
-                    if (documents != null) {
-                        for (document in documents) {
-                            if (document.get("name") == name &&
-                                document.get("dimension") == dimension &&
-                                document.get("crop") == crop
-                            ) {
-                                db.collection("Area")
-                                    .document(document.id)
-                                    .update(
-                                        mapOf(
-                                            "name" to newProperty.name,
-                                            "dimension" to newProperty.dimension,
-                                            "crop" to newProperty.crop
-                                        )
-                                    )
+        db.collection("Property").document(propertyID.toString())
+            .get().addOnSuccessListener { document ->
+
+                db.collection("Property").document(propertyID.toString())
+                    .update("dimension_left", FieldValue.increment(dimension!!))
+
+                if (newArea.dimension!!.toLong() > document.getLong("dimension_left")!!) {
+                    Toast.makeText(requireContext(), "dimensão não compatível!", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+                        .addSnapshotListener { snapshot, e ->
+                            if (e == null) {
+                                val documents = snapshot?.documents
+                                if (documents != null) {
+                                    for (document in documents) {
+                                        if (document.get("name") == name &&
+                                            document.get("dimension") == dimension &&
+                                            document.get("crop") == crop
+                                        ) {
+                                            db.collection("Area")
+                                                .document(document.id)
+                                                .update(
+                                                    mapOf(
+                                                        "name" to newArea.name,
+                                                        "dimension" to newArea.dimension,
+                                                        "crop" to newArea.crop
+                                                    )
+                                                )
+                                            db.collection("Property").document(propertyID.toString())
+                                                .update("dimension_left", FieldValue.increment(-dimension))
+
+                                            binding.editName.setText("")
+                                            binding.editArea.setText("")
+                                            dismiss()
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
                 }
             }
-
     }
 
     private fun addArea(name: String, dimension: Long, crop: String) {
