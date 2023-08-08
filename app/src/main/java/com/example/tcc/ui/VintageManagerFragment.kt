@@ -11,6 +11,7 @@ import com.example.tcc.databinding.FragmentAreaManagerBinding
 import com.example.tcc.databinding.FragmentVintageManagerBinding
 import com.example.tcc.dialogs.AddAreaDialogFragment
 import com.example.tcc.model.Area
+import com.example.tcc.model.Vintage
 import com.example.tcc.ui.adapter.EntryManageAreaAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,14 +24,14 @@ class VintageManagerFragment : Fragment() {
     private val binding get() = _binding!!
 
     //private val entryAdapter = EntryManageAreaAdapter()
-    //private val areaList = mutableListOf<Area>()
+    private val vintageList = mutableListOf<Vintage>()
 
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
     //private lateinit var dialogAdd: AddAreaDialogFragment
 
-    //private val area = Area(null, null, null)
+    private val vintage = Vintage(null, null,null)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
