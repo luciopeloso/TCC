@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -115,13 +118,23 @@ class AreaManagerFragment : Fragment() {
                                     document.get("dimension") == area.dimension &&
                                     document.get("crop") == area.crop
                                 ) {
-                                    //AVANÇAR NA FRAGMENT
+                                    navigate(AreaManagerFragmentDirections
+                                        .actionAreaManagerFragmentToVintageManagerFragment(document.id))
                                 }
                             }
 
                         }
                     }
                 }
+        }
+    }
+
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
         }
     }
 

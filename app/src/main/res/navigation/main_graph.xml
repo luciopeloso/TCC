@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_areaManagerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_areaManagerFragment_to_vintageManagerFragment"
+            app:destination="@id/vintageManagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/managerFragment"
@@ -80,5 +83,17 @@
         <action
             android:id="@+id/action_managerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vintageManagerFragment"
+        android:name="com.example.tcc.ui.VintageManagerFragment"
+        android:label="fragment_vintage_manager"
+        tools:layout="@layout/fragment_vintage_manager" >
+        <action
+            android:id="@+id/action_vintageManagerFragment_to_areaManagerFragment"
+            app:destination="@id/areaManagerFragment" />
+        <argument
+            android:name="areaId"
+            app:argType="string" />
     </fragment>
 </navigation>
