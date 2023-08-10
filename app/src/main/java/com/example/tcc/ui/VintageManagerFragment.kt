@@ -18,6 +18,7 @@ import com.example.tcc.dialogs.AddVintageDialogFragment
 import com.example.tcc.model.Area
 import com.example.tcc.model.Vintage
 import com.example.tcc.ui.adapter.EntryManageAreaAdapter
+import com.example.tcc.ui.adapter.EntryManageVintageAdapter
 import com.example.tcc.ui.listeners.EntryListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,7 +32,7 @@ class VintageManagerFragment : Fragment() {
     private var _binding: FragmentVintageManagerBinding? = null
     private val binding get() = _binding!!
 
-    //private val entryAdapter = EntryManageAreaAdapter()
+    private val entryAdapter = EntryManageVintageAdapter()
     private val vintageList = mutableListOf<Vintage>()
 
     private lateinit var auth: FirebaseAuth
@@ -56,16 +57,16 @@ class VintageManagerFragment : Fragment() {
 
         Log.d("db", "ID Talhão: ${args?.areaId}")
 
-        /*binding.rvAreaEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvAreaEntries.setHasFixedSize(true)
-        binding.rvAreaEntries.adapter = entryAdapter*/
+        binding.rvVintageEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvVintageEntries.setHasFixedSize(true)
+        binding.rvVintageEntries.adapter = entryAdapter
 
         val listener = object : EntryListener {
             override fun onListClick(selected: Boolean) {
                 if (selected) {
-                    //vintage.description = vintageList[entryAdapter.positionSelected].description
-                    //vintage.begin = vintageList[entryAdapter.positionSelected].begin
-                    //vintage.begin = vintageList[entryAdapter.positionSelected].end
+                    vintage.description = vintageList[entryAdapter.positionSelected].description
+                    vintage.begin = vintageList[entryAdapter.positionSelected].begin
+                    vintage.begin = vintageList[entryAdapter.positionSelected].end
                     binding.buttonEdit.visibility = View.VISIBLE
                     binding.buttonGo.visibility = View.VISIBLE
                 } else {
@@ -74,7 +75,7 @@ class VintageManagerFragment : Fragment() {
                 }
             }
         }
-        //entryAdapter.attachListener(listener)
+        entryAdapter.attachListener(listener)
 
         getEntries()
 
@@ -126,7 +127,28 @@ class VintageManagerFragment : Fragment() {
     }
 
     private fun getEntries() {
-        TODO("Not yet implemented")
+        db.collection("Vintage").whereEqualTo("property", args?.areaId)
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        vintageList.clear()
+
+                        for (document in documents) {
+                            val description = document.get("description").toString()
+                            val begin = document.get("begin").toString()
+                            val end = document.get("end").toString()
+                            val newVintage = Vintage(description, begin, end)
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                            vintageList.add(newVintage)
+                            entryAdapter.updateAreas(vintageList)
+                        }
+
+                    }
+                }
+            }
     }
 
     override fun onDestroy() {

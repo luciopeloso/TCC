@@ -72,7 +72,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
         <EditText
-            android:id="@+id/edit_area"
+            android:id="@+id/edit_begin"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
@@ -103,7 +103,7 @@
             android:hint="Selecione uma data"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/text_end"
-            app:layout_constraintTop_toBottomOf="@+id/edit_area" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_begin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

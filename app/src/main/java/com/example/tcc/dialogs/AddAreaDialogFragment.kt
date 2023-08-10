@@ -63,7 +63,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
 
         }
 
-        binding.textTitle.text = "Adicionar Propriedade"
+        binding.textTitle.text = "Adicionar talhão"
         initClicks()
     }
 
