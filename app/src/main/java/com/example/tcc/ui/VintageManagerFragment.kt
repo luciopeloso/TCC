@@ -85,10 +85,10 @@ class VintageManagerFragment : Fragment() {
     private fun initClicks() {
         binding.ibLogout.setOnClickListener {
             auth.signOut()
-            //findNavController().navigate(R.id.action_areaManagerFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_vintageManagerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            //findNavController().navigate(R.id.action_areaManagerFragment_to_managerFragment)
+            findNavController().navigate(R.id.action_vintageManagerFragment_to_areaManagerFragment)
 
         }
         binding.buttonAdd.setOnClickListener {
@@ -97,7 +97,7 @@ class VintageManagerFragment : Fragment() {
         }
 
         binding.buttonEdit.setOnClickListener {
-            //dialogAdd = AddVintageDialogFragment(vintageList[entryAdapter.positionSelected], args?.areaId)
+            dialogAdd = AddVintageDialogFragment(vintageList[entryAdapter.positionSelected], args?.areaId)
             dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
         }
 
