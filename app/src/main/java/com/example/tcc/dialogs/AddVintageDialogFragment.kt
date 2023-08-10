@@ -2,12 +2,14 @@ package com.example.tcc.dialogs
 
 import android.R
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tcc.databinding.FragmentAddAreaDialogBinding
@@ -19,13 +21,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID: String?): DialogFragment() {
+class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID: String?): DialogFragment(),
+    DatePickerDialog.OnDateSetListener {
 
     private var _binding: FragmentAddVintageDialogBinding? = null
     private val binding get() = _binding!!
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 
     private val newVintage = Vintage(null, null, null)
 
@@ -63,6 +69,10 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
         }
 
         binding.buttonSubmit.setOnClickListener {
+
+            //val dateBegin = SimpleDateFormat("yyyy-MM-dd").parse(begin)
+            //binding.editBegin.setText(SimpleDateFormat("dd/MM/yyyy").format(dateBegin))
+
             val description = binding.editDescription.text.toString()
             val begin = binding.editBegin.text.toString()
             val end = binding.editEnd.text.toString()
@@ -81,6 +91,14 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
                     addVintage(description, begin, end)
                 }
             }
+        }
+
+        binding.editBegin.setOnClickListener {
+            handleDate()
+        }
+
+        binding.editEnd.setOnClickListener {
+            handleDate()
         }
 
     }
@@ -157,6 +175,22 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
                     }
 
             }
+    }
+
+    override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+
+        val dueDate = dateFormat.format(calendar.time)
+        //binding.edit.text = dueDate
+    }
+
+    private fun handleDate() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        DatePickerDialog(requireContext(), this, year, month, day).show()
     }
 
 }

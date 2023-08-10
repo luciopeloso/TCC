@@ -52,7 +52,7 @@ class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.
         @SuppressLint("SetTextI18n")
         fun bindData(vintage: Vintage, position: Int) {
             binding.textDescription.text = vintage.description
-            binding.textBegin.text = "${vintage.begin} hectares"
+            binding.textBegin.text = vintage.begin
             binding.textEnd.text = vintage.end
 
             binding.entryArea.setOnClickListener {
