@@ -23,4 +23,6 @@
     <string name="text_title_bottom_sheet">Atenção</string>
     <string name="text_button_bottom_sheet">Entendi</string>
 
+    <string name="radio_button_budgeted">Orçado</string>
+
 </resources>

@@ -11,7 +11,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/entry_area"
+        android:id="@+id/entry_vintage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/text_view_border"

@@ -1,7 +1,11 @@
 package com.example.tcc.model
 
-data class ChildData(val type: String?,
-                     val description:String?,
-                     val quantity:Int?,
-                     val unity:String?,
-                     val price: Long?)
+data class ChildData(
+    var category: String?,
+    var description: String?,
+    var quantity: Float?,
+    var unity: String?,
+    var price: Float?,
+    var type: Int?,
+    var total: Float?
+)

@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,7 +69,7 @@ class VintageManagerFragment : Fragment() {
                 if (selected) {
                     vintage.description = vintageList[entryAdapter.positionSelected].description
                     vintage.begin = vintageList[entryAdapter.positionSelected].begin
-                    vintage.begin = vintageList[entryAdapter.positionSelected].end
+                    vintage.end = vintageList[entryAdapter.positionSelected].end
                     binding.buttonEdit.visibility = View.VISIBLE
                     binding.buttonGo.visibility = View.VISIBLE
                 } else {
@@ -89,8 +92,8 @@ class VintageManagerFragment : Fragment() {
         }
         binding.ibBack.setOnClickListener {
             findNavController().navigate(R.id.action_vintageManagerFragment_to_areaManagerFragment)
-
         }
+
         binding.buttonAdd.setOnClickListener {
             dialogAdd = AddVintageDialogFragment(null, args?.areaId)
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
@@ -98,7 +101,7 @@ class VintageManagerFragment : Fragment() {
 
         binding.buttonEdit.setOnClickListener {
             dialogAdd = AddVintageDialogFragment(vintageList[entryAdapter.positionSelected], args?.areaId)
-            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
         }
 
         binding.buttonGo.setOnClickListener {
@@ -116,13 +119,23 @@ class VintageManagerFragment : Fragment() {
                                     document.get("begin") == vintage.begin &&
                                     document.get("end") == vintage.end
                                 ) {
-                                    //AVANÇAR NA FRAGMENT
+                                    navigate(VintageManagerFragmentDirections
+                                        .actionVintageManagerFragmentToEntriesManagerFragment(document.id))
                                 }
                             }
 
                         }
                     }
                 }
+        }
+    }
+
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
         }
     }
 

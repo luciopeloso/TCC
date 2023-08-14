@@ -55,7 +55,7 @@ class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.
             binding.textBegin.text = vintage.begin
             binding.textEnd.text = vintage.end
 
-            binding.entryArea.setOnClickListener {
+            binding.entryVintage.setOnClickListener {
 
                 if(positionSelected==position){
                     positionSelected= RecyclerView.NO_POSITION

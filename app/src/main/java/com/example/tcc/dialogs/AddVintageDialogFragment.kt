@@ -149,7 +149,7 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
         val entries: ArrayList<String> = ArrayList()
 
 
-        val propertyMap = hashMapOf(
+        val vintageMap = hashMapOf(
             "description" to description,
             "begin" to begin,
             "end" to end,
@@ -160,7 +160,7 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
 
         db.collection("Area").document(areaID.toString())
             .get().addOnSuccessListener { document ->
-                db.collection("Vintage").add(propertyMap)
+                db.collection("Vintage").add(vintageMap)
                     .addOnSuccessListener { documentReference ->
                         db.collection("Area").document(areaID.toString())
                             .update("vintages", FieldValue.arrayUnion(documentReference.id))

@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shape_constraint"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.adapter.EntryAdapter"
-    android:layout_margin="16dp"
+    tools:context=".ui.adapter.EntryManageEntriesAdapter"
+    android:layout_margin="4dp"
     android:layout_gravity="center_horizontal">
 
 <!--    <TextView-->
@@ -55,22 +56,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_show_dimension"
+            android:id="@+id/text_show_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="Dimensão:"
+            android:text="Quantidade:"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_show_descripion" />
 
         <TextView
-            android:id="@+id/text_dimension"
+            android:id="@+id/text_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text=""
-            app:layout_constraintStart_toEndOf="@+id/text_show_dimension"
+            app:layout_constraintStart_toEndOf="@+id/text_show_quantity"
             app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
         <TextView
@@ -80,7 +81,7 @@
             android:padding="4dp"
             android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_dimension"
+            app:layout_constraintStart_toEndOf="@+id/text_quantity"
             android:visibility="visible"/>
 
         <TextView
@@ -88,6 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
+            android:layout_marginStart="8dp"
             android:text="Preço:"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -109,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
+            android:layout_marginStart="8dp"
             android:text="Total/Há:"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

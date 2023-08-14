@@ -98,5 +98,23 @@
         <action
             android:id="@+id/action_vintageManagerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_vintageManagerFragment_to_entriesManagerFragment"
+            app:destination="@id/entriesManagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entriesManagerFragment"
+        android:name="com.example.tcc.ui.EntriesManagerFragment"
+        android:label="fragment_entries_manager"
+        tools:layout="@layout/fragment_entries_manager" >
+        <action
+            android:id="@+id/action_entriesManagerFragment_to_vintageManagerFragment"
+            app:destination="@id/vintageManagerFragment" />
+        <action
+            android:id="@+id/action_entriesManagerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <argument
+            android:name="vintageId"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -1,6 +1,5 @@
 package com.example.tcc.dialogs
 
-import android.R
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -49,7 +48,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
         super.onViewCreated(view, savedInstanceState)
 
         val list = listOf("Selecione a cultura", "Café", "Soja", "Milho")
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, list)
+        val adapter = ArrayAdapter(requireContext(), androidx.transition.R.layout.support_simple_spinner_dropdown_item, list)
 
         binding.spinnerCrop.adapter = adapter
 
@@ -152,7 +151,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
         val vintages: ArrayList<String> = ArrayList()
 
 
-        val propertyMap = hashMapOf(
+        val areaMap = hashMapOf(
             "name" to name,
             "crop" to crop,
             "dimension" to dimension,
@@ -168,7 +167,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                     Toast.makeText(requireContext(), "dimensão não compatível!", Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    db.collection("Area").add(propertyMap)
+                    db.collection("Area").add(areaMap)
                         .addOnSuccessListener { documentReference ->
                             db.collection("Property").document(propertyID.toString())
                                 .update("areas", FieldValue.arrayUnion(documentReference.id))

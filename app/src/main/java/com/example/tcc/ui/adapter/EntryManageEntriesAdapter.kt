@@ -1,5 +1,6 @@
 package com.example.tcc.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,18 @@ import com.example.tcc.helper.AppConstants
 import com.example.tcc.model.ChildData
 import com.example.tcc.model.ParentData
 import com.example.tcc.R
+import com.example.tcc.databinding.ItemEntryChildBinding
+import com.example.tcc.databinding.ItemEntryVintageBinding
+import com.example.tcc.model.Vintage
+import com.example.tcc.ui.listeners.EntryListener
+import kotlinx.coroutines.NonDisposableHandle
+import kotlinx.coroutines.NonDisposableHandle.parent
 
-class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private lateinit var listener: EntryListener
+
+    var positionSelected = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -21,12 +32,20 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_parent, parent,false)
             GroupViewHolder(rowView)
         } else {
-            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
-            ChildViewHolder(rowView)
+            //val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
+            //ChildViewHolder(rowView)
+
+            val inflater = LayoutInflater.from(parent.context)
+            val itemBinding = ItemEntryChildBinding.inflate(inflater, parent, false)
+            return ChildViewHolder(itemBinding,listener)
         }
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun attachListener(entryListener: EntryListener) {
+        listener = entryListener
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
@@ -45,6 +64,16 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
             holder.apply {
                 val singleService = dataList.subList?.first()
                 //childTV?.text = singleService.childTitle
+
+                if(positionSelected == position){
+                    holder.selectedBg()
+                } else {
+                    holder.unselectedBg()
+                }
+                if (singleService != null) {
+                    holder.bindData(singleService, position)
+                }
+
             }
         }
     }
@@ -94,19 +123,52 @@ class EntryAdapter(var mContext: Context, val list: MutableList<ParentData>) : R
         return position.toLong()
     }
 
-    class GroupViewHolder(row: View) : RecyclerView.ViewHolder(row) {
+    inner class GroupViewHolder(row: View) : RecyclerView.ViewHolder(row) {
         val component = row.findViewById(R.id.item_parent) as ConstraintLayout?
         val parentTV = row.findViewById(R.id.parent_Title) as TextView?
         val downIV  = row.findViewById(R.id.down_iv) as ImageView?
     }
-    class ChildViewHolder(row: View) : RecyclerView.ViewHolder(row) {
+    inner class ChildViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
+        : RecyclerView.ViewHolder(binding.root) {
+
         //val childTV = row.findViewById(R.id.entry_child) as TextView?
-        val type = row.findViewById(R.id.parent_Title) as TextView?
+        /*val type = row.findViewById(R.id.parent_Title) as TextView?
         val description = row.findViewById(R.id.text_description) as TextView?
         val unity = row.findViewById(R.id.text_unity) as TextView?
         val price = row.findViewById(R.id.text_price) as TextView?
-        val total = row.findViewById(R.id.text_total) as TextView?
+        val total = row.findViewById(R.id.text_total) as TextView?*/
 
+        @SuppressLint("SetTextI18n")
+        fun bindData(entry: ChildData, position: Int) {
+
+            binding.textDescription.text = entry.description
+            binding.textQuantity.text = entry.quantity.toString()
+            binding.textUnity.text = entry.unity
+            binding.textPrice.text = entry.price.toString()
+            binding.textTotal.text = entry.total.toString()
+
+            binding.entryChild.setOnClickListener {
+
+                if(positionSelected==position){
+                    positionSelected= RecyclerView.NO_POSITION
+                    listener.onListClick(false)
+                    notifyDataSetChanged()
+
+                }
+                positionSelected = position
+                listener.onListClick(true)
+                notifyDataSetChanged()
+
+            }
+        }
+
+        fun selectedBg(){
+            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
+        }
+
+        fun unselectedBg(){
+            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
+        }
 
     }
 

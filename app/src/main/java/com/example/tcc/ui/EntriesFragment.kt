@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.model.ParentData
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentEntriesBinding
-import com.example.tcc.ui.adapter.EntryAdapter
+import com.example.tcc.model.ChildData
+import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
+import com.example.tcc.ui.listeners.EntryListener
 
 class EntriesFragment : Fragment() {
 
     private var _binding: FragmentEntriesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var entryAdapter: EntryAdapter
+    private lateinit var entryManageEntriesAdapter: EntryManageEntriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,20 +65,31 @@ class EntriesFragment : Fragment() {
         val parentObj1 = ParentData(parentTitle = parentData[0])
         val parentObj2 = ParentData(parentTitle = parentData[1])
         val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[1])
+        val parentObj4 = ParentData(parentTitle = parentData[3])
+        val parentObj5 = ParentData(parentTitle = parentData[4])
+        val parentObj6 = ParentData(parentTitle = parentData[5])
 
         listData.add(parentObj1)
         listData.add(parentObj2)
         listData.add(parentObj3)
         listData.add(parentObj4)
+        listData.add(parentObj5)
+        listData.add(parentObj6)
 
         binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntries.setHasFixedSize(true)
-        entryAdapter = EntryAdapter(requireContext(), listData)
+        entryManageEntriesAdapter = EntryManageEntriesAdapter(listData)
+
+        val listener = object : EntryListener {
+            override fun onListClick(selected: Boolean) {
+
+            }
+        }
+        entryManageEntriesAdapter.attachListener(listener)
 
         initclicks()
 
-        binding.rvEntries.adapter = entryAdapter
+        binding.rvEntries.adapter = entryManageEntriesAdapter
 
     }
 
