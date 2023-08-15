@@ -74,6 +74,7 @@ class EntriesFragment : Fragment() {
 //        val parentObj3 = ParentData(parentTitle = parentData[2])
 //        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
 
+
         for(i in 0 until parentData.size){
             val parentObj = ParentData(parentTitle = parentData[i])
             parentList.add(parentObj)

@@ -65,6 +65,7 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = Firebase.auth
         parentList = ArrayList()
 
         val parentData: MutableList<String> =
@@ -76,14 +77,18 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 "Operações"
             )
 
-        for (i in 0 until parentData.size) {
+        /*for (i in 0 until parentData.size) {
             val parentObj = ParentData(parentTitle = parentData[i])
             parentList.add(parentObj)
-        }
+        }*/
 
-        auth = Firebase.auth
+        val childData: MutableList<ChildData> = mutableListOf(
+            ChildData("Sementes","semente A", 3,"unidades", 2, 0, 6),
+            ChildData("Sementes","semente B", 2,"unidades", 3, 0, 6))
+        val parentObj = ParentData(parentTitle = parentData[0], subList = childData)
+        parentList.add(parentObj)
 
-        Log.d("db", "ID Talhão: ${args?.vintageId}")
+        Log.d("db", "ID Safra: ${args?.vintageId}")
 
         binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntries.setHasFixedSize(true)
