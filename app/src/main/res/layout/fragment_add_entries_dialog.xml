@@ -191,12 +191,13 @@
             android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
-            android:id="@+id/radio_foreseen"
+            android:id="@+id/radio_accomplished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/radio_flat_selector"
             android:button="@android:color/transparent"
             android:gravity="center"
+            android:checked="false"
             android:paddingLeft="16dp"
             android:paddingTop="3dp"
             android:paddingRight="16dp"

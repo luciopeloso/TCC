@@ -3,9 +3,9 @@ package com.example.tcc.model
 data class ChildData(
     var category: String?,
     var description: String?,
-    var quantity: Float?,
+    var quantity: Long?,
     var unity: String?,
-    var price: Float?,
-    var type: Int?,
-    var total: Float?
+    var price: Long?,
+    var type: Long?,
+    var total: Long?
 )

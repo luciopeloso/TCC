@@ -94,13 +94,18 @@
             app:destination="@id/areaManagerFragment" />
         <argument
             android:name="areaId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_vintageManagerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_vintageManagerFragment_to_entriesManagerFragment"
             app:destination="@id/entriesManagerFragment" />
+        <argument
+            android:name="propId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/entriesManagerFragment"
@@ -115,6 +120,15 @@
             app:destination="@id/loginFragment" />
         <argument
             android:name="vintageId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="areaId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="propId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

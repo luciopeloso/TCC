@@ -13,11 +13,21 @@ import com.example.tcc.databinding.FragmentEntriesBinding
 import com.example.tcc.model.ChildData
 import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
 import com.example.tcc.ui.listeners.EntryListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class EntriesFragment : Fragment() {
 
     private var _binding: FragmentEntriesBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var auth: FirebaseAuth
+    private val db = FirebaseFirestore.getInstance()
+
+    private val entryAccomplishedList = mutableListOf<ChildData>()
+    private lateinit var parentList: MutableList<ParentData>
 
     private lateinit var entryManageEntriesAdapter: EntryManageEntriesAdapter
 
@@ -33,7 +43,9 @@ class EntriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listData: MutableList<ParentData> = ArrayList()
+        auth = Firebase.auth
+
+        parentList = ArrayList()
 
         val parentData: MutableList<String> =
             mutableListOf("Produto",
@@ -62,23 +74,14 @@ class EntriesFragment : Fragment() {
 //        val parentObj3 = ParentData(parentTitle = parentData[2])
 //        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
 
-        val parentObj1 = ParentData(parentTitle = parentData[0])
-        val parentObj2 = ParentData(parentTitle = parentData[1])
-        val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[3])
-        val parentObj5 = ParentData(parentTitle = parentData[4])
-        val parentObj6 = ParentData(parentTitle = parentData[5])
-
-        listData.add(parentObj1)
-        listData.add(parentObj2)
-        listData.add(parentObj3)
-        listData.add(parentObj4)
-        listData.add(parentObj5)
-        listData.add(parentObj6)
+        for(i in 0 until parentData.size){
+            val parentObj = ParentData(parentTitle = parentData[i])
+            parentList.add(parentObj)
+        }
 
         binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntries.setHasFixedSize(true)
-        entryManageEntriesAdapter = EntryManageEntriesAdapter(listData)
+        entryManageEntriesAdapter = EntryManageEntriesAdapter(parentList)
 
         val listener = object : EntryListener {
             override fun onListClick(selected: Boolean) {
@@ -87,6 +90,7 @@ class EntriesFragment : Fragment() {
         }
         entryManageEntriesAdapter.attachListener(listener)
 
+        //getAccomplishedEntries()
         initclicks()
 
         binding.rvEntries.adapter = entryManageEntriesAdapter
@@ -101,6 +105,44 @@ class EntriesFragment : Fragment() {
         }
     }
 
+    private fun getAccomplishedEntries() {
+        db.collection("Entry").whereEqualTo("users", auth.currentUser?.uid.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        entryAccomplishedList.clear()
+
+                        for (document in documents) {
+                            val description = document.get("description").toString()
+                            val category = document.get("category").toString()
+                            val quantity = document.getLong("quantity")
+                            val unity = document.get("unity").toString()
+                            val price = document.getLong("price")
+                            val type = document.getLong("type")
+                            val total = document.getLong("total")
+
+                            val newEntry = ChildData(
+                                description,
+                                category,
+                                quantity ,
+                                unity,
+                                price ,
+                                type ,
+                                total
+                            )
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                            entryAccomplishedList.add(newEntry)
+                            //entryList.add(newEntry)
+                            entryManageEntriesAdapter.updateAreas(parentList)
+                        }
+
+                    }
+                }
+            }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -153,7 +153,7 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
             "description" to description,
             "begin" to begin,
             "end" to end,
-            "property" to areaID,
+            "area" to areaID,
             "users" to users,
             "entries" to entries
         )

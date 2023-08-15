@@ -91,7 +91,8 @@ class VintageManagerFragment : Fragment() {
             findNavController().navigate(R.id.action_vintageManagerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            findNavController().navigate(R.id.action_vintageManagerFragment_to_areaManagerFragment)
+            navigate(VintageManagerFragmentDirections
+                .actionVintageManagerFragmentToAreaManagerFragment(args?.propId))
         }
 
         binding.buttonAdd.setOnClickListener {
@@ -120,7 +121,7 @@ class VintageManagerFragment : Fragment() {
                                     document.get("end") == vintage.end
                                 ) {
                                     navigate(VintageManagerFragmentDirections
-                                        .actionVintageManagerFragmentToEntriesManagerFragment(document.id))
+                                        .actionVintageManagerFragmentToEntriesManagerFragment(document.id,args?.areaId,args?.propId))
                                 }
                             }
 
@@ -140,7 +141,7 @@ class VintageManagerFragment : Fragment() {
     }
 
     private fun getEntries() {
-        db.collection("Vintage").whereEqualTo("property", args?.areaId)
+        db.collection("Vintage").whereEqualTo("area", args?.areaId)
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents

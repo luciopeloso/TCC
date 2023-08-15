@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.EntriesManagerFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -91,12 +92,13 @@
             android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
-            android:id="@+id/radio_foreseen"
+            android:id="@+id/radio_accomplished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/radio_flat_selector"
             android:button="@android:color/transparent"
             android:gravity="center"
+            android:checked="false"
             android:paddingLeft="16dp"
             android:paddingTop="3dp"
             android:paddingRight="16dp"
@@ -111,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radio_group_entries" />

@@ -24,6 +24,9 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
 
     private lateinit var listener: EntryListener
 
+    private var _entryList: List<ParentData> = mutableListOf()
+    private var entryList = list
+
     var positionSelected = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,10 +45,6 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
     }
 
     override fun getItemCount(): Int = list.size
-
-    fun attachListener(entryListener: EntryListener) {
-        listener = entryListener
-    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
@@ -73,11 +72,10 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
                 if (singleService != null) {
                     holder.bindData(singleService, position)
                 }
-
             }
         }
     }
-    private fun expandOrCollapseParentItem(singleBoarding: ParentData, position: Int) {
+    fun expandOrCollapseParentItem(singleBoarding: ParentData, position: Int) {
 
         if (singleBoarding.isExpanded) {
             collapseParentRow(position)
@@ -86,7 +84,7 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
         }
     }
 
-    private fun expandParentRow(position: Int){
+    fun expandParentRow(position: Int){
         val currentBoardingRow = list[position]
         val services = currentBoardingRow.subList
         currentBoardingRow.isExpanded = true
@@ -105,7 +103,7 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
         }
     }
 
-    private fun collapseParentRow(position: Int){
+    fun collapseParentRow(position: Int){
         val currentBoardingRow = list[position]
         val services = currentBoardingRow.subList
         list[position].isExpanded = false
@@ -121,6 +119,15 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    fun attachListener(entryListener: EntryListener) {
+        listener = entryListener
+    }
+
+    fun updateAreas(updatedList: List<ParentData>) {
+        entryList = updatedList.toMutableList()
+        notifyDataSetChanged()
     }
 
     inner class GroupViewHolder(row: View) : RecyclerView.ViewHolder(row) {

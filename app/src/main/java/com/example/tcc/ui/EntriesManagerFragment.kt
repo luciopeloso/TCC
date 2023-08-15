@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,22 +31,29 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
-class EntriesManagerFragment : Fragment() {
+class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListener {
 
     private val args: EntriesManagerFragmentArgs? by navArgs()
 
     private var _binding: FragmentEntriesManagerBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var entryAdapter : EntryManageEntriesAdapter
+    private lateinit var entryManageEntriesAdapter: EntryManageEntriesAdapter
     private val entryList = mutableListOf<ChildData>()
+    private val entryBudgetedList = mutableListOf<ChildData>()
+    private val entryAccomplishedList = mutableListOf<ChildData>()
+    private lateinit var parentList: MutableList<ParentData>
 
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
     private lateinit var dialogAdd: AddEntriesDialogFragment
 
-    //private val vintage = Vintage(null, null,null)
+    private val entry = ChildData(
+        null, null, null,
+        null, null, null, null
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,28 +65,21 @@ class EntriesManagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listData: MutableList<ParentData> = ArrayList()
+        parentList = ArrayList()
 
         val parentData: MutableList<String> =
-            mutableListOf("Produto",
+            mutableListOf(
+                "Produto",
                 "Sementes",
                 "Capina, dessecação e pós emergência",
                 "Fungicidas, Inseticidas e Foliares",
-                "Operações")
+                "Operações"
+            )
 
-        val parentObj1 = ParentData(parentTitle = parentData[0])
-        val parentObj2 = ParentData(parentTitle = parentData[1])
-        val parentObj3 = ParentData(parentTitle = parentData[2])
-        val parentObj4 = ParentData(parentTitle = parentData[3])
-        val parentObj5 = ParentData(parentTitle = parentData[4])
-        val parentObj6 = ParentData(parentTitle = parentData[5])
-
-        listData.add(parentObj1)
-        listData.add(parentObj2)
-        listData.add(parentObj3)
-        listData.add(parentObj4)
-        listData.add(parentObj5)
-        listData.add(parentObj6)
+        for (i in 0 until parentData.size) {
+            val parentObj = ParentData(parentTitle = parentData[i])
+            parentList.add(parentObj)
+        }
 
         auth = Firebase.auth
 
@@ -83,14 +87,18 @@ class EntriesManagerFragment : Fragment() {
 
         binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntries.setHasFixedSize(true)
-        entryAdapter = EntryManageEntriesAdapter(listData)
+        entryManageEntriesAdapter = EntryManageEntriesAdapter(parentList)
 
         val listener = object : EntryListener {
             override fun onListClick(selected: Boolean) {
                 if (selected) {
-                    /*vintage.description = vintageList[entryAdapter.positionSelected].description
-                    vintage.begin = vintageList[entryAdapter.positionSelected].begin
-                    vintage.begin = vintageList[entryAdapter.positionSelected].end*/
+                    entry.description = entryList[entryManageEntriesAdapter.positionSelected].description
+                    entry.quantity = entryList[entryManageEntriesAdapter.positionSelected].quantity
+                    entry.unity = entryList[entryManageEntriesAdapter.positionSelected].unity
+                    entry.category = entryList[entryManageEntriesAdapter.positionSelected].category
+                    entry.price = entryList[entryManageEntriesAdapter.positionSelected].price
+                    entry.type = entryList[entryManageEntriesAdapter.positionSelected].type
+                    entry.total = entryList[entryManageEntriesAdapter.positionSelected].total
                     binding.buttonEdit.visibility = View.VISIBLE
 
                 } else {
@@ -99,11 +107,118 @@ class EntriesManagerFragment : Fragment() {
                 }
             }
         }
-        entryAdapter.attachListener(listener)
+        entryManageEntriesAdapter.attachListener(listener)
 
-        getEntries()
+        //getEntries()
+
+        getBudgetedEntries()
+        getAccomplishedEntries()
+
+        binding.radioBudgeted.setOnCheckedChangeListener(this)
 
         initClicks()
+    }
+
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
+        }
+    }
+    private fun getAccomplishedEntries() {
+        db.collection("Entry").whereEqualTo("vintage", args?.vintageId)
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        entryAccomplishedList.clear()
+
+                        for (document in documents) {
+                            val description = document.get("description").toString()
+                            val category = document.get("category").toString()
+                            val quantity = document.getLong("quantity")
+                            val unity = document.get("unity").toString()
+                            val price = document.getLong("price")
+                            val type = document.getLong("type")
+                            val total = document.getLong("total")
+
+                            val newEntry = ChildData(
+                                description,
+                                category,
+                                quantity ,
+                                unity,
+                                price ,
+                                type ,
+                                total
+                            )
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                            entryAccomplishedList.add(newEntry)
+                            entryList.add(newEntry)
+                            entryManageEntriesAdapter.updateAreas(parentList)
+                        }
+
+                    }
+                }
+            }
+    }
+
+    private fun getBudgetedEntries() {
+        db.collection("Entry").whereEqualTo("vintage", args?.vintageId)
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        entryBudgetedList.clear()
+
+                        for (document in documents) {
+                            val description = document.get("description").toString()
+                            val category = document.get("category").toString()
+                            val quantity = document.getLong("quantity")
+                            val unity = document.get("unity").toString()
+                            val price = document.getLong("price")
+                            val type = document.getLong("type")
+                            val total = document.getLong("total")
+
+                            val newEntry = ChildData(
+                                description,
+                                category,
+                                quantity ,
+                                unity,
+                                price ,
+                                type ,
+                                total
+                            )
+
+                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
+
+                            entryBudgetedList.add(newEntry)
+                            entryList.add(newEntry)
+                            entryManageEntriesAdapter.updateAreas(parentList)
+                        }
+
+                    }
+                }
+            }
+    }
+
+    override fun onCheckedChanged(button: CompoundButton, isChecked: Boolean) {
+        when (button.id) {
+            R.id.radio_budgeted -> {
+                for (i in 0 until parentList.size) {
+                    entryManageEntriesAdapter.collapseParentRow(i)
+                }
+            }
+
+            R.id.radio_accomplished -> {
+                for (i in 0 until parentList.size) {
+                    entryManageEntriesAdapter.collapseParentRow(i)
+                }
+            }
+        }
     }
 
     private fun initClicks() {
@@ -112,7 +227,8 @@ class EntriesManagerFragment : Fragment() {
             findNavController().navigate(R.id.action_entriesManagerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            findNavController().navigate(R.id.action_entriesManagerFragment_to_vintageManagerFragment)
+            navigate(EntriesManagerFragmentDirections
+                .actionEntriesManagerFragmentToVintageManagerFragment(args?.areaId,args?.propId))
         }
 
         binding.buttonAdd.setOnClickListener {
@@ -121,18 +237,23 @@ class EntriesManagerFragment : Fragment() {
         }
 
         binding.buttonEdit.setOnClickListener {
-            dialogAdd = AddEntriesDialogFragment(entryList[entryAdapter.positionSelected], args?.vintageId)
-            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-        }
-    }
 
-    private fun getEntries() {
-        TODO("Not yet implemented")
+            if(binding.radioBudgeted.isSelected){
+                dialogAdd =
+                    AddEntriesDialogFragment(entryBudgetedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            } else {
+                dialogAdd =
+                    AddEntriesDialogFragment(entryAccomplishedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

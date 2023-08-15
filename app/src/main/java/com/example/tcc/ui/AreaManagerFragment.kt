@@ -91,7 +91,6 @@ class AreaManagerFragment : Fragment() {
         }
         binding.ibBack.setOnClickListener {
             findNavController().navigate(R.id.action_areaManagerFragment_to_managerFragment)
-
         }
         binding.buttonAdd.setOnClickListener {
             dialogAdd = AddAreaDialogFragment(null, args?.propId)
@@ -119,7 +118,7 @@ class AreaManagerFragment : Fragment() {
                                     document.get("crop") == area.crop
                                 ) {
                                     navigate(AreaManagerFragmentDirections
-                                        .actionAreaManagerFragmentToVintageManagerFragment(document.id))
+                                        .actionAreaManagerFragmentToVintageManagerFragment(document.id, args?.propId))
                                 }
                             }
 

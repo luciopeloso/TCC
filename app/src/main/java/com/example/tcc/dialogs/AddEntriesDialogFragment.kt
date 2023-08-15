@@ -4,6 +4,7 @@ package com.example.tcc.dialogs
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -84,10 +85,10 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
     private fun setType() {
         binding.radioGroupEntries.check(
             when(entry?.type){
-                0 -> {
+                0L -> {
                     R.id.radio_budgeted
                 } else -> {
-                    R.id.radio_foreseen
+                    R.id.radio_accomplished
                 }
             }
         )
@@ -116,24 +117,20 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                 if (entry != null) {
                     newEntry.description = description
                     newEntry.category = category
-                    newEntry.quantity = quantity.toFloat()
+                    newEntry.quantity = quantity.toLong()
                     newEntry.unity = unity
-                    newEntry.price = price.toFloat()
+                    newEntry.price = price.toLong()
+                    newEntry.type = 0L
 
-                    if(binding.radioBudgeted.isSelected){
-                        newEntry.type = 0
+                    if(binding.radioBudgeted.isChecked){
+                        newEntry.type = 0L
                     } else {
-                        newEntry.type = 1
+                        newEntry.type = 1L
                     }
 
                     editEntry(entry, newEntry)
                 } else {
-                    val buttonSelected = if(binding.radioBudgeted.isSelected){
-                        0
-                    } else {
-                        1
-                    }
-
+                    val buttonSelected = if(binding.radioBudgeted.isChecked){ 0 } else { 1 }
                     addEntry(category, description, quantity.toFloat(), unity, price.toFloat(), buttonSelected)
                 }
             }
@@ -153,12 +150,14 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
             "unity" to unity,
             "price" to price,
             "type" to type,
-            "total" to total
+            "total" to total,
+            "vintage" to vintageID,
+            "users" to users
         )
 
         db.collection("Entry").add(entryMap)
             .addOnSuccessListener { documentReference ->
-                db.collection("Property").document(vintageID.toString())
+                db.collection("Vintage").document(vintageID.toString())
                     .update("entries", FieldValue.arrayUnion(documentReference.id))
                     .addOnSuccessListener {
                         binding.editDescription.setText("")
@@ -202,8 +201,9 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                                             "unity" to newEntry.unity,
                                             "quantity" to newEntry.category,
                                             "price" to newEntry.price,
-                                            "total" to (newEntry.price!! * newEntry.quantity!!)
+                                            "total" to 0
                                         )
+                                        //(newEntry.price!! * newEntry.quantity!!)
                                     )
 
                                 binding.editDescription.setText("")
@@ -217,5 +217,5 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
             }
     }
 
-
 }
+
