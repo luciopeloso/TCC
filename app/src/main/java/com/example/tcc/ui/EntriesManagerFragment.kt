@@ -69,8 +69,6 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
         auth = Firebase.auth
         parentList = ArrayList()
 
-
-
         val parentData: MutableList<String> =
             mutableListOf(
                 "Produto",
@@ -199,6 +197,13 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
 
                             entryAccomplishedList.add(newEntry)
                             entryList.add(newEntry)
+
+                            parentList.forEach { item ->
+                                if(item.parentTitle == category){
+                                    item.subList?.add(newEntry)
+                                }
+                            }
+
                             entryManageEntriesAdapter.updateEntries(parentList)
                         }
 
