@@ -157,7 +157,7 @@ class VintageManagerFragment : Fragment() {
                             //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
 
                             vintageList.add(newVintage)
-                            entryAdapter.updateAreas(vintageList)
+                            entryAdapter.updateVintages(vintageList)
                         }
 
                     }

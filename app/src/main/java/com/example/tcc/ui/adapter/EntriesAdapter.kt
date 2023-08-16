@@ -1,7 +1,6 @@
 package com.example.tcc.ui.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,28 +8,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tcc.R
+import com.example.tcc.databinding.ItemEntryChildBinding
 import com.example.tcc.helper.AppConstants
 import com.example.tcc.model.ChildData
 import com.example.tcc.model.ParentData
-import com.example.tcc.R
-import com.example.tcc.databinding.ItemEntryChildBinding
-import com.example.tcc.databinding.ItemEntryVintageBinding
-import com.example.tcc.model.Vintage
 import com.example.tcc.ui.listeners.EntryListener
-import kotlinx.coroutines.NonDisposableHandle
-import kotlinx.coroutines.NonDisposableHandle.parent
 
-class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EntriesAdapter(val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var listener: EntryListener
 
     private var _entryList: List<ParentData> = mutableListOf()
     private var entryList = list
-
-    var positionSelected = RecyclerView.NO_POSITION
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         return if(viewType== AppConstants.Constants.PARENT){
             val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_parent, parent,false)
             GroupViewHolder(rowView)
@@ -47,10 +38,9 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val dataList = list[position]
         if (dataList.type == AppConstants.Constants.PARENT) {
-            holder as GroupViewHolder
+            holder as EntriesAdapter.GroupViewHolder
             holder.apply {
                 parentTV?.text = dataList.parentTitle
                 component?.setOnClickListener{
@@ -58,23 +48,19 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
                 }
             }
         } else {
-            holder as ChildViewHolder
+            holder as EntriesAdapter.ChildViewHolder
 
             holder.apply {
                 val singleService = dataList.subList?.first()
                 //childTV?.text = singleService.childTitle
 
-                if(positionSelected == position){
-                    holder.selectedBg()
-                } else {
-                    holder.unselectedBg()
-                }
                 if (singleService != null) {
                     holder.bindData(singleService, position)
                 }
             }
         }
     }
+
     fun expandOrCollapseParentItem(singleBoarding: ParentData, position: Int) {
 
         if (singleBoarding.isExpanded) {
@@ -125,7 +111,7 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
         listener = entryListener
     }
 
-    fun updateEntries(updatedList: List<ParentData>) {
+    fun updateAreas(updatedList: List<ParentData>) {
         entryList = updatedList.toMutableList()
         notifyDataSetChanged()
     }
@@ -135,6 +121,7 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
         val parentTV = row.findViewById(R.id.parent_Title) as TextView?
         val downIV  = row.findViewById(R.id.down_iv) as ImageView?
     }
+
     inner class ChildViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
         : RecyclerView.ViewHolder(binding.root) {
 
@@ -147,37 +134,13 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
 
         @SuppressLint("SetTextI18n")
         fun bindData(entry: ChildData, position: Int) {
-
             binding.textDescription.text = entry.description
             binding.textQuantity.text = entry.quantity.toString()
             binding.textUnity.text = entry.unity
             binding.textPrice.text = entry.price.toString()
             binding.textTotal.text = entry.total.toString()
 
-            binding.entryChild.setOnClickListener {
-
-                if(positionSelected==position){
-                    positionSelected= RecyclerView.NO_POSITION
-                    listener.onListClick(false)
-                    notifyDataSetChanged()
-
-                }
-                positionSelected = position
-                listener.onListClick(true)
-                notifyDataSetChanged()
-
-            }
         }
-
-        fun selectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-        }
-
-        fun unselectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
-        }
-
     }
-
 
 }

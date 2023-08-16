@@ -11,6 +11,7 @@ import com.example.tcc.model.ParentData
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentEntriesBinding
 import com.example.tcc.model.ChildData
+import com.example.tcc.ui.adapter.EntriesAdapter
 import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
 import com.example.tcc.ui.listeners.EntryListener
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +30,7 @@ class EntriesFragment : Fragment() {
     private val entryAccomplishedList = mutableListOf<ChildData>()
     private lateinit var parentList: MutableList<ParentData>
 
-    private lateinit var entryManageEntriesAdapter: EntryManageEntriesAdapter
+    private lateinit var entryAdapter: EntriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,19 +83,19 @@ class EntriesFragment : Fragment() {
 
         binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntries.setHasFixedSize(true)
-        entryManageEntriesAdapter = EntryManageEntriesAdapter(parentList)
+        entryAdapter = EntriesAdapter(parentList)
 
         val listener = object : EntryListener {
             override fun onListClick(selected: Boolean) {
 
             }
         }
-        entryManageEntriesAdapter.attachListener(listener)
+        entryAdapter.attachListener(listener)
 
         //getAccomplishedEntries()
         initclicks()
 
-        binding.rvEntries.adapter = entryManageEntriesAdapter
+        binding.rvEntries.adapter = entryAdapter
 
     }
 
@@ -137,7 +138,7 @@ class EntriesFragment : Fragment() {
 
                             entryAccomplishedList.add(newEntry)
                             //entryList.add(newEntry)
-                            entryManageEntriesAdapter.updateAreas(parentList)
+                            entryAdapter.updateAreas(parentList)
                         }
 
                     }

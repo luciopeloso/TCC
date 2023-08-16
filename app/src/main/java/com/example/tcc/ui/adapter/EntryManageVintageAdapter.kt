@@ -37,7 +37,7 @@ class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.
         holder.bindData(vintageList[position], position)
     }
 
-    fun updateAreas(list: List<Vintage>) {
+    fun updateVintages(list: List<Vintage>) {
         vintageList = list
         notifyDataSetChanged()
     }

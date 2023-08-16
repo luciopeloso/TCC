@@ -23,6 +23,7 @@ import com.example.tcc.dialogs.AddVintageDialogFragment
 import com.example.tcc.model.ChildData
 import com.example.tcc.model.ParentData
 import com.example.tcc.model.Vintage
+import com.example.tcc.ui.adapter.EntriesAdapter
 import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
 import com.example.tcc.ui.adapter.EntryManageVintageAdapter
 import com.example.tcc.ui.listeners.EntryListener
@@ -68,6 +69,8 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
         auth = Firebase.auth
         parentList = ArrayList()
 
+
+
         val parentData: MutableList<String> =
             mutableListOf(
                 "Produto",
@@ -77,22 +80,20 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 "Operações"
             )
 
-        /*for (i in 0 until parentData.size) {
+        for (i in 0 until parentData.size) {
             val parentObj = ParentData(parentTitle = parentData[i])
             parentList.add(parentObj)
-        }*/
+        }
 
-        val childData: MutableList<ChildData> = mutableListOf(
+        /*val childData: MutableList<ChildData> = mutableListOf(
             ChildData("Sementes","semente A", 3,"unidades", 2, 0, 6),
             ChildData("Sementes","semente B", 2,"unidades", 3, 0, 6))
         val parentObj = ParentData(parentTitle = parentData[0], subList = childData)
-        parentList.add(parentObj)
+        parentList.add(parentObj)*/
 
         Log.d("db", "ID Safra: ${args?.vintageId}")
 
-        binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvEntries.setHasFixedSize(true)
-        entryManageEntriesAdapter = EntryManageEntriesAdapter(parentList)
+
 
         val listener = object : EntryListener {
             override fun onListClick(selected: Boolean) {
@@ -112,6 +113,12 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 }
             }
         }
+
+        binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntries.setHasFixedSize(true)
+        entryManageEntriesAdapter = EntryManageEntriesAdapter(parentList)
+        binding.rvEntries.adapter = entryManageEntriesAdapter
+
         entryManageEntriesAdapter.attachListener(listener)
 
         //getEntries()
@@ -122,6 +129,35 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
         binding.radioBudgeted.setOnCheckedChangeListener(this)
 
         initClicks()
+    }
+
+    private fun initClicks() {
+        binding.ibLogout.setOnClickListener {
+            auth.signOut()
+            findNavController().navigate(R.id.action_entriesManagerFragment_to_loginFragment)
+        }
+        binding.ibBack.setOnClickListener {
+            navigate(EntriesManagerFragmentDirections
+                .actionEntriesManagerFragmentToVintageManagerFragment(args?.areaId,args?.propId))
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            dialogAdd = AddEntriesDialogFragment(null, args?.vintageId)
+            dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
+        }
+
+        binding.buttonEdit.setOnClickListener {
+
+            if(binding.radioBudgeted.isSelected){
+                dialogAdd =
+                    AddEntriesDialogFragment(entryBudgetedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            } else {
+                dialogAdd =
+                    AddEntriesDialogFragment(entryAccomplishedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            }
+        }
     }
 
     private fun Fragment.navigate(directions: NavDirections) {
@@ -163,7 +199,7 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
 
                             entryAccomplishedList.add(newEntry)
                             entryList.add(newEntry)
-                            entryManageEntriesAdapter.updateAreas(parentList)
+                            entryManageEntriesAdapter.updateEntries(parentList)
                         }
 
                     }
@@ -202,7 +238,7 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
 
                             entryBudgetedList.add(newEntry)
                             entryList.add(newEntry)
-                            entryManageEntriesAdapter.updateAreas(parentList)
+                            entryManageEntriesAdapter.updateEntries(parentList)
                         }
 
                     }
@@ -213,44 +249,19 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
     override fun onCheckedChanged(button: CompoundButton, isChecked: Boolean) {
         when (button.id) {
             R.id.radio_budgeted -> {
-                for (i in 0 until parentList.size) {
-                    entryManageEntriesAdapter.collapseParentRow(i)
+                if(parentList.size != 0){
+                    for (i in 0 until parentList.size) {
+                        entryManageEntriesAdapter.collapseParentRow(i)
+                    }
                 }
             }
 
             R.id.radio_accomplished -> {
-                for (i in 0 until parentList.size) {
-                    entryManageEntriesAdapter.collapseParentRow(i)
+                if(parentList.size != 0){
+                    for (i in 0 until parentList.size) {
+                        entryManageEntriesAdapter.collapseParentRow(i)
+                    }
                 }
-            }
-        }
-    }
-
-    private fun initClicks() {
-        binding.ibLogout.setOnClickListener {
-            auth.signOut()
-            findNavController().navigate(R.id.action_entriesManagerFragment_to_loginFragment)
-        }
-        binding.ibBack.setOnClickListener {
-            navigate(EntriesManagerFragmentDirections
-                .actionEntriesManagerFragmentToVintageManagerFragment(args?.areaId,args?.propId))
-        }
-
-        binding.buttonAdd.setOnClickListener {
-            dialogAdd = AddEntriesDialogFragment(null, args?.vintageId)
-            dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
-        }
-
-        binding.buttonEdit.setOnClickListener {
-
-            if(binding.radioBudgeted.isSelected){
-                dialogAdd =
-                    AddEntriesDialogFragment(entryBudgetedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-            } else {
-                dialogAdd =
-                    AddEntriesDialogFragment(entryAccomplishedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
             }
         }
     }
