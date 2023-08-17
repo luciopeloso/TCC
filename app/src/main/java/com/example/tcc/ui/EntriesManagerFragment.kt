@@ -150,10 +150,16 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 dialogAdd =
                     AddEntriesDialogFragment(entryBudgetedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
                 dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                binding.radioBudgeted.isChecked = true
+                binding.radioAccomplished.isChecked = false
             } else {
                 dialogAdd =
                     AddEntriesDialogFragment(entryAccomplishedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
                 dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                binding.radioBudgeted.isChecked = false
+                binding.radioAccomplished.isChecked = true
             }
         }
     }
@@ -184,8 +190,8 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                             val total = document.getLong("total")
 
                             val newEntry = ChildData(
-                                description,
                                 category,
+                                description,
                                 quantity ,
                                 unity,
                                 price ,
@@ -199,7 +205,7 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                             entryList.add(newEntry)
 
                             parentList.forEach { item ->
-                                if(item.parentTitle == category){
+                                if(item.parentTitle == category && type == 1L){
                                     item.subList?.add(newEntry)
                                 }
                             }
@@ -230,8 +236,8 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                             val total = document.getLong("total")
 
                             val newEntry = ChildData(
-                                description,
                                 category,
+                                description,
                                 quantity ,
                                 unity,
                                 price ,
@@ -243,6 +249,13 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
 
                             entryBudgetedList.add(newEntry)
                             entryList.add(newEntry)
+
+                            parentList.forEach { item ->
+                                if(item.parentTitle == category && type == 0L){
+                                    item.subList?.add(newEntry)
+                                }
+                            }
+
                             entryManageEntriesAdapter.updateEntries(parentList)
                         }
 
