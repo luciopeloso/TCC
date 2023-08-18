@@ -61,7 +61,9 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
             holder as ChildViewHolder
 
             holder.apply {
+
                 val singleService = dataList.subList?.first()
+
                 //childTV?.text = singleService.childTitle
 
                 if(positionSelected == position){

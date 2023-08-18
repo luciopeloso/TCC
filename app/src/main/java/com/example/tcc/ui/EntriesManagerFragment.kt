@@ -122,7 +122,7 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
         //getEntries()
 
         getBudgetedEntries()
-        getAccomplishedEntries()
+
 
         binding.radioBudgeted.setOnCheckedChangeListener(this)
 
@@ -145,22 +145,9 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
         }
 
         binding.buttonEdit.setOnClickListener {
-
-            if(binding.radioBudgeted.isSelected){
-                dialogAdd =
-                    AddEntriesDialogFragment(entryBudgetedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-
-                binding.radioBudgeted.isChecked = true
-                binding.radioAccomplished.isChecked = false
-            } else {
-                dialogAdd =
-                    AddEntriesDialogFragment(entryAccomplishedList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-
-                binding.radioBudgeted.isChecked = false
-                binding.radioAccomplished.isChecked = true
-            }
+            dialogAdd =
+                AddEntriesDialogFragment(entryList[entryManageEntriesAdapter.positionSelected], args?.vintageId)
+            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
         }
     }
 
@@ -178,7 +165,9 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 if (e == null) {
                     val documents = snapshot?.documents
                     if (documents != null) {
-                        entryAccomplishedList.clear()
+                        for (i in 0 until parentList.size) {
+                            parentList[i].subList?.clear()
+                        }
 
                         for (document in documents) {
                             val description = document.get("description").toString()
@@ -224,7 +213,9 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
                 if (e == null) {
                     val documents = snapshot?.documents
                     if (documents != null) {
-                        entryBudgetedList.clear()
+                        for (i in 0 until parentList.size) {
+                            parentList[i].subList?.clear()
+                        }
 
                         for (document in documents) {
                             val description = document.get("description").toString()
@@ -267,19 +258,22 @@ class EntriesManagerFragment : Fragment(), CompoundButton.OnCheckedChangeListene
     override fun onCheckedChanged(button: CompoundButton, isChecked: Boolean) {
         when (button.id) {
             R.id.radio_budgeted -> {
-                if(parentList.size != 0){
-                    for (i in 0 until parentList.size) {
+                /*for (i in 0 until parentList.size) {
+                    if(parentList[i].isExpanded){
                         entryManageEntriesAdapter.collapseParentRow(i)
                     }
-                }
+                }*/
+                getBudgetedEntries()
+
             }
 
             R.id.radio_accomplished -> {
-                if(parentList.size != 0){
-                    for (i in 0 until parentList.size) {
+                /*for (i in 0 until parentList.size) {
+                    if(parentList[i].isExpanded){
                         entryManageEntriesAdapter.collapseParentRow(i)
                     }
-                }
+                }*/
+                getAccomplishedEntries()
             }
         }
     }
