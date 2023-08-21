@@ -65,10 +65,6 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
         notifyDataSetChanged()
     }
 
-    fun clearSelecteds(){
-
-    }
-
     inner class MyViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
         : RecyclerView.ViewHolder(binding.root) {
 
@@ -103,14 +99,6 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
             }
 
         }
-        fun selectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-        }
-
-        fun unselectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
-        }
-
     }
 
 
