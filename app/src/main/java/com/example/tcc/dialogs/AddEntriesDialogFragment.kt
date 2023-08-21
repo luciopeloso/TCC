@@ -85,7 +85,7 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
     private fun setType() {
         binding.radioGroupEntries.check(
             when(entry?.type){
-                0L -> {
+                "Orçado" -> {
                     R.id.radio_budgeted
                 } else -> {
                     R.id.radio_accomplished
@@ -107,7 +107,7 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
             val unity = binding.editUnity.text.toString()
             val price = binding.editPrice.text.toString()
 
-            if (category == "0" || description.isEmpty() || quantity.isEmpty()
+            if (category == "Tipo de entrada" || description.isEmpty() || quantity.isEmpty()
                 || unity.isEmpty() || price.isEmpty()
             ) {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
@@ -120,24 +120,24 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                     newEntry.quantity = quantity.toLong()
                     newEntry.unity = unity
                     newEntry.price = price.toLong()
-                    newEntry.type = 0L
+                    newEntry.type = "Orçado"
 
                     if(binding.radioBudgeted.isChecked){
-                        newEntry.type = 0L
+                        newEntry.type = "Orçado"
                     } else {
-                        newEntry.type = 1L
+                        newEntry.type = "Realizado"
                     }
 
                     editEntry(entry, newEntry)
                 } else {
-                    val buttonSelected = if(binding.radioBudgeted.isChecked){ 0 } else { 1 }
+                    val buttonSelected = if(binding.radioBudgeted.isChecked){ "Orçado" } else { "Realizado" }
                     addEntry(category, description, quantity.toFloat(), unity, price.toFloat(), buttonSelected)
                 }
             }
         }
     }
 
-    private fun addEntry(category: String, description: String, quantity: Float, unity: String, price: Float, type: Int) {
+    private fun addEntry(category: String, description: String, quantity: Float, unity: String, price: Float, type: String) {
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())
 
@@ -177,6 +177,7 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
         val unity = oldEntry.unity
         val price = oldEntry.price
         val type = oldEntry.type
+        val total = (quantity?.times(price!!))
 
         db.collection("Entry").whereArrayContains("users", auth.currentUser?.uid.toString())
             .addSnapshotListener { snapshot, e ->
@@ -201,7 +202,7 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                                             "unity" to newEntry.unity,
                                             "quantity" to newEntry.category,
                                             "price" to newEntry.price,
-                                            "total" to 0
+                                            "total" to total
                                         )
                                         //(newEntry.price!! * newEntry.quantity!!)
                                     )

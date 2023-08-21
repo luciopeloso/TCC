@@ -6,6 +6,6 @@ data class ChildData(
     var quantity: Long?,
     var unity: String?,
     var price: Long?,
-    var type: Long?,
+    var type: String?,
     var total: Long?
 )

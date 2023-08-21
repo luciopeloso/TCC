@@ -15,12 +15,14 @@ import com.example.tcc.model.ParentData
 import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryChildBinding
 import com.example.tcc.databinding.ItemEntryVintageBinding
+import com.example.tcc.dialogs.AddAreaDialogFragment
+import com.example.tcc.dialogs.AddEntriesDialogFragment
 import com.example.tcc.model.Vintage
 import com.example.tcc.ui.listeners.EntryListener
 import kotlinx.coroutines.NonDisposableHandle
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView.Adapter<EntryManageEntriesAdapter.MyViewHolder>() {
 
     private lateinit var listener: EntryListener
 
@@ -29,95 +31,26 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
 
     var positionSelected = RecyclerView.NO_POSITION
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        return if(viewType== AppConstants.Constants.PARENT){
-            val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_parent, parent,false)
-            GroupViewHolder(rowView)
-        } else {
-            //val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_entry_child, parent,false)
-            //ChildViewHolder(rowView)
-
-            val inflater = LayoutInflater.from(parent.context)
-            val itemBinding = ItemEntryChildBinding.inflate(inflater, parent, false)
-            return ChildViewHolder(itemBinding,listener)
-        }
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): EntryManageEntriesAdapter.MyViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val itemBinding = ItemEntryChildBinding.inflate(inflater, parent, false)
+        return MyViewHolder(itemBinding,listener)
     }
 
     override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-        val dataList = list[position]
-        if (dataList.type == AppConstants.Constants.PARENT) {
-            holder as GroupViewHolder
-            holder.apply {
-                parentTV?.text = dataList.parentTitle
-                component?.setOnClickListener{
-                    expandOrCollapseParentItem(dataList,position)
-                }
-            }
+    override fun onBindViewHolder(holder: EntryManageEntriesAdapter.MyViewHolder, position: Int) {
+        if(positionSelected == position){
+            //holder.selectedBg()
         } else {
-            holder as ChildViewHolder
+            //holder.unselectedBg()
 
-            holder.apply {
-
-                val singleService = dataList.subList?.first()
-
-                //childTV?.text = singleService.childTitle
-
-                if(positionSelected == position){
-                    holder.selectedBg()
-                } else {
-                    holder.unselectedBg()
-                }
-                if (singleService != null) {
-                    holder.bindData(singleService, position)
-                }
-            }
         }
+        holder.bindData(entryList[position], position)
     }
-    fun expandOrCollapseParentItem(singleBoarding: ParentData, position: Int) {
-
-        if (singleBoarding.isExpanded) {
-            collapseParentRow(position)
-        } else {
-            expandParentRow(position)
-        }
-    }
-
-    fun expandParentRow(position: Int){
-        val currentBoardingRow = list[position]
-        val services = currentBoardingRow.subList
-        currentBoardingRow.isExpanded = true
-        var nextPosition = position
-        if(currentBoardingRow.type== AppConstants.Constants.PARENT){
-
-            services?.forEach { service ->
-                val parentModel =  ParentData()
-                parentModel.type = AppConstants.Constants.CHILD
-                val subList : ArrayList<ChildData> = ArrayList()
-                subList.add(service)
-                parentModel.subList=subList
-                list.add(++nextPosition,parentModel)
-            }
-            notifyDataSetChanged()
-        }
-    }
-
-    fun collapseParentRow(position: Int){
-        val currentBoardingRow = list[position]
-        val services = currentBoardingRow.subList
-        list[position].isExpanded = false
-        if(list[position].type== AppConstants.Constants.PARENT){
-            services?.forEach { _ ->
-                list.removeAt(position + 1)
-            }
-            notifyDataSetChanged()
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int = list[position].type
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -127,17 +60,16 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
         listener = entryListener
     }
 
-    fun updateEntries(updatedList: List<ParentData>) {
+    fun updateEntries(updatedList: List<ChildData>) {
         entryList = updatedList.toMutableList()
         notifyDataSetChanged()
     }
 
-    inner class GroupViewHolder(row: View) : RecyclerView.ViewHolder(row) {
-        val component = row.findViewById(R.id.item_parent) as ConstraintLayout?
-        val parentTV = row.findViewById(R.id.parent_Title) as TextView?
-        val downIV  = row.findViewById(R.id.down_iv) as ImageView?
+    fun clearSelecteds(){
+
     }
-    inner class ChildViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
+
+    inner class MyViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
         : RecyclerView.ViewHolder(binding.root) {
 
         //val childTV = row.findViewById(R.id.entry_child) as TextView?
@@ -159,18 +91,18 @@ class EntryManageEntriesAdapter(val list: MutableList<ParentData>) : RecyclerVie
             binding.entryChild.setOnClickListener {
 
                 if(positionSelected==position){
-                    positionSelected= RecyclerView.NO_POSITION
+                    positionSelected = RecyclerView.NO_POSITION
                     listener.onListClick(false)
                     notifyDataSetChanged()
 
+                } else {
+                    positionSelected = position
+                    listener.onListClick(true)
+                    notifyDataSetChanged()
                 }
-                positionSelected = position
-                listener.onListClick(true)
-                notifyDataSetChanged()
-
             }
-        }
 
+        }
         fun selectedBg(){
             binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
         }

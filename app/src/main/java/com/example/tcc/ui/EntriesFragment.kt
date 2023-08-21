@@ -121,7 +121,7 @@ class EntriesFragment : Fragment() {
                             val quantity = document.getLong("quantity")
                             val unity = document.get("unity").toString()
                             val price = document.getLong("price")
-                            val type = document.getLong("type")
+                            val type = document.get("type").toString()
                             val total = document.getLong("total")
 
                             val newEntry = ChildData(
