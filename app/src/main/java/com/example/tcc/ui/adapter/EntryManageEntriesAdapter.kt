@@ -25,8 +25,6 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView.Adapter<EntryManageEntriesAdapter.MyViewHolder>() {
 
     private lateinit var listener: EntryListener
-
-    private var _entryList: List<ParentData> = mutableListOf()
     private var entryList = list
 
     var positionSelected = RecyclerView.NO_POSITION
@@ -43,12 +41,6 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: EntryManageEntriesAdapter.MyViewHolder, position: Int) {
-        if(positionSelected == position){
-            //holder.selectedBg()
-        } else {
-            //holder.unselectedBg()
-
-        }
         holder.bindData(entryList[position], position)
     }
 
@@ -67,13 +59,6 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
 
     inner class MyViewHolder(private val binding: ItemEntryChildBinding, val listener: EntryListener)
         : RecyclerView.ViewHolder(binding.root) {
-
-        //val childTV = row.findViewById(R.id.entry_child) as TextView?
-        /*val type = row.findViewById(R.id.parent_Title) as TextView?
-        val description = row.findViewById(R.id.text_description) as TextView?
-        val unity = row.findViewById(R.id.text_unity) as TextView?
-        val price = row.findViewById(R.id.text_price) as TextView?
-        val total = row.findViewById(R.id.text_total) as TextView?*/
 
         @SuppressLint("SetTextI18n")
         fun bindData(entry: ChildData, position: Int) {

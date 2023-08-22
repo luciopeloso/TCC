@@ -272,201 +272,122 @@ class EntriesManagerFragment : Fragment() {
                 operationsExpanded = true
             }
         }
-
-        binding.buttonEdit.setOnClickListener {
-
-            when (typeClick) {
-                "Produto" -> {
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            productList[entryProductAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-                }
-
-                "Sementes" -> {
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            seedList[entrySeedAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-                }
-
-                "Capina, dessecação e pós emergência" -> {
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            cdeList[entryCDEAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-                }
-
-                "Fungicidas, Inseticidas e Foliares" -> {
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            fifList[entryFIFAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-                }
-
-                "Operações" -> {
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            operationsList[entryOperationsAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-                }
-            }
-        }
     }
 
     private fun initAdapters() {
 
         val listenerProduct = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    entry.description =
-                        productList[entryProductAdapter.positionSelected].description
-                    entry.quantity = productList[entryProductAdapter.positionSelected].quantity
-                    entry.unity = productList[entryProductAdapter.positionSelected].unity
-                    entry.category = productList[entryProductAdapter.positionSelected].category
-                    entry.price = productList[entryProductAdapter.positionSelected].price
-                    entry.type = productList[entryProductAdapter.positionSelected].type
-                    entry.total = productList[entryProductAdapter.positionSelected].total
-                    //binding.buttonEdit.visibility = View.VISIBLE
+                entry.description =
+                    productList[entryProductAdapter.positionSelected].description
+                entry.quantity = productList[entryProductAdapter.positionSelected].quantity
+                entry.unity = productList[entryProductAdapter.positionSelected].unity
+                entry.category = productList[entryProductAdapter.positionSelected].category
+                entry.price = productList[entryProductAdapter.positionSelected].price
+                entry.type = productList[entryProductAdapter.positionSelected].type
+                entry.total = productList[entryProductAdapter.positionSelected].total
+                //binding.buttonEdit.visibility = View.VISIBLE
 
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            productList[entryProductAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                dialogAdd =
+                    AddEntriesDialogFragment(
+                        productList[entryProductAdapter.positionSelected],
+                        args?.vintageId
+                    )
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
-                    typeClick = entry.category!!
-
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-
-                }
+                typeClick = entry.category!!
             }
         }
 
         val listenerSeed = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    entry.description = seedList[entrySeedAdapter.positionSelected].description
-                    entry.quantity = seedList[entrySeedAdapter.positionSelected].quantity
-                    entry.unity = seedList[entrySeedAdapter.positionSelected].unity
-                    entry.category = seedList[entrySeedAdapter.positionSelected].category
-                    entry.price = seedList[entrySeedAdapter.positionSelected].price
-                    entry.type = seedList[entrySeedAdapter.positionSelected].type
-                    entry.total = seedList[entrySeedAdapter.positionSelected].total
-                    //binding.buttonEdit.visibility = View.VISIBLE
+                entry.description = seedList[entrySeedAdapter.positionSelected].description
+                entry.quantity = seedList[entrySeedAdapter.positionSelected].quantity
+                entry.unity = seedList[entrySeedAdapter.positionSelected].unity
+                entry.category = seedList[entrySeedAdapter.positionSelected].category
+                entry.price = seedList[entrySeedAdapter.positionSelected].price
+                entry.type = seedList[entrySeedAdapter.positionSelected].type
+                entry.total = seedList[entrySeedAdapter.positionSelected].total
+                //binding.buttonEdit.visibility = View.VISIBLE
 
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            seedList[entrySeedAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                dialogAdd =
+                    AddEntriesDialogFragment(
+                        seedList[entrySeedAdapter.positionSelected],
+                        args?.vintageId
+                    )
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
-                    typeClick = entry.category!!
-
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-
-                }
+                typeClick = entry.category!!
             }
         }
 
         val listenerCDE = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    entry.description = cdeList[entryCDEAdapter.positionSelected].description
-                    entry.quantity = cdeList[entryCDEAdapter.positionSelected].quantity
-                    entry.unity = cdeList[entryCDEAdapter.positionSelected].unity
-                    entry.category = cdeList[entryCDEAdapter.positionSelected].category
-                    entry.price = cdeList[entryCDEAdapter.positionSelected].price
-                    entry.type = cdeList[entryCDEAdapter.positionSelected].type
-                    entry.total = cdeList[entryCDEAdapter.positionSelected].total
-                    //binding.buttonEdit.visibility = View.VISIBLE
+                entry.description = cdeList[entryCDEAdapter.positionSelected].description
+                entry.quantity = cdeList[entryCDEAdapter.positionSelected].quantity
+                entry.unity = cdeList[entryCDEAdapter.positionSelected].unity
+                entry.category = cdeList[entryCDEAdapter.positionSelected].category
+                entry.price = cdeList[entryCDEAdapter.positionSelected].price
+                entry.type = cdeList[entryCDEAdapter.positionSelected].type
+                entry.total = cdeList[entryCDEAdapter.positionSelected].total
+                //binding.buttonEdit.visibility = View.VISIBLE
 
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            cdeList[entryCDEAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                dialogAdd =
+                    AddEntriesDialogFragment(
+                        cdeList[entryCDEAdapter.positionSelected],
+                        args?.vintageId
+                    )
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
-                    typeClick = entry.category!!
-
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-
-                }
+                typeClick = entry.category!!
             }
         }
 
         val listenerFIF = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    entry.description = fifList[entryFIFAdapter.positionSelected].description
-                    entry.quantity = fifList[entryFIFAdapter.positionSelected].quantity
-                    entry.unity = fifList[entryFIFAdapter.positionSelected].unity
-                    entry.category = fifList[entryFIFAdapter.positionSelected].category
-                    entry.price = fifList[entryFIFAdapter.positionSelected].price
-                    entry.type = fifList[entryFIFAdapter.positionSelected].type
-                    entry.total = fifList[entryFIFAdapter.positionSelected].total
-                    //binding.buttonEdit.visibility = View.VISIBLE
+                entry.description = fifList[entryFIFAdapter.positionSelected].description
+                entry.quantity = fifList[entryFIFAdapter.positionSelected].quantity
+                entry.unity = fifList[entryFIFAdapter.positionSelected].unity
+                entry.category = fifList[entryFIFAdapter.positionSelected].category
+                entry.price = fifList[entryFIFAdapter.positionSelected].price
+                entry.type = fifList[entryFIFAdapter.positionSelected].type
+                entry.total = fifList[entryFIFAdapter.positionSelected].total
+                //binding.buttonEdit.visibility = View.VISIBLE
 
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            fifList[entryFIFAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                dialogAdd =
+                    AddEntriesDialogFragment(
+                        fifList[entryFIFAdapter.positionSelected],
+                        args?.vintageId
+                    )
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
-                    typeClick = entry.category!!
-
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-
-                }
+                typeClick = entry.category!!
             }
         }
 
         val listenerOperations = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    entry.description =
-                        operationsList[entryOperationsAdapter.positionSelected].description
-                    entry.quantity =
-                        operationsList[entryOperationsAdapter.positionSelected].quantity
-                    entry.unity = operationsList[entryOperationsAdapter.positionSelected].unity
-                    entry.category =
-                        operationsList[entryOperationsAdapter.positionSelected].category
-                    entry.price = operationsList[entryOperationsAdapter.positionSelected].price
-                    entry.type = operationsList[entryOperationsAdapter.positionSelected].type
-                    entry.total = operationsList[entryOperationsAdapter.positionSelected].total
-                    //binding.buttonEdit.visibility = View.VISIBLE
+                entry.description =
+                    operationsList[entryOperationsAdapter.positionSelected].description
+                entry.quantity =
+                    operationsList[entryOperationsAdapter.positionSelected].quantity
+                entry.unity = operationsList[entryOperationsAdapter.positionSelected].unity
+                entry.category =
+                    operationsList[entryOperationsAdapter.positionSelected].category
+                entry.price = operationsList[entryOperationsAdapter.positionSelected].price
+                entry.type = operationsList[entryOperationsAdapter.positionSelected].type
+                entry.total = operationsList[entryOperationsAdapter.positionSelected].total
+                //binding.buttonEdit.visibility = View.VISIBLE
 
-                    dialogAdd =
-                        AddEntriesDialogFragment(
-                            operationsList[entryOperationsAdapter.positionSelected],
-                            args?.vintageId
-                        )
-                    dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                dialogAdd =
+                    AddEntriesDialogFragment(
+                        operationsList[entryOperationsAdapter.positionSelected],
+                        args?.vintageId
+                    )
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
-                    typeClick = entry.category!!
+                typeClick = entry.category!!
 
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-
-                }
             }
         }
 
