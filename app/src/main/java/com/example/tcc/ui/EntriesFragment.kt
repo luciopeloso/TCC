@@ -150,11 +150,5 @@ class EntriesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-//    fun handleAddAreaDialog(){
-//        val dialog = AddDialogFragment()
-//        dialog.show(childFragmentManager, AddDialogFragment.TAG)
-//    }
-
 }
 

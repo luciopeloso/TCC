@@ -33,78 +33,117 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title">
 
-        <TextView
-            android:id="@+id/text_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Descrição:"
-            android:textColor="@color/black"
-            android:textSize="10sp"
+        <LinearLayout
+            android:id="@+id/linear_layout_description"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_description"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Adicione uma descrição"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_description"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/text_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Descrição:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_begin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Data Início:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Adicione uma descrição"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_description"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_layout_begin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_description" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_description"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_begin"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Selecione uma data"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_begin"
-            app:layout_constraintTop_toBottomOf="@+id/edit_description" />
+            <TextView
+                android:id="@+id/text_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Data Início:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
-        <TextView
-            android:id="@+id/text_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Data término:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/edit_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Selecione uma data"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_begin"
+                app:layout_constraintTop_toBottomOf="@+id/edit_description" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_end"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Selecione uma data"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_end"
-            app:layout_constraintTop_toBottomOf="@+id/edit_begin" />
+        <LinearLayout
+            android:id="@+id/linear_layout_end"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_begin"
+            tools:ignore="RtlHardcoded">
 
+            <TextView
+                android:id="@+id/text_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Data término:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Selecione uma data"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_end"
+                app:layout_constraintTop_toBottomOf="@+id/edit_begin" />
+
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

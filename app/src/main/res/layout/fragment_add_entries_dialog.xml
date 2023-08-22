@@ -33,133 +33,186 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title">
 
-        <TextView
-            android:id="@+id/text_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Tipo de entrada:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+        <LinearLayout
+            android:id="@+id/linear_layout_category"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded">
 
-        <Spinner
-            android:id="@+id/spinner_category"
-            android:layout_margin="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/text_category"
-            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/text_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="Tipo de entrada:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </Spinner>
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/text_category"
+                app:layout_constraintTop_toTopOf="parent">
+            </Spinner>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Descrição:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+        <LinearLayout
+            android:id="@+id/linear_layout_description"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_category" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_category"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_description"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Adicione uma descrição"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_description"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_category" />
+            <TextView
+                android:id="@+id/text_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Descrição:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_category" />
 
-        <TextView
-            android:id="@+id/text_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Quantidade:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Adicione uma descrição"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_description"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_category" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_description" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_description"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Adicionar quantidade"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_quantity"
-            app:layout_constraintTop_toBottomOf="@+id/edit_description" />
+            <TextView
+                android:id="@+id/text_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Quantidade:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
-        <TextView
-            android:id="@+id/text_unity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Unidade:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            <EditText
+                android:id="@+id/edit_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Adicionar quantidade"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_quantity"
+                app:layout_constraintTop_toBottomOf="@+id/edit_description" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_unity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_quantity" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_quantity"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_unity"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Defina a unidade"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/text_unity"
-            app:layout_constraintTop_toBottomOf="@+id/edit_quantity" />
+            <TextView
+                android:id="@+id/text_unity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Unidade:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quantity" />
 
+            <EditText
+                android:id="@+id/edit_unity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:hint="Defina a unidade"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_unity"
+                app:layout_constraintTop_toBottomOf="@+id/edit_quantity" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Preço:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <LinearLayout
+            android:id="@+id/linear_layout_price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_unity" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_unity"
+            tools:ignore="RtlHardcoded">
 
-        <EditText
-            android:id="@+id/edit_price"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:hint="Defina um preço"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_price"
-            app:layout_constraintTop_toBottomOf="@+id/edit_unity" />
+            <TextView
+                android:id="@+id/text_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Preço:"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_unity" />
 
-
+            <EditText
+                android:id="@+id/edit_price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:inputType="number"
+                android:hint="Defina um preço"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_price"
+                app:layout_constraintTop_toBottomOf="@+id/edit_unity" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,7 +226,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraint_entries">
-
 
         <RadioButton
             android:id="@+id/radio_budgeted"
