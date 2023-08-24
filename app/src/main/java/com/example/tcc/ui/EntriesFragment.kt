@@ -65,6 +65,20 @@ class EntriesFragment : Fragment() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
+                    binding.spinnerArea.setSelection(0)
+                    binding.spinnerYear.setSelection(0)
+
+                    if(position != 0){
+                        db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+                            .get().addOnSuccessListener { result ->
+                                for (document in result) {
+
+
+
+                                }
+                            }
+                    }
+
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
