@@ -1,6 +1,7 @@
 package com.example.tcc.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,13 +69,23 @@ class EntriesFragment : Fragment() {
                     binding.spinnerArea.setSelection(0)
                     binding.spinnerYear.setSelection(0)
 
+                    areaList.clear()
+                    vintageList.clear()
+
                     if(position != 0){
-                        db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+                        val propRef = db.collection("Property")
+
+                        propRef.whereArrayContains("users",auth.currentUser?.uid.toString())
                             .get().addOnSuccessListener { result ->
-                                for (document in result) {
-
-
-
+                                for(document in result){
+                                    if(document.get("name") == binding.spinnerPropiety.selectedItem.toString()){
+                                        db.collection("Area").whereEqualTo("property", document.id)
+                                            .get().addOnSuccessListener { resultArea ->
+                                                for(documentArea in resultArea){
+                                                    areaList.add(documentArea.get("name").toString())
+                                                }
+                                            }
+                                    }
                                 }
                             }
                     }
@@ -175,6 +186,7 @@ class EntriesFragment : Fragment() {
         initAdapterSpinner(binding.spinnerYear,vintageList)
 
     }
+
 
     private fun initAdapterSpinner(spinner: Spinner, list: MutableList<String>){
         val adapter =
