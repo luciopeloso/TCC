@@ -69,10 +69,14 @@ class EntriesFragment : Fragment() {
                     binding.spinnerArea.setSelection(0)
                     binding.spinnerYear.setSelection(0)
 
-                    areaList.clear()
-                    vintageList.clear()
+                    /*areaList.clear()
+                    vintageList.clear()*/
+
+                    clearList(areaList)
+                    clearList(vintageList)
 
                     if(position != 0){
+
                         val propRef = db.collection("Property")
 
                         propRef.whereArrayContains("users",auth.currentUser?.uid.toString())
@@ -89,21 +93,39 @@ class EntriesFragment : Fragment() {
                                 }
                             }
                     }
-
                 }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
         binding.spinnerArea.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
+                binding.spinnerYear.setSelection(0)
+
+                clearList(vintageList)
+
+                if(position != 0){
+
+                    val propRef = db.collection("Area")
+
+                    propRef.whereArrayContains("users",auth.currentUser?.uid.toString())
+                        .get().addOnSuccessListener { result ->
+                            for(document in result){
+                                if(document.get("name") == binding.spinnerArea.selectedItem.toString()){
+                                    db.collection("Vintage").whereEqualTo("area", document.id)
+                                        .get().addOnSuccessListener { resultVintage ->
+                                            for(documentArea in resultVintage){
+                                                vintageList.add(documentArea.get("description").toString())
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                }
+
+
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         binding.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -111,9 +133,7 @@ class EntriesFragment : Fragment() {
 
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         parentList = ArrayList()
@@ -196,6 +216,14 @@ class EntriesFragment : Fragment() {
                 list
             )
         spinner.adapter = adapter
+    }
+
+    private fun clearList(list: MutableList<String>){
+        if(list.size > 1){
+            for(i in 1 until list.size){
+                list.removeAt(i)
+            }
+        }
     }
 
 
