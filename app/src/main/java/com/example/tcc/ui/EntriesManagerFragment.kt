@@ -62,7 +62,7 @@ class EntriesManagerFragment : Fragment() {
     private var typeClick: String = ""
 
 
-    private lateinit var parentList: MutableList<ParentData>
+    private lateinit var parentList: MutableList<String>
 
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
@@ -86,21 +86,6 @@ class EntriesManagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = Firebase.auth
-        parentList = ArrayList()
-
-        val parentData: MutableList<String> =
-            mutableListOf(
-                "Produto",
-                "Sementes",
-                "Capina, dessecação e pós emergência",
-                "Fungicidas, Inseticidas e Foliares",
-                "Operações"
-            )
-
-        for (i in 0 until parentData.size) {
-            val parentObj = ParentData(parentTitle = parentData[i])
-            parentList.add(parentObj)
-        }
 
         Log.d("db", "ID Safra: ${args?.vintageId}")
 
@@ -124,12 +109,7 @@ class EntriesManagerFragment : Fragment() {
                     entryOperationsAdapter.positionSelected = RecyclerView.NO_POSITION
                     getEntries("Orçado", "Produto", productList, entryProductAdapter)
                     getEntries("Orçado", "Sementes", seedList, entrySeedAdapter)
-                    getEntries(
-                        "Orçado",
-                        "Capina, dessecação e pós emergência",
-                        cdeList,
-                        entryCDEAdapter
-                    )
+                    getEntries("Orçado","Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
                     getEntries(
                         "Orçado",
                         "Fungicidas, Inseticidas e Foliares",

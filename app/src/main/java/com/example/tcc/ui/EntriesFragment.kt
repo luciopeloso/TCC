@@ -12,9 +12,12 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.model.ParentData
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentEntriesBinding
+import com.example.tcc.dialogs.AddAreaDialogFragment
+import com.example.tcc.dialogs.AddEntriesDialogFragment
 import com.example.tcc.model.ChildData
 import com.example.tcc.ui.adapter.EntriesAdapter
 import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
@@ -32,12 +35,32 @@ class EntriesFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
-    private val entryAccomplishedList = mutableListOf<ChildData>()
-    private lateinit var parentList: MutableList<ParentData>
-
     private lateinit var propertyList: MutableList<String>
     private lateinit var areaList: MutableList<String>
     private lateinit var vintageList: MutableList<String>
+
+    private lateinit var parentList: MutableList<ParentData>
+
+    private lateinit var entryProductAdapter: EntryManageEntriesAdapter
+    private lateinit var entrySeedAdapter: EntryManageEntriesAdapter
+    private lateinit var entryCDEAdapter: EntryManageEntriesAdapter
+    private lateinit var entryFIFAdapter: EntryManageEntriesAdapter
+    private lateinit var entryOperationsAdapter: EntryManageEntriesAdapter
+    private lateinit var entryDescritiveAdapter: EntryManageEntriesAdapter
+
+    private val productList = mutableListOf<ChildData>()
+    private val seedList = mutableListOf<ChildData>()
+    private val cdeList = mutableListOf<ChildData>()
+    private val fifList = mutableListOf<ChildData>()
+    private val operationsList = mutableListOf<ChildData>()
+    private val descritiveList = mutableListOf<ChildData>()
+
+    private var productExpanded = false
+    private var seedExpanded = false
+    private var cdeExpanded = false
+    private var fifExpanded = false
+    private var operationsExpanded = false
+    private var descritiveExpanded = false
 
 
     private lateinit var entryAdapter: EntriesAdapter
@@ -72,8 +95,10 @@ class EntriesFragment : Fragment() {
                     /*areaList.clear()
                     vintageList.clear()*/
 
-                    clearList(areaList)
-                    clearList(vintageList)
+                    clearSpinnersList(areaList)
+                    clearSpinnersList(vintageList)
+                    clearAllLists()
+                    collapseAllRV()
 
                     if(position != 0){
 
@@ -101,13 +126,15 @@ class EntriesFragment : Fragment() {
 
                 binding.spinnerYear.setSelection(0)
 
-                clearList(vintageList)
+                clearSpinnersList(vintageList)
+                clearAllLists()
+                collapseAllRV()
 
                 if(position != 0){
 
-                    val propRef = db.collection("Area")
+                    val areaRef = db.collection("Area")
 
-                    propRef.whereArrayContains("users",auth.currentUser?.uid.toString())
+                    areaRef.whereArrayContains("users",auth.currentUser?.uid.toString())
                         .get().addOnSuccessListener { result ->
                             for(document in result){
                                 if(document.get("name") == binding.spinnerArea.selectedItem.toString()){
@@ -121,8 +148,6 @@ class EntriesFragment : Fragment() {
                             }
                         }
                 }
-
-
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -130,65 +155,242 @@ class EntriesFragment : Fragment() {
 
         binding.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
+                if(position != 0){
+                    if(binding.radioBudgeted.isChecked){
+                        getEntries("Orçado", "Produto", productList, entryProductAdapter)
+                        getEntries("Orçado", "Sementes", seedList, entrySeedAdapter)
+                        getEntries("Orçado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
+                        getEntries("Orçado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
+                        getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
+                    } else {
+                        getEntries("Realizado", "Produto", productList, entryProductAdapter)
+                        getEntries("Realizado", "Sementes", seedList, entrySeedAdapter)
+                        getEntries("Realizado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
+                        getEntries("Realizado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
+                        getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
+                    }
+                } else {
+                    clearAllLists()
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        parentList = ArrayList()
-
-        val parentData: MutableList<String> =
-            mutableListOf(
-                "Produto",
-                "Sementes",
-                "Capina, dessecação e pós emergência",
-                "Fungicidas, Inseticidas e Foliares",
-                "Operações",
-                "Descritivo"
-            )
-
-//        val childDataData1: MutableList<ChildData> = mutableListOf(
-//            ChildData("Anathapur"),
-//            ChildData("Chittoor"),
-//            ChildData("Nellore"),
-//            ChildData("Guntur")
-//        )
-//        val childDataData2: MutableList<ChildData> = mutableListOf(
-//            ChildData("Rajanna Sircilla"),
-//            ChildData("Karimnagar"),
-//            ChildData("Siddipet")
-//        )
-//        val childDataData3: MutableList<ChildData> =
-//            mutableListOf(ChildData("Chennai"), ChildData("Erode"))
-
-//        val parentObj1 = ParentData(parentTitle = parentData[0], subList = childDataData1)
-//        val parentObj2 = ParentData(parentTitle = parentData[1], subList = childDataData2)
-//        val parentObj3 = ParentData(parentTitle = parentData[2])
-//        val parentObj4 = ParentData(parentTitle = parentData[1], subList = childDataData3)
+        initAdapters()
 
 
-        for (i in 0 until parentData.size) {
-            val parentObj = ParentData(parentTitle = parentData[i])
-            parentList.add(parentObj)
-        }
 
-        binding.rvEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvEntries.setHasFixedSize(true)
-        entryAdapter = EntriesAdapter(parentList)
+        binding.radioGroupEntries.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_budgeted -> {
 
-        val listener = object : EntryListener {
-            override fun onListClick(selected: Boolean) {
+                    if(binding.spinnerYear.selectedItem != 0){
+                        getEntries("Orçado", "Produto", productList, entryProductAdapter)
+                        getEntries("Orçado", "Sementes", seedList, entrySeedAdapter)
+                        getEntries("Orçado","Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
+                        getEntries(
+                            "Orçado",
+                            "Fungicidas, Inseticidas e Foliares",
+                            fifList,
+                            entryFIFAdapter
+                        )
+                        getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
 
+                        binding.rvEntriesProduct.visibility = View.GONE
+                        binding.rvEntriesSeed.visibility = View.GONE
+                        binding.rvEntriesCDE.visibility = View.GONE
+                        binding.rvEntriesFIF.visibility = View.GONE
+                        binding.rvEntriesOperations.visibility = View.GONE
+                        binding.rvEntriesDescritive.visibility = View.GONE
+
+                        productExpanded = false
+                        seedExpanded = false
+                        cdeExpanded = false
+                        fifExpanded = false
+                        operationsExpanded = false
+                        descritiveExpanded = false
+                    }
+                }
+
+                R.id.radio_accomplished -> {
+
+                    if(binding.spinnerYear.selectedItem != 0){
+                        getEntries("Realizado", "Produto", productList, entryProductAdapter)
+                        getEntries("Realizado", "Sementes", seedList, entrySeedAdapter)
+                        getEntries(
+                            "Realizado",
+                            "Capina, dessecação e pós emergência",
+                            cdeList,
+                            entryCDEAdapter
+                        )
+                        getEntries(
+                            "Realizado",
+                            "Fungicidas, Inseticidas e Foliares",
+                            fifList,
+                            entryFIFAdapter
+                        )
+                        getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
+
+                        binding.rvEntriesProduct.visibility = View.GONE
+                        binding.rvEntriesSeed.visibility = View.GONE
+                        binding.rvEntriesCDE.visibility = View.GONE
+                        binding.rvEntriesFIF.visibility = View.GONE
+                        binding.rvEntriesOperations.visibility = View.GONE
+                        binding.rvEntriesDescritive.visibility = View.GONE
+
+                        productExpanded = false
+                        seedExpanded = false
+                        cdeExpanded = false
+                        fifExpanded = false
+                        operationsExpanded = false
+                        descritiveExpanded = false
+                    }
+                }
             }
         }
-        entryAdapter.attachListener(listener)
 
-        //getAccomplishedEntries()
         initclicks()
 
-        binding.rvEntries.adapter = entryAdapter
 
+    }
+
+    private fun collapseAllRV(){
+        binding.downIvProduct.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesProduct.visibility = View.GONE
+        productExpanded = false
+
+        binding.downIvSeed.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesSeed.visibility = View.GONE
+        seedExpanded = false
+
+        binding.downIvCDE.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesCDE.visibility = View.GONE
+        cdeExpanded = false
+
+        binding.downIvFIF.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesFIF.visibility = View.GONE
+        fifExpanded = false
+
+        binding.downIvOperations.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesOperations.visibility = View.GONE
+        operationsExpanded = false
+
+        binding.downIvDescritive.setImageResource(R.drawable.ic_drop_down)
+        binding.rvEntriesDescritive.visibility = View.GONE
+        descritiveExpanded = false
+    }
+
+    private fun getEntries(typeEntry: String, categoryEntry: String, list: MutableList<ChildData>, adapter: EntryManageEntriesAdapter) {
+
+        val vintageRef = db.collection("Vintage")
+
+        vintageRef.whereArrayContains("users", auth.currentUser?.uid.toString())
+            .get().addOnSuccessListener { result ->
+                for (document in result) {
+                    if (document.get("description") == binding.spinnerYear.selectedItem.toString()) {
+                        db.collection("Entry").whereEqualTo("vintage", document.id)
+                            .addSnapshotListener { snapshot, error ->
+                                if(error == null){
+                                    val documents = snapshot?.documents
+                                    if (documents != null) {
+                                        list.clear()
+                                        for(documentEntry in  documents) {
+                                            val description = documentEntry.get("description").toString()
+                                            val category = documentEntry.get("category").toString()
+                                            val quantity = documentEntry.getLong("quantity")
+                                            val unity = documentEntry.get("unity").toString()
+                                            val price = documentEntry.getLong("price")
+                                            val type = documentEntry.get("type").toString()
+                                            val total = documentEntry.getLong("total")
+
+                                            val newEntry = ChildData(
+                                                category,
+                                                description,
+                                                quantity,
+                                                unity,
+                                                price,
+                                                type,
+                                                total
+                                            )
+
+                                            if (type == typeEntry && categoryEntry == category) {
+                                                Log.d("db","inserção feita")
+                                                list.add(newEntry)
+                                                adapter.updateEntries(list)
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                    }
+                }
+            }
+    }
+
+
+    private fun initAdapters() {
+        val listenerProduct = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        val listenerSeed = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        val listenerCDE = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        val listenerFIF = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        val listenerOperations = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        val listenerDescritive = object : EntryListener {
+            override fun onListClick(selected: Boolean) {}
+        }
+
+        binding.rvEntriesProduct.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesProduct.setHasFixedSize(true)
+        entryProductAdapter = EntryManageEntriesAdapter(productList)
+        binding.rvEntriesProduct.adapter = entryProductAdapter
+        entryProductAdapter.attachListener(listenerProduct)
+
+
+        binding.rvEntriesSeed.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesSeed.setHasFixedSize(true)
+        entrySeedAdapter = EntryManageEntriesAdapter(seedList)
+        binding.rvEntriesSeed.adapter = entrySeedAdapter
+        entrySeedAdapter.attachListener(listenerSeed)
+
+        binding.rvEntriesCDE.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesCDE.setHasFixedSize(true)
+        entryCDEAdapter = EntryManageEntriesAdapter(cdeList)
+        binding.rvEntriesCDE.adapter = entryCDEAdapter
+        entryCDEAdapter.attachListener(listenerCDE)
+
+        binding.rvEntriesFIF.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesFIF.setHasFixedSize(true)
+        entryFIFAdapter = EntryManageEntriesAdapter(fifList)
+        binding.rvEntriesFIF.adapter = entryFIFAdapter
+        entryFIFAdapter.attachListener(listenerFIF)
+
+        binding.rvEntriesOperations.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesOperations.setHasFixedSize(true)
+        entryOperationsAdapter = EntryManageEntriesAdapter(operationsList)
+        binding.rvEntriesOperations.adapter = entryOperationsAdapter
+        entryOperationsAdapter.attachListener(listenerOperations)
+
+        binding.rvEntriesDescritive.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvEntriesDescritive.setHasFixedSize(true)
+        entryDescritiveAdapter = EntryManageEntriesAdapter(descritiveList)
+        binding.rvEntriesDescritive.adapter = entryDescritiveAdapter
+        entryDescritiveAdapter.attachListener(listenerDescritive)
     }
 
     private fun getSpinners() {
@@ -218,12 +420,21 @@ class EntriesFragment : Fragment() {
         spinner.adapter = adapter
     }
 
-    private fun clearList(list: MutableList<String>){
+    private fun clearSpinnersList(list: MutableList<String>){
         if(list.size > 1){
             for(i in 1 until list.size){
                 list.removeAt(i)
             }
         }
+    }
+
+    private fun clearAllLists(){
+        productList.clear()
+        seedList.clear()
+        cdeList.clear()
+        fifList.clear()
+        operationsList.clear()
+        descritiveList.clear()
     }
 
 
@@ -232,45 +443,79 @@ class EntriesFragment : Fragment() {
         binding.buttonEditEntries.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_managerFragment)
         }
-    }
 
-    private fun getAccomplishedEntries() {
-        db.collection("Entry").whereEqualTo("users", auth.currentUser?.uid.toString())
-            .addSnapshotListener { snapshot, e ->
-                if (e == null) {
-                    val documents = snapshot?.documents
-                    if (documents != null) {
-                        entryAccomplishedList.clear()
+        binding.textProduct.setOnClickListener {
+            if (productExpanded) {
+                binding.downIvProduct.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesProduct.visibility = View.GONE
+                productExpanded = false
 
-                        for (document in documents) {
-                            val description = document.get("description").toString()
-                            val category = document.get("category").toString()
-                            val quantity = document.getLong("quantity")
-                            val unity = document.get("unity").toString()
-                            val price = document.getLong("price")
-                            val type = document.get("type").toString()
-                            val total = document.getLong("total")
-
-                            val newEntry = ChildData(
-                                description,
-                                category,
-                                quantity,
-                                unity,
-                                price,
-                                type,
-                                total
-                            )
-
-                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
-
-                            entryAccomplishedList.add(newEntry)
-                            //entryList.add(newEntry)
-                            entryAdapter.updateAreas(parentList)
-                        }
-
-                    }
-                }
+            } else {
+                binding.downIvProduct.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesProduct.visibility = View.VISIBLE
+                productExpanded = true
             }
+        }
+
+        binding.textSeed.setOnClickListener {
+            if (seedExpanded) {
+                binding.downIvSeed.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesSeed.visibility = View.GONE
+                seedExpanded = false
+            } else {
+                binding.downIvSeed.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesSeed.visibility = View.VISIBLE
+                seedExpanded = true
+            }
+        }
+
+        binding.textCDE.setOnClickListener {
+            if (cdeExpanded) {
+                binding.downIvCDE.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesCDE.visibility = View.GONE
+                cdeExpanded = false
+            } else {
+                binding.downIvCDE.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesCDE.visibility = View.VISIBLE
+                cdeExpanded = true
+            }
+        }
+
+        binding.textFIF.setOnClickListener {
+            if (fifExpanded) {
+                binding.downIvFIF.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesFIF.visibility = View.GONE
+                fifExpanded = false
+            } else {
+                binding.downIvFIF.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesFIF.visibility = View.VISIBLE
+                fifExpanded = true
+            }
+        }
+
+        binding.textOpeartions.setOnClickListener {
+            if (operationsExpanded) {
+                binding.downIvOperations.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesOperations.visibility = View.GONE
+                operationsExpanded = false
+            } else {
+                binding.downIvOperations.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesOperations.visibility = View.VISIBLE
+                operationsExpanded = true
+            }
+        }
+
+        binding.textDescritive.setOnClickListener {
+            if (descritiveExpanded) {
+                binding.downIvDescritive.setImageResource(R.drawable.ic_drop_down)
+                binding.rvEntriesDescritive.visibility = View.GONE
+                descritiveExpanded = false
+            } else {
+                binding.downIvDescritive.setImageResource(R.drawable.ic_drop_up)
+                binding.rvEntriesDescritive.visibility = View.VISIBLE
+                descritiveExpanded = true
+            }
+        }
     }
 
     override fun onDestroyView() {
