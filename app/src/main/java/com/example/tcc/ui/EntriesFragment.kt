@@ -46,14 +46,14 @@ class EntriesFragment : Fragment() {
     private lateinit var entryCDEAdapter: EntryManageEntriesAdapter
     private lateinit var entryFIFAdapter: EntryManageEntriesAdapter
     private lateinit var entryOperationsAdapter: EntryManageEntriesAdapter
-    private lateinit var entryDescritiveAdapter: EntryManageEntriesAdapter
+
 
     private val productList = mutableListOf<ChildData>()
     private val seedList = mutableListOf<ChildData>()
     private val cdeList = mutableListOf<ChildData>()
     private val fifList = mutableListOf<ChildData>()
     private val operationsList = mutableListOf<ChildData>()
-    private val descritiveList = mutableListOf<ChildData>()
+
 
     private var productExpanded = false
     private var seedExpanded = false
@@ -162,12 +162,14 @@ class EntriesFragment : Fragment() {
                         getEntries("Orçado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
                         getEntries("Orçado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
                         getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
+                        handleDescritive()
                     } else {
                         getEntries("Realizado", "Produto", productList, entryProductAdapter)
                         getEntries("Realizado", "Sementes", seedList, entrySeedAdapter)
                         getEntries("Realizado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
                         getEntries("Realizado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
                         getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
+                        handleDescritive()
                     }
                 } else {
                     clearAllLists()
@@ -196,13 +198,14 @@ class EntriesFragment : Fragment() {
                             entryFIFAdapter
                         )
                         getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
+                        handleDescritive()
 
                         binding.rvEntriesProduct.visibility = View.GONE
                         binding.rvEntriesSeed.visibility = View.GONE
                         binding.rvEntriesCDE.visibility = View.GONE
                         binding.rvEntriesFIF.visibility = View.GONE
                         binding.rvEntriesOperations.visibility = View.GONE
-                        binding.rvEntriesDescritive.visibility = View.GONE
+                        binding.constraintDescritive.visibility = View.GONE
 
                         productExpanded = false
                         seedExpanded = false
@@ -231,13 +234,14 @@ class EntriesFragment : Fragment() {
                             entryFIFAdapter
                         )
                         getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
+                        handleDescritive()
 
                         binding.rvEntriesProduct.visibility = View.GONE
                         binding.rvEntriesSeed.visibility = View.GONE
                         binding.rvEntriesCDE.visibility = View.GONE
                         binding.rvEntriesFIF.visibility = View.GONE
                         binding.rvEntriesOperations.visibility = View.GONE
-                        binding.rvEntriesDescritive.visibility = View.GONE
+                        binding.constraintDescritive.visibility = View.GONE
 
                         productExpanded = false
                         seedExpanded = false
@@ -277,7 +281,7 @@ class EntriesFragment : Fragment() {
         operationsExpanded = false
 
         binding.downIvDescritive.setImageResource(R.drawable.ic_drop_down)
-        binding.rvEntriesDescritive.visibility = View.GONE
+        binding.constraintDescritive.visibility = View.GONE
         descritiveExpanded = false
     }
 
@@ -315,7 +319,6 @@ class EntriesFragment : Fragment() {
                                             )
 
                                             if (type == typeEntry && categoryEntry == category) {
-                                                Log.d("db","inserção feita")
                                                 list.add(newEntry)
                                                 adapter.updateEntries(list)
                                             }
@@ -351,10 +354,6 @@ class EntriesFragment : Fragment() {
             override fun onListClick(selected: Boolean) {}
         }
 
-        val listenerDescritive = object : EntryListener {
-            override fun onListClick(selected: Boolean) {}
-        }
-
         binding.rvEntriesProduct.layoutManager = LinearLayoutManager(requireContext())
         binding.rvEntriesProduct.setHasFixedSize(true)
         entryProductAdapter = EntryManageEntriesAdapter(productList)
@@ -386,11 +385,6 @@ class EntriesFragment : Fragment() {
         binding.rvEntriesOperations.adapter = entryOperationsAdapter
         entryOperationsAdapter.attachListener(listenerOperations)
 
-        binding.rvEntriesDescritive.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvEntriesDescritive.setHasFixedSize(true)
-        entryDescritiveAdapter = EntryManageEntriesAdapter(descritiveList)
-        binding.rvEntriesDescritive.adapter = entryDescritiveAdapter
-        entryDescritiveAdapter.attachListener(listenerDescritive)
     }
 
     private fun getSpinners() {
@@ -407,6 +401,67 @@ class EntriesFragment : Fragment() {
         initAdapterSpinner(binding.spinnerArea,areaList)
         initAdapterSpinner(binding.spinnerYear,vintageList)
 
+    }
+
+    private fun handleDescritive(){
+        var totalProduct = 0f
+        var totalSeed = 0f
+        var totalCDE = 0f
+        var totalFIF = 0f
+        var totalOperations = 0f
+        var totalAbsolute = 0f
+
+        productList.forEach { item ->
+            totalProduct += (item.total!!).toFloat()
+        }
+
+        seedList.forEach { item ->
+            totalSeed += (item.total!!).toFloat()
+        }
+
+        cdeList.forEach { item ->
+            totalCDE += (item.total!!).toFloat()
+        }
+
+        fifList.forEach { item ->
+            totalFIF += (item.total!!).toFloat()
+        }
+
+        operationsList.forEach { item ->
+            totalOperations += (item.total!!).toFloat()
+        }
+
+        totalAbsolute = totalProduct + totalSeed + totalCDE + totalFIF + totalOperations
+
+        binding.textOperationsDescritive.text = totalOperations.toString()
+        binding.textCorrectivesFertilizers.text = totalProduct.toString()
+        binding.textSeeds.text = totalSeed.toString()
+        binding.textDefensives.text = (totalCDE + totalFIF).toString()
+        binding.textTotal.text = totalAbsolute.toString()
+
+        if(totalOperations == 0f){
+            binding.textPercentageOperations.text = "0 %"
+        } else {
+            binding.textPercentageOperations.text = "${((totalOperations/totalAbsolute)*100)} %"
+        }
+
+        if(totalSeed == 0f){
+            binding.textPercentageSeeds.text = "0 %"
+        } else {
+            binding.textPercentageSeeds.text = "${((totalSeed / totalAbsolute )*100)} %"
+        }
+
+        if((totalCDE + totalFIF) == 0f){
+            binding.textPercentageDefensives.text = "0 %"
+        } else {
+            binding.textPercentageDefensives.text = "${(((totalCDE + totalFIF) / totalAbsolute)*100)} %"
+        }
+
+        if(totalProduct == 0f){
+            binding.textPercentageCorretivesFertilizers.text = "0 %"
+        } else {
+            binding.textPercentageCorretivesFertilizers.text = "${((totalProduct / totalAbsolute)*100)} %"
+        }
     }
 
 
@@ -434,7 +489,6 @@ class EntriesFragment : Fragment() {
         cdeList.clear()
         fifList.clear()
         operationsList.clear()
-        descritiveList.clear()
     }
 
 
@@ -493,7 +547,7 @@ class EntriesFragment : Fragment() {
             }
         }
 
-        binding.textOpeartions.setOnClickListener {
+        binding.textOperations.setOnClickListener {
             if (operationsExpanded) {
                 binding.downIvOperations.setImageResource(R.drawable.ic_drop_down)
                 binding.rvEntriesOperations.visibility = View.GONE
@@ -508,11 +562,11 @@ class EntriesFragment : Fragment() {
         binding.textDescritive.setOnClickListener {
             if (descritiveExpanded) {
                 binding.downIvDescritive.setImageResource(R.drawable.ic_drop_down)
-                binding.rvEntriesDescritive.visibility = View.GONE
+                binding.constraintDescritive.visibility = View.GONE
                 descritiveExpanded = false
             } else {
                 binding.downIvDescritive.setImageResource(R.drawable.ic_drop_up)
-                binding.rvEntriesDescritive.visibility = View.VISIBLE
+                binding.constraintDescritive.visibility = View.VISIBLE
                 descritiveExpanded = true
             }
         }

@@ -318,7 +318,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_FIF" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/text_opeartions"
+            android:id="@+id/text_operations"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_margin="8dp"
@@ -361,7 +361,7 @@
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_opeartions" />
+            app:layout_constraintTop_toBottomOf="@+id/text_operations" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/text_descritive"
@@ -397,37 +397,239 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_entries_descritive"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_descritive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/text_view_border"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:visibility="gone"
-            app:layoutManager="LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_descritive" />
+            app:layout_constraintTop_toBottomOf="@+id/text_descritive">
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/constraint_dropdown_entries"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_margin="8dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/radio_group_entries">-->
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rvEntries"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/text_show_administrative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Administrativo:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <TextView
+                android:id="@+id/text_administrative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_administrative"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_percentage_administrative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="4dp"
+                android:text="X% total"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_administrative"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_show_lease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Arrendamento:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_show_administrative" />
+
+            <TextView
+                android:id="@+id/text_lease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_lease"
+                app:layout_constraintTop_toBottomOf="@id/text_administrative" />
+
+            <TextView
+                android:id="@+id/text_percentage_lease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="4dp"
+                android:text="X% total"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_lease"
+                app:layout_constraintTop_toBottomOf="@+id/text_percentage_administrative" />
+
+            <TextView
+                android:id="@+id/text_show_operations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Operações:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/text_show_lease"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="44dp" />
+
+            <TextView
+                android:id="@+id/text_operations_descritive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/text_lease"
+                app:layout_constraintStart_toEndOf="@+id/text_show_operations"
+                tools:layout_editor_absoluteY="22dp" />
+
+            <TextView
+                android:id="@+id/text_percentage_operations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginStart="16dp"
+                android:text="X% total"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_operations_descritive"
+                app:layout_constraintTop_toBottomOf="@+id/text_percentage_lease" />
+
+            <TextView
+                android:id="@+id/text_show_correctives_fertilizers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Corretivos e Fertilizantes:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_show_operations" />
+
+            <TextView
+                android:id="@+id/text_correctives_fertilizers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_correctives_fertilizers"
+                app:layout_constraintTop_toBottomOf="@id/text_operations_descritive"/>
+
+            <TextView
+                android:id="@+id/text_percentage_corretives_fertilizers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginStart="16dp"
+                android:text="X% total"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_correctives_fertilizers"
+                app:layout_constraintTop_toBottomOf="@+id/text_percentage_operations" />
+
+            <TextView
+                android:id="@+id/text_show_seeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Sementes:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_show_correctives_fertilizers" />
+
+            <TextView
+                android:id="@+id/text_seeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_seeds"
+                app:layout_constraintTop_toBottomOf="@id/text_correctives_fertilizers"
+                tools:layout_editor_absoluteY="22dp" />
+
+            <TextView
+                android:id="@+id/text_percentage_seeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:layout_marginStart="16dp"
+                android:text="X% total"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_seeds"
+                app:layout_constraintTop_toBottomOf="@+id/text_percentage_corretives_fertilizers" />
+
+            <TextView
+                android:id="@+id/text_show_defensives"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Defensivos:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_show_seeds" />
+
+            <TextView
+                android:id="@+id/text_defensives"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_defensives"
+                app:layout_constraintTop_toBottomOf="@+id/text_seeds" />
+
+            <TextView
+                android:id="@+id/text_percentage_defensives"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="X% total"
+                android:layout_marginStart="16dp"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_defensives"
+                app:layout_constraintTop_toBottomOf="@+id/text_percentage_seeds" />
+
+            <TextView
+                android:id="@+id/text_show_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="TOTAL:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_show_defensives" />
+
+            <TextView
+                android:id="@+id/text_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textStyle="bold"
+                android:text=""
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/text_show_total"
+                app:layout_constraintTop_toBottomOf="@+id/text_defensives" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/button_edit_entries"
