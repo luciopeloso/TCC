@@ -1,5 +1,6 @@
 package com.example.tcc.ui
 
+import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,15 +10,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.model.ParentData
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentEntriesBinding
-import com.example.tcc.dialogs.AddAreaDialogFragment
-import com.example.tcc.dialogs.AddEntriesDialogFragment
 import com.example.tcc.model.ChildData
 import com.example.tcc.ui.adapter.EntriesAdapter
 import com.example.tcc.ui.adapter.EntryManageEntriesAdapter
@@ -61,7 +58,6 @@ class EntriesFragment : Fragment() {
     private var fifExpanded = false
     private var operationsExpanded = false
     private var descritiveExpanded = false
-
 
     private lateinit var entryAdapter: EntriesAdapter
 
@@ -162,14 +158,14 @@ class EntriesFragment : Fragment() {
                         getEntries("Orçado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
                         getEntries("Orçado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
                         getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
-                        handleDescritive()
+                        handleDescritive("Orçado")
                     } else {
                         getEntries("Realizado", "Produto", productList, entryProductAdapter)
                         getEntries("Realizado", "Sementes", seedList, entrySeedAdapter)
                         getEntries("Realizado", "Capina, dessecação e pós emergência", cdeList, entryCDEAdapter)
                         getEntries("Realizado", "Fungicidas, Inseticidas e Foliares", fifList, entryFIFAdapter)
                         getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
-                        handleDescritive()
+                        handleDescritive("Realizado")
                     }
                 } else {
                     clearAllLists()
@@ -180,8 +176,6 @@ class EntriesFragment : Fragment() {
         }
 
         initAdapters()
-
-
 
         binding.radioGroupEntries.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -198,7 +192,7 @@ class EntriesFragment : Fragment() {
                             entryFIFAdapter
                         )
                         getEntries("Orçado", "Operações", operationsList, entryOperationsAdapter)
-                        handleDescritive()
+                        handleDescritive("Orçado")
 
                         binding.rvEntriesProduct.visibility = View.GONE
                         binding.rvEntriesSeed.visibility = View.GONE
@@ -234,7 +228,7 @@ class EntriesFragment : Fragment() {
                             entryFIFAdapter
                         )
                         getEntries("Realizado", "Operações", operationsList, entryOperationsAdapter)
-                        handleDescritive()
+                        handleDescritive("Realizado")
 
                         binding.rvEntriesProduct.visibility = View.GONE
                         binding.rvEntriesSeed.visibility = View.GONE
@@ -255,7 +249,6 @@ class EntriesFragment : Fragment() {
         }
 
         initclicks()
-
 
     }
 
@@ -324,7 +317,6 @@ class EntriesFragment : Fragment() {
                                             }
                                         }
                                     }
-
                                 }
                             }
                     }
@@ -403,65 +395,93 @@ class EntriesFragment : Fragment() {
 
     }
 
-    private fun handleDescritive(){
+    private fun handleDescritive(typeDescritive: String){
         var totalProduct = 0f
         var totalSeed = 0f
         var totalCDE = 0f
         var totalFIF = 0f
         var totalOperations = 0f
-        var totalAbsolute = 0f
+        var totalAbsolute: Float
 
-        productList.forEach { item ->
-            totalProduct += (item.total!!).toFloat()
-        }
+        val df = DecimalFormat("#.##")
 
-        seedList.forEach { item ->
-            totalSeed += (item.total!!).toFloat()
-        }
+        val vintageRef = db.collection("Vintage")
 
-        cdeList.forEach { item ->
-            totalCDE += (item.total!!).toFloat()
-        }
+        vintageRef.whereArrayContains("users", auth.currentUser?.uid.toString())
+            .get().addOnSuccessListener { result ->
+                for (document in result) {
+                    if (document.get("description") == binding.spinnerYear.selectedItem.toString()) {
+                        db.collection("Entry").whereEqualTo("vintage", document.id)
+                            .addSnapshotListener { snapshot, error ->
+                                if(error == null){
+                                    val documents = snapshot?.documents
+                                    if (documents != null) {
+                                        for(documentEntry in  documents) {
+                                            val category = documentEntry.get("category").toString()
+                                            val total = documentEntry.getLong("total")
+                                            val type = documentEntry.get("type").toString()
 
-        fifList.forEach { item ->
-            totalFIF += (item.total!!).toFloat()
-        }
+                                            if(type == typeDescritive){
+                                                when(category){
+                                                    "Produto" -> {
+                                                        totalProduct += total!!.toFloat()
+                                                    }
+                                                    "Sementes" -> {
+                                                        totalSeed += total!!.toFloat()
+                                                    }
+                                                    "Capina, dessecação e pós emergência" -> {
+                                                        totalCDE += total!!.toFloat()
+                                                    }
+                                                    "Fungicidas, Inseticidas e Foliares" -> {
+                                                        totalFIF += total!!.toFloat()
+                                                    }
+                                                    "Operações" -> {
+                                                        totalOperations += total!!.toFloat()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                totalAbsolute = totalProduct + totalSeed + totalCDE + totalFIF + totalOperations
+                                df.format(totalAbsolute)
 
-        operationsList.forEach { item ->
-            totalOperations += (item.total!!).toFloat()
-        }
+                                binding.textOperationsDescritive.text = totalOperations.toString()
+                                binding.textCorrectivesFertilizers.text = totalProduct.toString()
+                                binding.textSeeds.text = totalSeed.toString()
+                                binding.textDefensives.text = (totalCDE + totalFIF).toString()
+                                binding.textTotal.text = totalAbsolute.toString()
 
-        totalAbsolute = totalProduct + totalSeed + totalCDE + totalFIF + totalOperations
+                                Log.d("db", "totalAbsolute = ${totalAbsolute} totalProduct = ${totalProduct} totalSeed = ${totalSeed} " +
+                                        "totalCDE = ${totalCDE} totalFIF = ${totalFIF} totalOperations = ${totalOperations}")
 
-        binding.textOperationsDescritive.text = totalOperations.toString()
-        binding.textCorrectivesFertilizers.text = totalProduct.toString()
-        binding.textSeeds.text = totalSeed.toString()
-        binding.textDefensives.text = (totalCDE + totalFIF).toString()
-        binding.textTotal.text = totalAbsolute.toString()
+                                if(totalOperations == 0f){
+                                    binding.textPercentageOperations.text = "0 %"
+                                } else {
+                                    binding.textPercentageOperations.text = "${df.format((totalOperations/totalAbsolute)*100)} %"
+                                }
 
-        if(totalOperations == 0f){
-            binding.textPercentageOperations.text = "0 %"
-        } else {
-            binding.textPercentageOperations.text = "${((totalOperations/totalAbsolute)*100)} %"
-        }
+                                if(totalSeed == 0f){
+                                    binding.textPercentageSeeds.text = "0 %"
+                                } else {
+                                    binding.textPercentageSeeds.text = "${(df.format((totalSeed / totalAbsolute )*100))} %"
+                                }
 
-        if(totalSeed == 0f){
-            binding.textPercentageSeeds.text = "0 %"
-        } else {
-            binding.textPercentageSeeds.text = "${((totalSeed / totalAbsolute )*100)} %"
-        }
+                                if((totalCDE + totalFIF) == 0f){
+                                    binding.textPercentageDefensives.text = "0 %"
+                                } else {
+                                    binding.textPercentageDefensives.text = "${df.format((((totalCDE + totalFIF) / totalAbsolute)*100))} %"
+                                }
 
-        if((totalCDE + totalFIF) == 0f){
-            binding.textPercentageDefensives.text = "0 %"
-        } else {
-            binding.textPercentageDefensives.text = "${(((totalCDE + totalFIF) / totalAbsolute)*100)} %"
-        }
-
-        if(totalProduct == 0f){
-            binding.textPercentageCorretivesFertilizers.text = "0 %"
-        } else {
-            binding.textPercentageCorretivesFertilizers.text = "${((totalProduct / totalAbsolute)*100)} %"
-        }
+                                if(totalProduct == 0f){
+                                    binding.textPercentageCorretivesFertilizers.text = "0 %"
+                                } else {
+                                    binding.textPercentageCorretivesFertilizers.text = "${df.format(((totalProduct / totalAbsolute)*100))} %"
+                                }
+                            }
+                    }
+                }
+            }
     }
 
 
