@@ -35,7 +35,7 @@ class VintageManagerFragment : Fragment() {
     private var _binding: FragmentVintageManagerBinding? = null
     private val binding get() = _binding!!
 
-    private val entryAdapter = EntryManageVintageAdapter()
+    private lateinit var entryAdapter : EntryManageVintageAdapter
     private val vintageList = mutableListOf<Vintage>()
 
     private lateinit var auth: FirebaseAuth
@@ -60,29 +60,50 @@ class VintageManagerFragment : Fragment() {
 
         Log.d("db", "ID Talhão: ${args?.areaId}")
 
-        binding.rvVintageEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvVintageEntries.setHasFixedSize(true)
-        binding.rvVintageEntries.adapter = entryAdapter
-
-        val listener = object : EntryListener {
-            override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    vintage.description = vintageList[entryAdapter.positionSelected].description
-                    vintage.begin = vintageList[entryAdapter.positionSelected].begin
-                    vintage.end = vintageList[entryAdapter.positionSelected].end
-                    binding.buttonEdit.visibility = View.VISIBLE
-                    binding.buttonGo.visibility = View.VISIBLE
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-                    binding.buttonGo.visibility = View.INVISIBLE
-                }
-            }
-        }
-        entryAdapter.attachListener(listener)
-
         getEntries()
 
         initClicks()
+    }
+
+    private fun initAdapter(){
+        binding.rvVintageEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvVintageEntries.setHasFixedSize(true)
+        entryAdapter = EntryManageVintageAdapter() { vintage, select ->
+            optionSelect(vintage, select)
+        }
+        binding.rvVintageEntries.adapter = entryAdapter
+    }
+
+    private fun optionSelect(vintage: Vintage, select: Int) {
+        when(select){
+            EntryManageVintageAdapter.SELECT_EDIT -> {
+                dialogAdd = AddVintageDialogFragment(vintageList[entryAdapter.positionSelected], args?.areaId)
+                dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
+            }
+            EntryManageVintageAdapter.SELECT_NEXT -> {
+                db.collection("Vintage").whereArrayContains("users", auth.currentUser?.uid.toString())
+                    .addSnapshotListener { snapshot, e ->
+                        if (e == null) {
+                            val documents = snapshot?.documents
+                            if (documents != null) {
+                                vintageList.clear()
+
+                                for (document in documents) {
+
+                                    if (document.get("description") == vintage.description &&
+                                        document.get("begin") == vintage.begin &&
+                                        document.get("end") == vintage.end
+                                    ) {
+                                        navigate(VintageManagerFragmentDirections
+                                            .actionVintageManagerFragmentToEntriesManagerFragment(document.id,args?.areaId,args?.propId))
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     private fun initClicks() {
@@ -98,36 +119,6 @@ class VintageManagerFragment : Fragment() {
         binding.buttonAdd.setOnClickListener {
             dialogAdd = AddVintageDialogFragment(null, args?.areaId)
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
-        }
-
-        binding.buttonEdit.setOnClickListener {
-            dialogAdd = AddVintageDialogFragment(vintageList[entryAdapter.positionSelected], args?.areaId)
-            dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
-        }
-
-        binding.buttonGo.setOnClickListener {
-
-            db.collection("Vintage").whereArrayContains("users", auth.currentUser?.uid.toString())
-                .addSnapshotListener { snapshot, e ->
-                    if (e == null) {
-                        val documents = snapshot?.documents
-                        if (documents != null) {
-                            vintageList.clear()
-
-                            for (document in documents) {
-
-                                if (document.get("description") == vintage.description &&
-                                    document.get("begin") == vintage.begin &&
-                                    document.get("end") == vintage.end
-                                ) {
-                                    navigate(VintageManagerFragmentDirections
-                                        .actionVintageManagerFragmentToEntriesManagerFragment(document.id,args?.areaId,args?.propId))
-                                }
-                            }
-
-                        }
-                    }
-                }
         }
     }
 
@@ -147,19 +138,15 @@ class VintageManagerFragment : Fragment() {
                     val documents = snapshot?.documents
                     if (documents != null) {
                         vintageList.clear()
-
                         for (document in documents) {
                             val description = document.get("description").toString()
                             val begin = document.get("begin").toString()
                             val end = document.get("end").toString()
                             val newVintage = Vintage(description, begin, end)
-
-                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
-
                             vintageList.add(newVintage)
-                            entryAdapter.updateVintages(vintageList)
                         }
-
+                        initAdapter()
+                        entryAdapter.updateVintages(vintageList)
                     }
                 }
             }

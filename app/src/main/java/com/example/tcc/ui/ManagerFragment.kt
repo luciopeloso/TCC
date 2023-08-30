@@ -28,7 +28,7 @@ class ManagerFragment : Fragment() {
     private var _binding: FragmentManagerBinding? = null
     private val binding get() = _binding!!
 
-    private val entryAdapter = EntryManagePropertyAdapter()
+    private lateinit var  entryAdapter : EntryManagePropertyAdapter
     private val propertyList = mutableListOf<Property>()
 
     private lateinit var auth: FirebaseAuth
@@ -54,30 +54,50 @@ class ManagerFragment : Fragment() {
 
         auth = Firebase.auth
 
-        binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvPropertyEntries.setHasFixedSize(true)
-        binding.rvPropertyEntries.adapter = entryAdapter
-
-        val listener = object : EntryListener {
-            override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    property.name = propertyList[entryAdapter.positionSelected].name
-                    property.dimension = propertyList[entryAdapter.positionSelected].dimension
-                    property.location = propertyList[entryAdapter.positionSelected].location
-                    binding.buttonEdit.visibility = View.VISIBLE
-                    binding.buttonGo.visibility = View.VISIBLE
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-                    binding.buttonGo.visibility = View.INVISIBLE
-                }
-            }
-        }
-        entryAdapter.attachListener(listener)
-
         getEntries()
 
         initClicks()
 
+    }
+
+    private fun initAdapter(){
+        binding.rvPropertyEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPropertyEntries.setHasFixedSize(true)
+        entryAdapter = EntryManagePropertyAdapter { property, select ->
+            optionSelect(property,select)
+        }
+        binding.rvPropertyEntries.adapter = entryAdapter
+    }
+
+    private fun optionSelect(property: Property, select: Int) {
+        when(select){
+            EntryManagePropertyAdapter.SELECT_EDIT -> {
+                dialogAdd = AddPropertyDialogFragment(propertyList[entryAdapter.positionSelected])
+                dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
+            }
+            EntryManagePropertyAdapter.SELECT_NEXT -> {
+                db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
+                    .addSnapshotListener { snapshot, e ->
+                        if (e == null) {
+                            val documents = snapshot?.documents
+                            if (documents != null) {
+                                propertyList.clear()
+
+                                for (document in documents) {
+
+                                    if (document.get("name") == property.name &&
+                                        document.get("dimension") == property.dimension &&
+                                        document.get("localization") == property.location
+                                    ) {
+                                        navigate(ManagerFragmentDirections.actionManagerFragmentToAreaManagerFragment(document.id))
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     private fun initClicks() {
@@ -94,34 +114,6 @@ class ManagerFragment : Fragment() {
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
         }
 
-        binding.buttonEdit.setOnClickListener {
-            dialogAdd = AddPropertyDialogFragment(propertyList[entryAdapter.positionSelected])
-            dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
-        }
-
-        binding.buttonGo.setOnClickListener {
-
-            db.collection("Property").whereArrayContains("users", auth.currentUser?.uid.toString())
-                .addSnapshotListener { snapshot, e ->
-                    if (e == null) {
-                        val documents = snapshot?.documents
-                        if (documents != null) {
-                            propertyList.clear()
-
-                            for (document in documents) {
-
-                                if (document.get("name") == property.name &&
-                                    document.get("dimension") == property.dimension &&
-                                    document.get("localization") == property.location
-                                ) {
-                                    navigate(ManagerFragmentDirections.actionManagerFragmentToAreaManagerFragment(document.id))
-                                }
-                            }
-
-                        }
-                    }
-                }
-        }
     }
 
     private fun Fragment.navigate(directions: NavDirections) {
@@ -150,14 +142,13 @@ class ManagerFragment : Fragment() {
                             //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
 
                             propertyList.add(newProperty)
-                            entryAdapter.updateProperties(propertyList)
                         }
-
+                        initAdapter()
+                        entryAdapter.updateProperties(propertyList)
                     }
                 }
             }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

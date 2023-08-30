@@ -7,28 +7,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tcc.model.Property
 import com.example.tcc.R
 import com.example.tcc.databinding.ItemEntryPropertyBinding
+import com.example.tcc.model.ChildData
 import com.example.tcc.ui.listeners.EntryListener
 
-class EntryManagePropertyAdapter:
+class EntryManagePropertyAdapter(val entrySelected: (Property, Int) -> Unit):
     RecyclerView.Adapter<EntryManagePropertyAdapter.MyViewHolder>() {
 
-    private lateinit var listener: EntryListener
     private var propertyList: List<Property> = mutableListOf()
 
     var positionSelected = RecyclerView.NO_POSITION
 
+    companion object {
+        const val SELECT_EDIT: Int = 1
+        const val SELECT_NEXT: Int = 2
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = ItemEntryPropertyBinding.inflate(inflater, parent, false)
-        return MyViewHolder(itemBinding,listener)
+        return MyViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if(positionSelected == position){
-            holder.selectedBg()
-        } else {
-            holder.unselectedBg()
-        }
         holder.bindData(propertyList[position], position)
     }
 
@@ -39,11 +39,7 @@ class EntryManagePropertyAdapter:
         notifyDataSetChanged()
     }
 
-    fun attachListener(entryListener: EntryListener) {
-        listener = entryListener
-    }
-
-    inner class MyViewHolder(private val binding: ItemEntryPropertyBinding, val listener: EntryListener) :
+    inner class MyViewHolder(private val binding: ItemEntryPropertyBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
 
@@ -53,27 +49,27 @@ class EntryManagePropertyAdapter:
             binding.textDimension.text = "${property.dimension} hectares"
             binding.textLocation.text = property.location
 
-            binding.entryProperty.setOnClickListener {
+            binding.buttonEdit.setOnClickListener {
 
                 if(positionSelected==position){
                     positionSelected=RecyclerView.NO_POSITION
-                    listener.onListClick(false)
                     notifyDataSetChanged()
-
                 }
                 positionSelected = position
-                listener.onListClick(true)
                 notifyDataSetChanged()
 
+                entrySelected(property, SELECT_EDIT)
             }
-        }
 
-        fun selectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-        }
-
-        fun unselectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
+            binding.buttonGo.setOnClickListener {
+                if(positionSelected==position){
+                    positionSelected=RecyclerView.NO_POSITION
+                    notifyDataSetChanged()
+                }
+                positionSelected = position
+                notifyDataSetChanged()
+                entrySelected(property, SELECT_NEXT)
+            }
         }
     }
 

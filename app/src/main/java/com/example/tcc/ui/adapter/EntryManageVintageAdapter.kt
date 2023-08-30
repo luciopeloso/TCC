@@ -11,29 +11,30 @@ import com.example.tcc.model.Area
 import com.example.tcc.model.Vintage
 import com.example.tcc.ui.listeners.EntryListener
 
-class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.MyViewHolder>() {
+class EntryManageVintageAdapter(val entrySelected: (Vintage, Int) -> Unit)
+    : RecyclerView.Adapter<EntryManageVintageAdapter.MyViewHolder>() {
 
-    private lateinit var listener: EntryListener
     private var vintageList: List<Vintage> = mutableListOf()
 
     var positionSelected = RecyclerView.NO_POSITION
+
+    companion object {
+        const val SELECT_EDIT: Int = 1
+        const val SELECT_NEXT: Int = 2
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): EntryManageVintageAdapter.MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = ItemEntryVintageBinding.inflate(inflater, parent, false)
-        return MyViewHolder(itemBinding,listener)
+        return MyViewHolder(itemBinding)
     }
 
     override fun getItemCount() = vintageList.size
 
     override fun onBindViewHolder(holder: EntryManageVintageAdapter.MyViewHolder, position: Int) {
-        if(positionSelected == position){
-            holder.selectedBg()
-        } else {
-            holder.unselectedBg()
-        }
         holder.bindData(vintageList[position], position)
     }
 
@@ -42,11 +43,7 @@ class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.
         notifyDataSetChanged()
     }
 
-    fun attachListener(entryListener: EntryListener) {
-        listener = entryListener
-    }
-
-    inner class MyViewHolder(private val binding: ItemEntryVintageBinding, val listener: EntryListener) :
+    inner class MyViewHolder(private val binding: ItemEntryVintageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -55,27 +52,31 @@ class EntryManageVintageAdapter: RecyclerView.Adapter<EntryManageVintageAdapter.
             binding.textBegin.text = vintage.begin
             binding.textEnd.text = vintage.end
 
-            binding.entryVintage.setOnClickListener {
+            binding.buttonEdit.setOnClickListener {
 
                 if(positionSelected==position){
-                    positionSelected= RecyclerView.NO_POSITION
-                    listener.onListClick(false)
+                    positionSelected=RecyclerView.NO_POSITION
                     notifyDataSetChanged()
-
                 }
                 positionSelected = position
-                listener.onListClick(true)
                 notifyDataSetChanged()
 
+                entrySelected(vintage, SELECT_EDIT)
             }
+
+            binding.buttonGo.setOnClickListener {
+                if(positionSelected==position){
+                    positionSelected=RecyclerView.NO_POSITION
+                    notifyDataSetChanged()
+                }
+                positionSelected = position
+                notifyDataSetChanged()
+                entrySelected(vintage, SELECT_NEXT)
+            }
+
         }
 
-        fun selectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-        }
 
-        fun unselectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
-        }
+
     }
 }

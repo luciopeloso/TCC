@@ -11,26 +11,25 @@ import com.example.tcc.model.Area
 import com.example.tcc.model.Property
 import com.example.tcc.ui.listeners.EntryListener
 
-class EntryManageAreaAdapter:
+class EntryManageAreaAdapter(val entrySelected: (Area, Int) -> Unit):
     RecyclerView.Adapter<EntryManageAreaAdapter.MyViewHolder>() {
 
-    private lateinit var listener: EntryListener
     private var areaList: List<Area> = mutableListOf()
 
     var positionSelected = RecyclerView.NO_POSITION
 
+    companion object {
+        const val SELECT_EDIT: Int = 1
+        const val SELECT_NEXT: Int = 2
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = ItemEntryAreaBinding.inflate(inflater, parent, false)
-        return MyViewHolder(itemBinding,listener)
+        return MyViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: EntryManageAreaAdapter.MyViewHolder, position: Int) {
-        if(positionSelected == position){
-            holder.selectedBg()
-        } else {
-            holder.unselectedBg()
-        }
         holder.bindData(areaList[position], position)
     }
 
@@ -41,11 +40,7 @@ class EntryManageAreaAdapter:
         notifyDataSetChanged()
     }
 
-    fun attachListener(entryListener: EntryListener) {
-        listener = entryListener
-    }
-
-    inner class MyViewHolder(private val binding: ItemEntryAreaBinding, val listener: EntryListener) :
+    inner class MyViewHolder(private val binding: ItemEntryAreaBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -54,27 +49,27 @@ class EntryManageAreaAdapter:
             binding.textDimension.text = "${area.dimension} hectares"
             binding.textCulture.text = area.crop
 
-            binding.entryArea.setOnClickListener {
+            binding.buttonEdit.setOnClickListener {
 
                 if(positionSelected==position){
-                    positionSelected= RecyclerView.NO_POSITION
-                    listener.onListClick(false)
+                    positionSelected=RecyclerView.NO_POSITION
                     notifyDataSetChanged()
-
                 }
                 positionSelected = position
-                listener.onListClick(true)
                 notifyDataSetChanged()
 
+                entrySelected(area, SELECT_EDIT)
             }
-        }
 
-        fun selectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_selected_border)
-        }
-
-        fun unselectedBg(){
-            binding.shapeConstraint.setBackgroundResource(R.drawable.text_view_border)
+            binding.buttonGo.setOnClickListener {
+                if(positionSelected==position){
+                    positionSelected=RecyclerView.NO_POSITION
+                    notifyDataSetChanged()
+                }
+                positionSelected = position
+                notifyDataSetChanged()
+                entrySelected(area, SELECT_NEXT)
+            }
         }
     }
 }

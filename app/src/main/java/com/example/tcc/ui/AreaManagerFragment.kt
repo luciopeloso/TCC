@@ -34,7 +34,7 @@ class AreaManagerFragment : Fragment() {
     private var _binding: FragmentAreaManagerBinding? = null
     private val binding get() = _binding!!
 
-    private val entryAdapter = EntryManageAreaAdapter()
+    private lateinit var  entryAdapter : EntryManageAreaAdapter
     private val areaList = mutableListOf<Area>()
 
     private lateinit var auth: FirebaseAuth
@@ -59,29 +59,50 @@ class AreaManagerFragment : Fragment() {
 
         Log.d("db", "ID Propiedade: ${args?.propId}")
 
-        binding.rvAreaEntries.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvAreaEntries.setHasFixedSize(true)
-        binding.rvAreaEntries.adapter = entryAdapter
-
-        val listener = object : EntryListener {
-            override fun onListClick(selected: Boolean) {
-                if (selected) {
-                    area.name = areaList[entryAdapter.positionSelected].name
-                    area.dimension = areaList[entryAdapter.positionSelected].dimension
-                    area.crop = areaList[entryAdapter.positionSelected].crop
-                    binding.buttonEdit.visibility = View.VISIBLE
-                    binding.buttonGo.visibility = View.VISIBLE
-                } else {
-                    binding.buttonEdit.visibility = View.INVISIBLE
-                    binding.buttonGo.visibility = View.INVISIBLE
-                }
-            }
-        }
-        entryAdapter.attachListener(listener)
-
         getEntries()
 
         initClicks()
+    }
+
+    private fun initAdapter(){
+        binding.rvAreaEntries.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAreaEntries.setHasFixedSize(true)
+        entryAdapter = EntryManageAreaAdapter { area, select ->
+            optionSelect(area,select)
+        }
+        binding.rvAreaEntries.adapter = entryAdapter
+    }
+
+    private fun optionSelect(area: Area, select: Int) {
+        when(select){
+            EntryManageAreaAdapter.SELECT_EDIT -> {
+                dialogAdd = AddAreaDialogFragment(areaList[entryAdapter.positionSelected], args?.propId)
+                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+            }
+            EntryManageAreaAdapter.SELECT_NEXT -> {
+                db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
+                    .addSnapshotListener { snapshot, e ->
+                        if (e == null) {
+                            val documents = snapshot?.documents
+                            if (documents != null) {
+                                areaList.clear()
+
+                                for (document in documents) {
+
+                                    if (document.get("name") == area.name &&
+                                        document.get("dimension") == area.dimension &&
+                                        document.get("crop") == area.crop
+                                    ) {
+                                        navigate(AreaManagerFragmentDirections
+                                            .actionAreaManagerFragmentToVintageManagerFragment(document.id, args?.propId))
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     private fun initClicks() {
@@ -95,36 +116,6 @@ class AreaManagerFragment : Fragment() {
         binding.buttonAdd.setOnClickListener {
             dialogAdd = AddAreaDialogFragment(null, args?.propId)
             dialogAdd.show(childFragmentManager, AddPropertyDialogFragment.TAG)
-        }
-
-        binding.buttonEdit.setOnClickListener {
-            dialogAdd = AddAreaDialogFragment(areaList[entryAdapter.positionSelected], args?.propId)
-            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
-        }
-
-        binding.buttonGo.setOnClickListener {
-
-            db.collection("Area").whereArrayContains("users", auth.currentUser?.uid.toString())
-                .addSnapshotListener { snapshot, e ->
-                    if (e == null) {
-                        val documents = snapshot?.documents
-                        if (documents != null) {
-                            areaList.clear()
-
-                            for (document in documents) {
-
-                                if (document.get("name") == area.name &&
-                                    document.get("dimension") == area.dimension &&
-                                    document.get("crop") == area.crop
-                                ) {
-                                    navigate(AreaManagerFragmentDirections
-                                        .actionAreaManagerFragmentToVintageManagerFragment(document.id, args?.propId))
-                                }
-                            }
-
-                        }
-                    }
-                }
         }
     }
 
@@ -144,19 +135,15 @@ class AreaManagerFragment : Fragment() {
                     val documents = snapshot?.documents
                     if (documents != null) {
                         areaList.clear()
-
                         for (document in documents) {
                             val name = document.get("name").toString()
                             val dimension = document.get("dimension")
                             val crop = document.get("crop").toString()
                             val newArea = Area(name, dimension as Long, crop)
-
-                            //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
-
                             areaList.add(newArea)
-                            entryAdapter.updateAreas(areaList)
                         }
-
+                        initAdapter()
+                        entryAdapter.updateAreas(areaList)
                     }
                 }
             }

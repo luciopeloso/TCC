@@ -102,29 +102,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageView
-            android:id="@+id/button_edit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_edit"
-            android:background="@color/green_leaf"
-            android:textAllCaps="false"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/button_go"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:background="@color/green_leaf"
-            android:src="@drawable/ic_arrow_proceed"
-            android:textAllCaps="false"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button_edit" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
