@@ -60,6 +60,8 @@ class VintageManagerFragment : Fragment() {
 
         Log.d("db", "ID Talhão: ${args?.areaId}")
 
+        getAreaName()
+
         getEntries()
 
         initClicks()
@@ -72,6 +74,17 @@ class VintageManagerFragment : Fragment() {
             optionSelect(vintage, select)
         }
         binding.rvVintageEntries.adapter = entryAdapter
+    }
+
+    private fun getAreaName(){
+        db.collection("Property").document(args?.propId!!)
+            .get().addOnSuccessListener { documentProp ->
+                val nameProp = documentProp.get("name").toString()
+                db.collection("Area").document(args?.areaId!!).get().addOnSuccessListener { documentArea ->
+                    val nameArea = documentArea.get("name").toString()
+                    binding.textNavigation.text = "Propriedade: $nameProp \nTalhão: $nameArea"
+                }
+            }
     }
 
     private fun optionSelect(vintage: Vintage, select: Int) {

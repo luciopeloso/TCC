@@ -59,6 +59,8 @@ class AreaManagerFragment : Fragment() {
 
         Log.d("db", "ID Propiedade: ${args?.propId}")
 
+        getPropertyName()
+
         getEntries()
 
         initClicks()
@@ -71,6 +73,14 @@ class AreaManagerFragment : Fragment() {
             optionSelect(area,select)
         }
         binding.rvAreaEntries.adapter = entryAdapter
+    }
+
+    private fun getPropertyName(){
+        db.collection("Property").document(args?.propId!!)
+            .get().addOnSuccessListener { document ->
+                val name = document.get("name").toString()
+                binding.textNavigation.text = "Propriedade: $name"
+            }
     }
 
     private fun optionSelect(area: Area, select: Int) {

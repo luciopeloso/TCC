@@ -73,6 +73,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/text_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
+
         <RadioGroup
             android:id="@+id/radio_group_entries"
             android:layout_width="match_parent"
@@ -82,7 +89,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+            app:layout_constraintTop_toBottomOf="@+id/text_navigation">
 
 
             <RadioButton
@@ -106,8 +113,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/radio_flat_selector"
                 android:button="@android:color/transparent"
-                android:gravity="center"
                 android:checked="false"
+                android:gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingTop="3dp"
                 android:paddingRight="16dp"

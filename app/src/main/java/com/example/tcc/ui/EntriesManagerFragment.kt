@@ -169,6 +169,8 @@ class EntriesManagerFragment : Fragment() {
             }
         }
 
+        getVintageName()
+
         initClicks()
     }
 
@@ -252,6 +254,22 @@ class EntriesManagerFragment : Fragment() {
                 operationsExpanded = true
             }
         }
+    }
+
+    private fun getVintageName(){
+        db.collection("Property").document(args?.propId!!)
+            .get().addOnSuccessListener { documentProp ->
+                val nameProp = documentProp.get("name").toString()
+                db.collection("Area").document(args?.areaId!!)
+                    .get().addOnSuccessListener { documentArea ->
+                    val nameArea = documentArea.get("name").toString()
+                        db.collection("Vintage").document(args?.vintageId!!)
+                            .get().addOnSuccessListener { documentVintage ->
+                                val nameVintage = documentVintage.get("description").toString()
+                                binding.textNavigation.text = "Propriedade: $nameProp \nTalhão: $nameArea\n Safra: $nameVintage"
+                            }
+                    }
+            }
     }
 
     private fun initAdapters() {
