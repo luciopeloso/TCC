@@ -147,6 +147,7 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
         users.add(auth.currentUser?.uid.toString())
 
         val entries: ArrayList<String> = ArrayList()
+        val locked = "no"
 
 
         val vintageMap = hashMapOf(
@@ -155,7 +156,8 @@ class AddVintageDialogFragment(private val vintage: Vintage?, private val areaID
             "end" to end,
             "area" to areaID,
             "users" to users,
-            "entries" to entries
+            "entries" to entries,
+            "locked" to locked
         )
 
         db.collection("Area").document(areaID.toString())

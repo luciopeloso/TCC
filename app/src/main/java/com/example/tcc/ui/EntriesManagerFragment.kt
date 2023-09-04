@@ -1,5 +1,6 @@
 package com.example.tcc.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -87,11 +88,9 @@ class EntriesManagerFragment : Fragment() {
 
         auth = Firebase.auth
 
-        Log.d("db", "ID Safra: ${args?.vintageId}")
-
-
         initAdapters()
 
+        verifyLocked()
 
         getEntries("Orçado", "Produto", productList, entryProductAdapter)
         getEntries("Orçado", "Sementes", seedList, entrySeedAdapter)
@@ -102,6 +101,9 @@ class EntriesManagerFragment : Fragment() {
         binding.radioGroupEntries.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_budgeted -> {
+
+                    verifyLocked()
+
                     entryProductAdapter.positionSelected = RecyclerView.NO_POSITION
                     entrySeedAdapter.positionSelected = RecyclerView.NO_POSITION
                     entryCDEAdapter.positionSelected = RecyclerView.NO_POSITION
@@ -133,6 +135,9 @@ class EntriesManagerFragment : Fragment() {
                 }
 
                 R.id.radio_accomplished -> {
+
+                    binding.buttonAdd.visibility = View.VISIBLE
+
                     entryProductAdapter.positionSelected = RecyclerView.NO_POSITION
                     entrySeedAdapter.positionSelected = RecyclerView.NO_POSITION
                     entryCDEAdapter.positionSelected = RecyclerView.NO_POSITION
@@ -174,6 +179,16 @@ class EntriesManagerFragment : Fragment() {
         initClicks()
     }
 
+    private fun verifyLocked(){
+        db.collection("Vintage").document(args?.vintageId!!)
+            .get().addOnSuccessListener { document ->
+                if(document.get("locked") == "yes"){
+                    binding.buttonLock.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                }
+            }
+    }
+
     private fun initClicks() {
         binding.ibLogout.setOnClickListener {
             auth.signOut()
@@ -192,6 +207,20 @@ class EntriesManagerFragment : Fragment() {
         binding.buttonAdd.setOnClickListener {
             dialogAdd = AddEntriesDialogFragment(null, args?.vintageId)
             dialogAdd.show(childFragmentManager, AddVintageDialogFragment.TAG)
+        }
+
+        binding.buttonLock.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Confirmação de entradas orçadas")
+                .setMessage("Deseja confirmar as entradas orçadas?(Esta opção será definitiva)")
+                .setPositiveButton("Sim") { dialog, which ->
+                    db.collection("Vintage").document(args?.vintageId!!)
+                        .update("locked", "yes")
+                    binding.buttonLock.visibility = View.INVISIBLE
+                    binding.buttonAdd.visibility = View.INVISIBLE
+                }
+                .setNeutralButton("voltar", null)
+                .show()
         }
 
         binding.textProduct.setOnClickListener {
@@ -263,12 +292,12 @@ class EntriesManagerFragment : Fragment() {
                 db.collection("Area").document(args?.areaId!!)
                     .get().addOnSuccessListener { documentArea ->
                     val nameArea = documentArea.get("name").toString()
-                        db.collection("Vintage").document(args?.vintageId!!)
-                            .get().addOnSuccessListener { documentVintage ->
-                                val nameVintage = documentVintage.get("description").toString()
-                                binding.textNavigation.text = "Propriedade: $nameProp \nTalhão: $nameArea\n Safra: $nameVintage"
-                            }
+                    db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { documentVintage ->
+                         val nameVintage = documentVintage.get("description").toString()
+                         binding.textNavigation.text = "Propriedade: $nameProp \nTalhão: $nameArea\n Safra: $nameVintage"
                     }
+                }
             }
     }
 
@@ -276,116 +305,150 @@ class EntriesManagerFragment : Fragment() {
 
         val listenerProduct = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                entry.description =
-                    productList[entryProductAdapter.positionSelected].description
-                entry.quantity = productList[entryProductAdapter.positionSelected].quantity
-                entry.unity = productList[entryProductAdapter.positionSelected].unity
-                entry.category = productList[entryProductAdapter.positionSelected].category
-                entry.price = productList[entryProductAdapter.positionSelected].price
-                entry.type = productList[entryProductAdapter.positionSelected].type
-                entry.total = productList[entryProductAdapter.positionSelected].total
+
                 //binding.buttonEdit.visibility = View.VISIBLE
 
-                dialogAdd =
-                    AddEntriesDialogFragment(
-                        productList[entryProductAdapter.positionSelected],
-                        args?.vintageId
-                    )
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { document ->
+                        if(document.get("locked") == "no"){
+                            entry.description =
+                                productList[entryProductAdapter.positionSelected].description
+                            entry.quantity = productList[entryProductAdapter.positionSelected].quantity
+                            entry.unity = productList[entryProductAdapter.positionSelected].unity
+                            entry.category = productList[entryProductAdapter.positionSelected].category
+                            entry.price = productList[entryProductAdapter.positionSelected].price
+                            entry.type = productList[entryProductAdapter.positionSelected].type
+                            entry.total = productList[entryProductAdapter.positionSelected].total
 
-                typeClick = entry.category!!
+                            dialogAdd =
+                                AddEntriesDialogFragment(
+                                    productList[entryProductAdapter.positionSelected],
+                                    args?.vintageId
+                                )
+                            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                            typeClick = entry.category!!
+                        }
+                    }
             }
         }
 
         val listenerSeed = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                entry.description = seedList[entrySeedAdapter.positionSelected].description
-                entry.quantity = seedList[entrySeedAdapter.positionSelected].quantity
-                entry.unity = seedList[entrySeedAdapter.positionSelected].unity
-                entry.category = seedList[entrySeedAdapter.positionSelected].category
-                entry.price = seedList[entrySeedAdapter.positionSelected].price
-                entry.type = seedList[entrySeedAdapter.positionSelected].type
-                entry.total = seedList[entrySeedAdapter.positionSelected].total
+
                 //binding.buttonEdit.visibility = View.VISIBLE
 
-                dialogAdd =
-                    AddEntriesDialogFragment(
-                        seedList[entrySeedAdapter.positionSelected],
-                        args?.vintageId
-                    )
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { document ->
+                        if(document.get("locked") == "no"){
+                            entry.description = seedList[entrySeedAdapter.positionSelected].description
+                            entry.quantity = seedList[entrySeedAdapter.positionSelected].quantity
+                            entry.unity = seedList[entrySeedAdapter.positionSelected].unity
+                            entry.category = seedList[entrySeedAdapter.positionSelected].category
+                            entry.price = seedList[entrySeedAdapter.positionSelected].price
+                            entry.type = seedList[entrySeedAdapter.positionSelected].type
+                            entry.total = seedList[entrySeedAdapter.positionSelected].total
 
-                typeClick = entry.category!!
+                            dialogAdd =
+                                AddEntriesDialogFragment(
+                                    seedList[entrySeedAdapter.positionSelected],
+                                    args?.vintageId
+                                )
+                            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                            typeClick = entry.category!!
+                        }
+                    }
             }
         }
 
         val listenerCDE = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                entry.description = cdeList[entryCDEAdapter.positionSelected].description
-                entry.quantity = cdeList[entryCDEAdapter.positionSelected].quantity
-                entry.unity = cdeList[entryCDEAdapter.positionSelected].unity
-                entry.category = cdeList[entryCDEAdapter.positionSelected].category
-                entry.price = cdeList[entryCDEAdapter.positionSelected].price
-                entry.type = cdeList[entryCDEAdapter.positionSelected].type
-                entry.total = cdeList[entryCDEAdapter.positionSelected].total
+
                 //binding.buttonEdit.visibility = View.VISIBLE
 
-                dialogAdd =
-                    AddEntriesDialogFragment(
-                        cdeList[entryCDEAdapter.positionSelected],
-                        args?.vintageId
-                    )
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { document ->
+                        if (document.get("locked") == "no") {
+                            entry.description = cdeList[entryCDEAdapter.positionSelected].description
+                            entry.quantity = cdeList[entryCDEAdapter.positionSelected].quantity
+                            entry.unity = cdeList[entryCDEAdapter.positionSelected].unity
+                            entry.category = cdeList[entryCDEAdapter.positionSelected].category
+                            entry.price = cdeList[entryCDEAdapter.positionSelected].price
+                            entry.type = cdeList[entryCDEAdapter.positionSelected].type
+                            entry.total = cdeList[entryCDEAdapter.positionSelected].total
 
-                typeClick = entry.category!!
+                            dialogAdd =
+                                AddEntriesDialogFragment(
+                                    cdeList[entryCDEAdapter.positionSelected],
+                                    args?.vintageId
+                                )
+                            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                            typeClick = entry.category!!
+                        }
+                    }
             }
         }
 
         val listenerFIF = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                entry.description = fifList[entryFIFAdapter.positionSelected].description
-                entry.quantity = fifList[entryFIFAdapter.positionSelected].quantity
-                entry.unity = fifList[entryFIFAdapter.positionSelected].unity
-                entry.category = fifList[entryFIFAdapter.positionSelected].category
-                entry.price = fifList[entryFIFAdapter.positionSelected].price
-                entry.type = fifList[entryFIFAdapter.positionSelected].type
-                entry.total = fifList[entryFIFAdapter.positionSelected].total
+
                 //binding.buttonEdit.visibility = View.VISIBLE
 
-                dialogAdd =
-                    AddEntriesDialogFragment(
-                        fifList[entryFIFAdapter.positionSelected],
-                        args?.vintageId
-                    )
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { document ->
+                        if (document.get("locked") == "no") {
+                            entry.description = fifList[entryFIFAdapter.positionSelected].description
+                            entry.quantity = fifList[entryFIFAdapter.positionSelected].quantity
+                            entry.unity = fifList[entryFIFAdapter.positionSelected].unity
+                            entry.category = fifList[entryFIFAdapter.positionSelected].category
+                            entry.price = fifList[entryFIFAdapter.positionSelected].price
+                            entry.type = fifList[entryFIFAdapter.positionSelected].type
+                            entry.total = fifList[entryFIFAdapter.positionSelected].total
 
-                typeClick = entry.category!!
+                            dialogAdd =
+                                AddEntriesDialogFragment(
+                                    fifList[entryFIFAdapter.positionSelected],
+                                    args?.vintageId
+                                )
+                            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+
+                            typeClick = entry.category!!
+                        }
+                    }
             }
         }
 
         val listenerOperations = object : EntryListener {
             override fun onListClick(selected: Boolean) {
-                entry.description =
-                    operationsList[entryOperationsAdapter.positionSelected].description
-                entry.quantity =
-                    operationsList[entryOperationsAdapter.positionSelected].quantity
-                entry.unity = operationsList[entryOperationsAdapter.positionSelected].unity
-                entry.category =
-                    operationsList[entryOperationsAdapter.positionSelected].category
-                entry.price = operationsList[entryOperationsAdapter.positionSelected].price
-                entry.type = operationsList[entryOperationsAdapter.positionSelected].type
-                entry.total = operationsList[entryOperationsAdapter.positionSelected].total
+
                 //binding.buttonEdit.visibility = View.VISIBLE
 
-                dialogAdd =
-                    AddEntriesDialogFragment(
-                        operationsList[entryOperationsAdapter.positionSelected],
-                        args?.vintageId
-                    )
-                dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
+                db.collection("Vintage").document(args?.vintageId!!)
+                    .get().addOnSuccessListener { document ->
+                        if (document.get("locked") == "no") {
+                            entry.description =
+                                operationsList[entryOperationsAdapter.positionSelected].description
+                            entry.quantity =
+                                operationsList[entryOperationsAdapter.positionSelected].quantity
+                            entry.unity = operationsList[entryOperationsAdapter.positionSelected].unity
+                            entry.category =
+                                operationsList[entryOperationsAdapter.positionSelected].category
+                            entry.price = operationsList[entryOperationsAdapter.positionSelected].price
+                            entry.type = operationsList[entryOperationsAdapter.positionSelected].type
+                            entry.total = operationsList[entryOperationsAdapter.positionSelected].total
 
-                typeClick = entry.category!!
+                            dialogAdd =
+                                AddEntriesDialogFragment(
+                                    operationsList[entryOperationsAdapter.positionSelected],
+                                    args?.vintageId
+                                )
+                            dialogAdd.show(childFragmentManager, AddAreaDialogFragment.TAG)
 
+                            typeClick = entry.category!!
+                        }
+                    }
             }
         }
 
