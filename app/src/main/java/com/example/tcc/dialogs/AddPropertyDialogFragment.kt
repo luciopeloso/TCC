@@ -57,8 +57,9 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
 
         binding.buttonSubmit.setOnClickListener {
             val name = binding.editName.text.toString()
-            val dimension = binding.editArea.text.toString()
+            var dimension = binding.editArea.text.toString()
             val localization = binding.editLocalization.text.toString()
+
 
             if (name.isEmpty() || dimension.isEmpty() || localization.isEmpty()) {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
@@ -67,11 +68,12 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
             } else {
                 if (property != null) {
                     newProperty.name = name
-                    newProperty.dimension = dimension.toLong()
+                    newProperty.dimension = dimension.toDouble()
                     newProperty.location = localization
                     editProperty(property, newProperty)
                 } else {
-                    addProperty(name, dimension.toLong(), localization)
+                    dimension = dimension.replace(",",".")
+                    addProperty(name, dimension.toDouble(), localization)
                 }
             }
         }
@@ -89,7 +91,7 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
                     if (documents != null) {
                         for (document in documents) {
                             if (document.get("name") == name &&
-                                document.get("dimension") == dimension &&
+                                document.getDouble("dimension") == dimension &&
                                 document.get("localization") == location
                             ) {
                                 db.collection("Property")
@@ -97,6 +99,7 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
                                     .update(
                                         mapOf(
                                             "name" to newProperty.name,
+                                            "dimension_left" to newProperty.dimension,
                                             "dimension" to newProperty.dimension,
                                             "localization" to newProperty.location
                                         )
@@ -109,7 +112,7 @@ class AddPropertyDialogFragment(private val property: Property?) : DialogFragmen
         dismiss()
     }
 
-    private fun addProperty(name: String, dimension: Long, localization: String) {
+    private fun addProperty(name: String, dimension: Double, localization: String) {
 
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())

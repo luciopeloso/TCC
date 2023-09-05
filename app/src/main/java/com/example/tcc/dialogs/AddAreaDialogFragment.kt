@@ -73,7 +73,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
 
         binding.buttonSubmit.setOnClickListener {
             val name = binding.editName.text.toString()
-            val dimension = binding.editArea.text.toString()
+            var dimension = binding.editArea.text.toString()
             val crop = binding.spinnerCrop.selectedItem.toString()
 
             if (name.isEmpty() || dimension.isEmpty() || crop == "0") {
@@ -83,11 +83,12 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
             } else {
                 if (area != null) {
                     newArea.name = name
-                    newArea.dimension = dimension.toLong()
+                    newArea.dimension = dimension.toDouble()
                     newArea.crop = crop
                     editArea(area, newArea)
                 } else {
-                    addArea(name, dimension.toLong(), crop)
+                    dimension = dimension.replace(",",".")
+                    addArea(name, dimension.toDouble(), crop)
                 }
             }
         }
@@ -116,7 +117,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
                                 if (documents != null) {
                                     for (document in documents) {
                                         if (document.get("name") == name &&
-                                            document.get("dimension") == dimension &&
+                                            document.getDouble("dimension") == dimension &&
                                             document.get("crop") == crop
                                         ) {
                                             db.collection("Area")
@@ -143,7 +144,7 @@ class AddAreaDialogFragment(private val area: Area?, private val propertyID: Str
             }
     }
 
-    private fun addArea(name: String, dimension: Long, crop: String) {
+    private fun addArea(name: String, dimension: Double, crop: String) {
 
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())

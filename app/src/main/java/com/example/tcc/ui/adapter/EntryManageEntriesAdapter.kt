@@ -2,6 +2,7 @@ package com.example.tcc.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.icu.text.DecimalFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,11 +64,15 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
         @SuppressLint("SetTextI18n")
         fun bindData(entry: ChildData, position: Int) {
 
+            val df = DecimalFormat("#.##")
+
             binding.textDescription.text = entry.description
             binding.textQuantity.text = entry.quantity.toString()
             binding.textUnity.text = entry.unity
-            binding.textPrice.text = entry.price.toString()
-            binding.textTotal.text = entry.total.toString()
+            val priceConveted = (df.format(entry.price).toString()).replace(".",",")
+            binding.textPrice.text = "R$ ${priceConveted}"
+            val totalConveted = (df.format(entry.total).toString()).replace(".",",")
+            binding.textTotal.text = "R$ ${totalConveted}"
 
             binding.entryChild.setOnClickListener {
 

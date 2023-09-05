@@ -46,7 +46,8 @@ class EntryManagePropertyAdapter(val entrySelected: (Property, Int) -> Unit):
         @SuppressLint("SetTextI18n")
         fun bindData(property: Property, position: Int) {
             binding.textDescription.text = property.name
-            binding.textDimension.text = "${property.dimension} hectares"
+            val dimensionConveted = (property.dimension.toString()).replace(".",",")
+            binding.textDimension.text = "$dimensionConveted hectares"
             binding.textLocation.text = property.location
 
             binding.buttonEdit.setOnClickListener {

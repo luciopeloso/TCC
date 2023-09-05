@@ -100,7 +100,7 @@ class AreaManagerFragment : Fragment() {
                                 for (document in documents) {
 
                                     if (document.get("name") == area.name &&
-                                        document.get("dimension") == area.dimension &&
+                                        document.getDouble("dimension") == area.dimension &&
                                         document.get("crop") == area.crop
                                     ) {
                                         navigate(AreaManagerFragmentDirections
@@ -147,9 +147,9 @@ class AreaManagerFragment : Fragment() {
                         areaList.clear()
                         for (document in documents) {
                             val name = document.get("name").toString()
-                            val dimension = document.get("dimension")
+                            val dimension = document.getDouble("dimension")
                             val crop = document.get("crop").toString()
-                            val newArea = Area(name, dimension as Long, crop)
+                            val newArea = Area(name, dimension as Double, crop)
                             areaList.add(newArea)
                         }
                         initAdapter()

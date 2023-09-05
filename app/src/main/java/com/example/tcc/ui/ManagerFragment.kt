@@ -86,7 +86,7 @@ class ManagerFragment : Fragment() {
                                 for (document in documents) {
 
                                     if (document.get("name") == property.name &&
-                                        document.get("dimension") == property.dimension &&
+                                        document.getDouble("dimension") == property.dimension &&
                                         document.get("localization") == property.location
                                     ) {
                                         navigate(ManagerFragmentDirections.actionManagerFragmentToAreaManagerFragment(document.id))
@@ -135,9 +135,9 @@ class ManagerFragment : Fragment() {
 
                         for (document in documents) {
                             val name = document.get("name").toString()
-                            val dimension = document.get("dimension")
+                            val dimension = document.getDouble("dimension")
                             val localization = document.get("localization").toString()
-                            val newProperty = Property(name, dimension as Long, localization)
+                            val newProperty = Property(name,dimension as Double , localization)
 
                             //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
 

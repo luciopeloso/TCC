@@ -99,6 +99,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
                 android:inputType="number|numberDecimal"
+                android:digits="0123456789,."
                 android:hint="Dimensão da área"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"

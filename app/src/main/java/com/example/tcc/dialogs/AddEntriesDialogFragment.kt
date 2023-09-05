@@ -6,12 +6,17 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import android.widget.EditText
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentAddEntriesDialogBinding
@@ -23,7 +28,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AddEntriesDialogFragment(private val entry: ChildData?, private val vintageID: String?) :
     DialogFragment() {
@@ -35,8 +44,11 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
 
     private var newEntry = ChildData(null, null, null, null, null, null, null)
 
+
     companion object {
         const val TAG = "addEntriesDialog"
+        private const val replaceRegex: String = "[R$,.\u00A0]"
+        private const val replaceFinal: String = "\u00A0"
     }
 
     override fun onCreateView(
@@ -65,6 +77,8 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
             ArrayAdapter(requireContext(), androidx.transition.R.layout.support_simple_spinner_dropdown_item, listType)
 
         binding.spinnerCategory.adapter = adapter
+
+        binding.editPrice.moneyTextWatch()
 
         if (entry != null) {
 
@@ -95,6 +109,7 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
     }
 
     private fun initClicks() {
+
         binding.buttonBack.setOnClickListener {
             dismiss()
         }
@@ -103,9 +118,9 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
 
             val category = binding.spinnerCategory.selectedItem.toString()
             val description = binding.editDescription.text.toString()
-            val quantity = binding.editQuantity.text.toString()
+            var quantity = binding.editQuantity.text.toString()
             val unity = binding.editUnity.text.toString()
-            val price = binding.editPrice.text.toString()
+            var price = binding.editPrice.text.toString()
 
             if (category == "Tipo de entrada" || description.isEmpty() || quantity.isEmpty()
                 || unity.isEmpty() || price.isEmpty()
@@ -117,9 +132,9 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                 if (entry != null) {
                     newEntry.description = description
                     newEntry.category = category
-                    newEntry.quantity = quantity.toLong()
+                    newEntry.quantity = quantity.toDouble()
                     newEntry.unity = unity
-                    newEntry.price = price.toLong()
+                    newEntry.price = price.toDouble()
                     newEntry.type = "Orçado"
 
                     if(binding.radioBudgeted.isChecked){
@@ -131,13 +146,17 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                     editEntry(entry, newEntry)
                 } else {
                     val buttonSelected = if(binding.radioBudgeted.isChecked){ "Orçado" } else { "Realizado" }
-                    addEntry(category, description, quantity.toFloat(), unity, price.toFloat(), buttonSelected)
+                    quantity = quantity.replace(",",".")
+                    price = price.replace(",",".")
+                    price = price.replace("R$","")
+
+                    addEntry(category, description, quantity.toDouble(), unity, price.toDouble(), buttonSelected)
                 }
             }
         }
     }
 
-    private fun addEntry(category: String, description: String, quantity: Float, unity: String, price: Float, type: String) {
+    private fun addEntry(category: String, description: String, quantity: Double, unity: String, price: Double, type: String) {
         val users: ArrayList<String> = ArrayList()
         users.add(auth.currentUser?.uid.toString())
 
@@ -187,9 +206,9 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                         for (document in documents) {
                             if (document.get("description") == description &&
                                 document.get("category") == category &&
-                                document.get("quantity") == quantity &&
+                                document.getDouble("quantity") == quantity &&
                                 document.get("unity") == unity &&
-                                document.get("price") == price &&
+                                document.getDouble("price") == price &&
                                 document.get("type") == type
                             ) {
                                 db.collection("Entry")
@@ -216,6 +235,40 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
                     }
                 }
             }
+    }
+
+    private fun EditText.moneyTextWatch(){
+        this.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                try{
+                    val stringEditable = editable.toString()
+                    if(stringEditable.isEmpty()) return
+                    removeTextChangedListener(this)
+                    val cleanString = stringEditable.replace(replaceRegex.toRegex(), "")
+
+                    val parsed = BigDecimal(cleanString)
+                        .setScale(2)
+                        .divide(BigDecimal(100))
+                    val decimalFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR")) as DecimalFormat
+                    val formatted = decimalFormat.format(parsed)
+
+                    val stringFinal = formatted.replace(replaceFinal, "")
+                    setText(stringFinal)
+                    setSelection(stringFinal.length)
+                    addTextChangedListener(this)
+
+                } catch (e: Exception){
+                    Log.d("ERROR", e.toString())
+                }
+            }
+
+        })
     }
 
 }

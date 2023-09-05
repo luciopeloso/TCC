@@ -46,7 +46,8 @@ class EntryManageAreaAdapter(val entrySelected: (Area, Int) -> Unit):
         @SuppressLint("SetTextI18n")
         fun bindData(area: Area, position: Int) {
             binding.textDescription.text = area.name
-            binding.textDimension.text = "${area.dimension} hectares"
+            val dimensionConveted = (area.dimension.toString()).replace(".",",")
+            binding.textDimension.text = "$dimensionConveted hectares"
             binding.textCulture.text = area.crop
 
             binding.buttonEdit.setOnClickListener {

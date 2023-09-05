@@ -295,11 +295,11 @@ class EntriesFragment : Fragment() {
                                         for(documentEntry in  documents) {
                                             val description = documentEntry.get("description").toString()
                                             val category = documentEntry.get("category").toString()
-                                            val quantity = documentEntry.getLong("quantity")
+                                            val quantity = documentEntry.getDouble("quantity")
                                             val unity = documentEntry.get("unity").toString()
-                                            val price = documentEntry.getLong("price")
+                                            val price = documentEntry.getDouble("price")
                                             val type = documentEntry.get("type").toString()
-                                            val total = documentEntry.getLong("total")
+                                            val total = documentEntry.getDouble("total")
 
                                             val newEntry = ChildData(
                                                 category,
@@ -403,7 +403,7 @@ class EntriesFragment : Fragment() {
         var totalOperations = 0f
         var totalAbsolute: Float
 
-        val df = DecimalFormat("#.##")
+        val df = DecimalFormat("#,##")
 
         val vintageRef = db.collection("Vintage")
 
@@ -418,7 +418,7 @@ class EntriesFragment : Fragment() {
                                     if (documents != null) {
                                         for(documentEntry in  documents) {
                                             val category = documentEntry.get("category").toString()
-                                            val total = documentEntry.getLong("total")
+                                            val total = documentEntry.getDouble("total")
                                             val type = documentEntry.get("type").toString()
 
                                             if(type == typeDescritive){
@@ -446,11 +446,14 @@ class EntriesFragment : Fragment() {
                                 totalAbsolute = totalProduct + totalSeed + totalCDE + totalFIF + totalOperations
                                 df.format(totalAbsolute)
 
-                                binding.textOperationsDescritive.text = totalOperations.toString()
-                                binding.textCorrectivesFertilizers.text = totalProduct.toString()
-                                binding.textSeeds.text = totalSeed.toString()
-                                binding.textDefensives.text = (totalCDE + totalFIF).toString()
-                                binding.textTotal.text = totalAbsolute.toString()
+                                val operativeText = String.format("%.2f", totalOperations)
+                                    //totalOperations.toString().replace(".", ",")
+
+                                binding.textOperationsDescritive.text = "R$ ${operativeText}"
+                                binding.textCorrectivesFertilizers.text = "R$ ${totalProduct.toString().replace(".", ",")}"
+                                binding.textSeeds.text = "R$ ${totalSeed.toString().replace(".", ",")}"
+                                binding.textDefensives.text = "R$ ${(totalCDE + totalFIF).toString().replace(".", ",")}"
+                                binding.textTotal.text = "R$ ${totalAbsolute.toString().replace(".", ",")}"
 
                                 Log.d("db", "totalAbsolute = ${totalAbsolute} totalProduct = ${totalProduct} totalSeed = ${totalSeed} " +
                                         "totalCDE = ${totalCDE} totalFIF = ${totalFIF} totalOperations = ${totalOperations}")

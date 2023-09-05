@@ -512,11 +512,11 @@ class EntriesManagerFragment : Fragment() {
                         for (document in documents) {
                             val description = document.get("description").toString()
                             val category = document.get("category").toString()
-                            val quantity = document.getLong("quantity")
+                            val quantity = document.getDouble("quantity")
                             val unity = document.get("unity").toString()
-                            val price = document.getLong("price")
+                            val price = document.getDouble("price")
                             val type = document.get("type").toString()
-                            val total = document.getLong("total")
+                            val total = document.getDouble("total")
 
                             val newEntry = ChildData(
                                 category,
