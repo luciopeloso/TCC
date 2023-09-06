@@ -88,7 +88,8 @@ class AddEntriesDialogFragment(private val entry: ChildData?, private val vintag
             binding.editDescription.setText(entry.description.toString())
             binding.editQuantity.setText(entry.quantity.toString())
             binding.editUnity.setText(entry.unity.toString())
-            binding.editPrice.setText(entry.price.toString())
+            binding.editPrice.setText(String.format("%.2f", entry.price).replace(".", ","))
+            //binding.editPrice.setText(entry.price.toString())
             setType()
         }
 

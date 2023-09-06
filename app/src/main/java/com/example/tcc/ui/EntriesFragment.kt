@@ -446,17 +446,14 @@ class EntriesFragment : Fragment() {
                                 totalAbsolute = totalProduct + totalSeed + totalCDE + totalFIF + totalOperations
                                 df.format(totalAbsolute)
 
-                                val operativeText = String.format("%.2f", totalOperations)
+
                                     //totalOperations.toString().replace(".", ",")
 
-                                binding.textOperationsDescritive.text = "R$ ${operativeText}"
-                                binding.textCorrectivesFertilizers.text = "R$ ${totalProduct.toString().replace(".", ",")}"
-                                binding.textSeeds.text = "R$ ${totalSeed.toString().replace(".", ",")}"
-                                binding.textDefensives.text = "R$ ${(totalCDE + totalFIF).toString().replace(".", ",")}"
-                                binding.textTotal.text = "R$ ${totalAbsolute.toString().replace(".", ",")}"
-
-                                Log.d("db", "totalAbsolute = ${totalAbsolute} totalProduct = ${totalProduct} totalSeed = ${totalSeed} " +
-                                        "totalCDE = ${totalCDE} totalFIF = ${totalFIF} totalOperations = ${totalOperations}")
+                                binding.textOperationsDescritive.text = "R$ ${String.format("%.2f", totalOperations).replace(".", ",")}"
+                                binding.textCorrectivesFertilizers.text = "R$ ${String.format("%.2f", totalProduct).replace(".", ",")}"
+                                binding.textSeeds.text = "R$ ${String.format("%.2f", totalSeed).replace(".", ",")}"
+                                binding.textDefensives.text = "R$ ${String.format("%.2f", totalCDE + totalFIF).replace(".", ",")}"
+                                binding.textTotal.text = "R$ ${String.format("%.2f", totalAbsolute).replace(".", ",")}"
 
                                 if(totalOperations == 0f){
                                     binding.textPercentageOperations.text = "0 %"

@@ -69,10 +69,8 @@ class EntryManageEntriesAdapter(val list: MutableList<ChildData>) : RecyclerView
             binding.textDescription.text = entry.description
             binding.textQuantity.text = entry.quantity.toString()
             binding.textUnity.text = entry.unity
-            val priceConveted = (df.format(entry.price).toString()).replace(".",",")
-            binding.textPrice.text = "R$ ${priceConveted}"
-            val totalConveted = (df.format(entry.total).toString()).replace(".",",")
-            binding.textTotal.text = "R$ ${totalConveted}"
+            binding.textPrice.text = "R$ ${String.format("%.2f", entry.price).replace(".", ",")}"
+            binding.textTotal.text = "R$ ${String.format("%.2f", entry.total).replace(".", ",")}"
 
             binding.entryChild.setOnClickListener {
 
