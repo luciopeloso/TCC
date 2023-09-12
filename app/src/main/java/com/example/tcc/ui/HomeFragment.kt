@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentHomeBinding
 import com.example.tcc.ui.adapter.ViewPagerAdapter
@@ -24,6 +25,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
+    private val args: HomeFragmentArgs? by navArgs()
 
     companion object{
         var user = ""
@@ -43,8 +45,6 @@ class HomeFragment : Fragment() {
         auth = Firebase.auth
 
         configTablayout()
-
-
 
         initClicks()
     }
@@ -69,12 +69,13 @@ class HomeFragment : Fragment() {
         ) { tab, position ->
             tab.text = getString(adapter.getTitle(position))
         }.attach()
+
+
     }
 
     private fun logoutApp() {
         auth.signOut()
         findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-
     }
     override fun onDestroy() {
         super.onDestroy()

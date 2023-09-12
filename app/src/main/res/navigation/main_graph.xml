@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_homeFragment_to_managerFragment"
             app:destination="@id/managerFragment" />
+        <argument
+            android:name="tabLayout"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/areaManagerFragment"

@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentLoginBinding
@@ -70,8 +73,18 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
+        }
+    }
+
     private fun navigationToHome(email: String){
-        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        //findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment(0))
     }
 
     override fun onDestroyView() {

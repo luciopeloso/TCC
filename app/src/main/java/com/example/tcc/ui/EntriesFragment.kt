@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.model.ParentData
@@ -323,7 +326,6 @@ class EntriesFragment : Fragment() {
                 }
             }
     }
-
 
     private fun initAdapters() {
         val listenerProduct = object : EntryListener {

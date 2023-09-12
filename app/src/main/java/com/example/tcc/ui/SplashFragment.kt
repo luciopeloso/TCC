@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentSplashBinding
@@ -40,12 +43,21 @@ class SplashFragment : Fragment() {
         if (auth.currentUser == null) {
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         } else {
-            val action = SplashFragmentDirections
+            /*val action = SplashFragmentDirections
                 .actionSplashFragmentToHomeFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(action)*/
+            navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment(0))
         }
     }
 
+    private fun Fragment.navigate(directions: NavDirections) {
+        val controller = findNavController()
+        val currentDestination = (controller.currentDestination as? FragmentNavigator.Destination)?.className
+            ?: (controller.currentDestination as? DialogFragmentNavigator.Destination)?.className
+        if (currentDestination == this.javaClass.name) {
+            controller.navigate(directions)
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

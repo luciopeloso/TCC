@@ -1,6 +1,7 @@
 package com.example.tcc.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Pair
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.Spinner
 import com.example.tcc.R
 import com.example.tcc.databinding.FragmentEntriesBinding
 import com.example.tcc.databinding.FragmentVisualHomeBinding
+import com.example.tcc.model.DataBar
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -49,8 +51,6 @@ class HomeVisualFragment : Fragment() {
     private lateinit var barDataSet1: BarDataSet
     private lateinit var barDataSet2: BarDataSet
 
-    private lateinit var barEntriesList: ArrayList<BarEntry>
-
     var categories = arrayOf("Produto", "Semente", "CDE", "FIF", "Operações")
 
     companion object {
@@ -73,9 +73,6 @@ class HomeVisualFragment : Fragment() {
         areaList = mutableListOf("Selecione um talhão")
         propertyList = mutableListOf("Selecione uma propriedade")
         vintageList = mutableListOf("Selecione uma safra")
-
-        //binding.barChart.animation.duration = animationDuration
-
 
         getSpinners()
 
@@ -163,17 +160,10 @@ class HomeVisualFragment : Fragment() {
         binding.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if(position != 0){
-                    /*getLabels("Produto")
-                    getLabels("Sementes")
-                    getLabels("Capina, dessecação e pós emergência")
-                    getLabels("Fungicidas, Inseticidas e Foliares")
-                    getLabels("Operações")*/
 
-                    //binding.barChart.animate(bartest)
+                    getLabels()
 
-                    createBarChart()
 
-                    binding.chartConstraint.visibility = View.VISIBLE
 
 
                 } else {
@@ -186,13 +176,13 @@ class HomeVisualFragment : Fragment() {
         }
     }
 
-    private fun createBarChart(){
+    private fun createBarChart(arrayBudgeted : ArrayList<BarEntry>, arrayAccomplished : ArrayList<BarEntry>){
 
         barChart = binding.barChart
 
-        barDataSet1 = BarDataSet(getBarChartDataForSet1(), "Orçado")
+        barDataSet1 = BarDataSet(arrayBudgeted, "Orçado")
         barDataSet1.setColor(resources.getColor(R.color.purple_200))
-        barDataSet2 = BarDataSet(getBarChartDataForSet2(), "Realizado")
+        barDataSet2 = BarDataSet(arrayAccomplished, "Realizado")
         barDataSet2.setColor(resources.getColor(R.color.teal_200))
 
         var data = BarData(barDataSet1, barDataSet2)
@@ -200,6 +190,10 @@ class HomeVisualFragment : Fragment() {
         barChart.description.isEnabled = false
 
         var xAxis = barChart.xAxis
+
+        barDataSet1.valueTextSize = 8f
+        barDataSet2.valueTextSize = 8f
+
         xAxis.valueFormatter = IndexAxisValueFormatter(categories)
         xAxis.setCenterAxisLabels(true)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -214,13 +208,21 @@ class HomeVisualFragment : Fragment() {
         barChart.animate()
         barChart.groupBars(0f, groupSpace, barSpace)
         barChart.invalidate()
+        binding.chartConstraint.visibility = View.VISIBLE
     }
 
-    private fun getLabels(categoryEntry: String){
+    private fun getLabels(){
         val vintageRef = db.collection("Vintage")
-        var totalLabelBudgeted = 0.0
-        var totalLabelAccomplished = 0.0
+        var totalProduct = 0f
+        var totalSeeds = 0f
+        var totalCDE = 0f
+        var totalFIF = 0f
+        var totalOperations = 0f
 
+        val barBudgetedEntries : ArrayList<DataBar> = ArrayList()
+        val barAccomplishedEntries : ArrayList<DataBar> = ArrayList()
+        val barBudgetedList: ArrayList<BarEntry> = ArrayList()
+        val barAccomplishedList: ArrayList<BarEntry> = ArrayList()
 
         vintageRef.whereArrayContains("users", auth.currentUser?.uid.toString())
             .get().addOnSuccessListener { result ->
@@ -231,32 +233,83 @@ class HomeVisualFragment : Fragment() {
                                 if (error == null) {
                                     val documents = snapshot?.documents
                                     if (documents != null) {
-
-                                        totalLabelBudgeted = 0.0
-                                        totalLabelAccomplished = 0.0
-
                                         for (documentEntry in documents) {
                                             val category = documentEntry.get("category").toString()
                                             val total = documentEntry.getDouble("total")
                                             val type = documentEntry.get("type").toString()
 
+                                            val newEntry = DataBar(category,total)
+
                                             when(type){
                                                 "Orçado" -> {
-                                                    if(categoryEntry == category){
-                                                        totalLabelBudgeted += total!!
-                                                    }
+                                                    barBudgetedEntries.add(newEntry)
                                                 }
 
                                                 "Realizado" -> {
-                                                    if(categoryEntry == category){
-                                                        totalLabelAccomplished += total!!
-                                                    }
+                                                    barAccomplishedEntries.add(newEntry)
                                                 }
                                             }
-
                                         }
 
+                                        barBudgetedEntries.forEach { item ->
+                                            when(item.category){
+                                                "Produto" -> {
+                                                    totalProduct += item.total!!.toFloat()
+                                                }
+                                                "Sementes" -> {
+                                                    totalSeeds += item.total!!.toFloat()
+                                                }
+                                                "Capina, dessecação e pós emergência" -> {
+                                                    totalCDE += item.total!!.toFloat()
+                                                }
+                                                "Fungicidas, Inseticidas e Foliares" -> {
+                                                    totalFIF += item.total!!.toFloat()
+                                                }
+                                                "Operações" -> {
+                                                    totalOperations += item.total!!.toFloat()
+                                                }
+                                            }
+                                        }
 
+                                        barBudgetedList.add(BarEntry(1f, totalProduct))
+                                        barBudgetedList.add(BarEntry(2f, totalSeeds))
+                                        barBudgetedList.add(BarEntry(3f, totalCDE))
+                                        barBudgetedList.add(BarEntry(4f, totalFIF))
+                                        barBudgetedList.add(BarEntry(5f, totalOperations))
+
+                                        totalProduct = 0f
+                                        totalSeeds = 0f
+                                        totalCDE = 0f
+                                        totalFIF = 0f
+                                        totalOperations = 0f
+
+                                        barAccomplishedEntries.forEach { item ->
+                                            when(item.category){
+                                                "Produto" -> {
+                                                    totalProduct += item.total!!.toFloat()
+                                                }
+                                                "Sementes" -> {
+                                                    totalSeeds += item.total!!.toFloat()
+                                                }
+                                                "Capina, dessecação e pós emergência" -> {
+                                                    totalCDE += item.total!!.toFloat()
+                                                }
+                                                "Fungicidas, Inseticidas e Foliares" -> {
+                                                    totalFIF += item.total!!.toFloat()
+                                                }
+                                                "Operações" -> {
+                                                    totalOperations += item.total!!.toFloat()
+                                                }
+                                            }
+                                        }
+
+                                        barAccomplishedList.add(BarEntry(1f, totalProduct))
+                                        barAccomplishedList.add(BarEntry(2f, totalSeeds))
+                                        barAccomplishedList.add(BarEntry(3f, totalCDE))
+                                        barAccomplishedList.add(BarEntry(4f, totalFIF))
+                                        barAccomplishedList.add(BarEntry(5f, totalOperations))
+
+                                        createBarChart(barBudgetedList,barAccomplishedList)
                                     }
                                 }
 
@@ -283,30 +336,6 @@ class HomeVisualFragment : Fragment() {
                 list.removeAt(i)
             }
         }
-    }
-
-    private fun getBarChartDataForSet1(): ArrayList<BarEntry> {
-        barEntriesList = ArrayList()
-        // on below line we are adding
-        // data to our bar entries list
-        barEntriesList.add(BarEntry(1f, 1f))
-        barEntriesList.add(BarEntry(2f, 2f))
-        barEntriesList.add(BarEntry(3f, 3f))
-        barEntriesList.add(BarEntry(4f, 4f))
-        barEntriesList.add(BarEntry(5f, 5f))
-        return barEntriesList
-    }
-
-    private fun getBarChartDataForSet2(): ArrayList<BarEntry> {
-        barEntriesList = ArrayList()
-        // on below line we are adding data
-        // to our bar entries list
-        barEntriesList.add(BarEntry(1f, 2f))
-        barEntriesList.add(BarEntry(2f, 4f))
-        barEntriesList.add(BarEntry(3f, 6f))
-        barEntriesList.add(BarEntry(4f, 8f))
-        barEntriesList.add(BarEntry(5f, 10f))
-        return barEntriesList
     }
 
     override fun onDestroyView() {

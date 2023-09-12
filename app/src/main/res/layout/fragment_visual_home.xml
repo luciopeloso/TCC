@@ -122,8 +122,8 @@
             android:id="@+id/chart_constraint"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:visibility="gone"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout_spinners">
@@ -132,33 +132,34 @@
                 android:id="@+id/text_chart_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gráfico de Barras"
+                android:text="Relação entre Orçado/Realizado"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <com.db.williamchart.view.BarChartView-->
-<!--                android:id="@+id/barChart"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="150dp"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                app:chart_axis="x"-->
-<!--                app:chart_barsColor="@color/green_leaf"-->
-<!--                app:chart_barsRadius="4dp"-->
-<!--                app:chart_labelsColor="@color/black"-->
-<!--                app:chart_labelsSize="8sp"-->
-<!--                app:chart_spacing="4dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_chart_title" />-->
+            <!--            <com.db.williamchart.view.BarChartView-->
+            <!--                android:id="@+id/barChart"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="150dp"-->
+            <!--                android:layout_marginLeft="20dp"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:layout_marginRight="20dp"-->
+            <!--                app:chart_axis="x"-->
+            <!--                app:chart_barsColor="@color/green_leaf"-->
+            <!--                app:chart_barsRadius="4dp"-->
+            <!--                app:chart_labelsColor="@color/black"-->
+            <!--                app:chart_labelsSize="8sp"-->
+            <!--                app:chart_spacing="4dp"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/text_chart_title" />-->
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_margin = "8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_chart_title" />

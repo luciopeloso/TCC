@@ -106,7 +106,8 @@ class ManagerFragment : Fragment() {
             findNavController().navigate(R.id.action_managerFragment_to_loginFragment)
         }
         binding.ibBack.setOnClickListener {
-            findNavController().navigate(R.id.action_managerFragment_to_homeFragment)
+            //findNavController().navigate(R.id.action_managerFragment_to_homeFragment)
+            navigate(ManagerFragmentDirections.actionManagerFragmentToHomeFragment(1))
 
         }
         binding.buttonAdd.setOnClickListener {
