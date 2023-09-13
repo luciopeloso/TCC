@@ -39,8 +39,6 @@ class EntriesFragment : Fragment() {
     private lateinit var areaList: MutableList<String>
     private lateinit var vintageList: MutableList<String>
 
-    private lateinit var parentList: MutableList<ParentData>
-
     private lateinit var entryProductAdapter: EntryManageEntriesAdapter
     private lateinit var entrySeedAdapter: EntryManageEntriesAdapter
     private lateinit var entryCDEAdapter: EntryManageEntriesAdapter
@@ -54,6 +52,9 @@ class EntriesFragment : Fragment() {
     private val fifList = mutableListOf<ChildData>()
     private val operationsList = mutableListOf<ChildData>()
 
+    private lateinit var propertyAdapter: ArrayAdapter<String>
+    private lateinit var areaAdapter: ArrayAdapter<String>
+    private lateinit var yearAdapter: ArrayAdapter<String>
 
     private var productExpanded = false
     private var seedExpanded = false
@@ -97,6 +98,7 @@ class EntriesFragment : Fragment() {
                     clearSpinnersList(areaList)
                     clearSpinnersList(vintageList)
                     clearAllLists()
+
                     collapseAllRV()
 
                     if(position != 0){
@@ -111,6 +113,7 @@ class EntriesFragment : Fragment() {
                                             .get().addOnSuccessListener { resultArea ->
                                                 for(documentArea in resultArea){
                                                     areaList.add(documentArea.get("name").toString())
+                                                    areaAdapter.notifyDataSetChanged()
                                                 }
                                             }
                                     }
@@ -118,13 +121,13 @@ class EntriesFragment : Fragment() {
                             }
                     }
                 }
+
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
         binding.spinnerArea.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
                 binding.spinnerYear.setSelection(0)
-
                 clearSpinnersList(vintageList)
                 clearAllLists()
                 collapseAllRV()
@@ -141,12 +144,16 @@ class EntriesFragment : Fragment() {
                                         .get().addOnSuccessListener { resultVintage ->
                                             for(documentArea in resultVintage){
                                                 vintageList.add(documentArea.get("description").toString())
+                                                yearAdapter.notifyDataSetChanged()
                                             }
                                         }
                                 }
                             }
                         }
+
                 }
+                //binding.spinnerYear.isEnabled = true
+                //yearAdapter.notifyDataSetChanged()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -173,6 +180,7 @@ class EntriesFragment : Fragment() {
                 } else {
                     clearAllLists()
                 }
+                yearAdapter.notifyDataSetChanged()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -391,9 +399,9 @@ class EntriesFragment : Fragment() {
                 }
             }
 
-        initAdapterSpinner(binding.spinnerPropiety,propertyList)
-        initAdapterSpinner(binding.spinnerArea,areaList)
-        initAdapterSpinner(binding.spinnerYear,vintageList)
+        propertyAdapter = initAdapterSpinner(binding.spinnerPropiety,propertyList)
+        areaAdapter = initAdapterSpinner(binding.spinnerArea,areaList)
+        yearAdapter = initAdapterSpinner(binding.spinnerYear,vintageList)
 
     }
 
@@ -487,7 +495,7 @@ class EntriesFragment : Fragment() {
     }
 
 
-    private fun initAdapterSpinner(spinner: Spinner, list: MutableList<String>){
+    private fun initAdapterSpinner(spinner: Spinner, list: MutableList<String>): ArrayAdapter<String>{
         val adapter =
             ArrayAdapter(
                 requireContext(),
@@ -495,12 +503,24 @@ class EntriesFragment : Fragment() {
                 list
             )
         spinner.adapter = adapter
+        return spinner.adapter as ArrayAdapter<String>
     }
 
     private fun clearSpinnersList(list: MutableList<String>){
-        if(list.size > 1){
-            for(i in 1 until list.size){
-                list.removeAt(i)
+        list.clear()
+
+        when(list){
+            propertyList -> {
+                list.add("Selecione uma propriedade")
+                propertyAdapter.notifyDataSetChanged()
+            }
+            areaList -> {
+                list.add("Selecione um talhão")
+                areaAdapter.notifyDataSetChanged()
+            }
+            vintageList -> {
+                list.add("Selecione uma safra")
+                yearAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -587,9 +607,11 @@ class EntriesFragment : Fragment() {
                 binding.constraintDescritive.visibility = View.GONE
                 descritiveExpanded = false
             } else {
-                binding.downIvDescritive.setImageResource(R.drawable.ic_drop_up)
-                binding.constraintDescritive.visibility = View.VISIBLE
-                descritiveExpanded = true
+                if(binding.spinnerYear.selectedItem.toString() != "Selecione uma safra"){
+                    binding.downIvDescritive.setImageResource(R.drawable.ic_drop_up)
+                    binding.constraintDescritive.visibility = View.VISIBLE
+                    descritiveExpanded = true
+                }
             }
         }
     }

@@ -37,6 +37,10 @@ class HomeVisualFragment : Fragment() {
     private lateinit var areaList: MutableList<String>
     private lateinit var vintageList: MutableList<String>
 
+    private lateinit var propertyAdapter: ArrayAdapter<String>
+    private lateinit var areaAdapter: ArrayAdapter<String>
+    private lateinit var yearAdapter: ArrayAdapter<String>
+
     private var barSet : List<Pair<String,Int>> = mutableListOf()
 
     private val bartest = listOf("JAN" to 4.0,
@@ -87,9 +91,9 @@ class HomeVisualFragment : Fragment() {
                 }
             }
 
-        initAdapterSpinner(binding.spinnerPropiety,propertyList)
-        initAdapterSpinner(binding.spinnerArea,areaList)
-        initAdapterSpinner(binding.spinnerYear,vintageList)
+        propertyAdapter = initAdapterSpinner(binding.spinnerPropiety,propertyList)
+        areaAdapter = initAdapterSpinner(binding.spinnerArea,areaList)
+        yearAdapter = initAdapterSpinner(binding.spinnerYear,vintageList)
 
         binding.spinnerPropiety.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -106,7 +110,6 @@ class HomeVisualFragment : Fragment() {
                     binding.chartConstraint.visibility = View.GONE
 
                     if(position != 0){
-
                         val propRef = db.collection("Property")
 
                         propRef.whereArrayContains("users",auth.currentUser?.uid.toString())
@@ -117,6 +120,7 @@ class HomeVisualFragment : Fragment() {
                                             .get().addOnSuccessListener { resultArea ->
                                                 for(documentArea in resultArea){
                                                     areaList.add(documentArea.get("name").toString())
+                                                    propertyAdapter.notifyDataSetChanged()
                                                 }
                                             }
                                     }
@@ -130,7 +134,6 @@ class HomeVisualFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
                 binding.spinnerYear.setSelection(0)
-
                 clearSpinnersList(vintageList)
                 binding.chartConstraint.visibility = View.GONE
 
@@ -146,6 +149,7 @@ class HomeVisualFragment : Fragment() {
                                         .get().addOnSuccessListener { resultVintage ->
                                             for(documentArea in resultVintage){
                                                 vintageList.add(documentArea.get("description").toString())
+                                                yearAdapter.notifyDataSetChanged()
                                             }
                                         }
                                 }
@@ -160,15 +164,9 @@ class HomeVisualFragment : Fragment() {
         binding.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if(position != 0){
-
                     getLabels()
-
-
-
-
                 } else {
                     binding.chartConstraint.visibility = View.GONE
-
                 }
             }
 
@@ -320,7 +318,7 @@ class HomeVisualFragment : Fragment() {
             }
     }
 
-    private fun initAdapterSpinner(spinner: Spinner, list: MutableList<String>) {
+    private fun initAdapterSpinner(spinner: Spinner, list: MutableList<String>): ArrayAdapter<String>{
         val adapter =
             ArrayAdapter(
                 requireContext(),
@@ -328,12 +326,24 @@ class HomeVisualFragment : Fragment() {
                 list
             )
         spinner.adapter = adapter
+        return spinner.adapter as ArrayAdapter<String>
     }
 
     private fun clearSpinnersList(list: MutableList<String>){
-        if(list.size > 1){
-            for(i in 1 until list.size){
-                list.removeAt(i)
+        list.clear()
+
+        when(list){
+            propertyList -> {
+                list.add("Selecione uma propriedade")
+                propertyAdapter.notifyDataSetChanged()
+            }
+            areaList -> {
+                list.add("Selecione um talhão")
+                areaAdapter.notifyDataSetChanged()
+            }
+            vintageList -> {
+                list.add("Selecione uma safra")
+                yearAdapter.notifyDataSetChanged()
             }
         }
     }

@@ -39,7 +39,9 @@
                     android:layout_margin="16dp"
                     android:text="Propriedade:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +73,9 @@
                     android:layout_margin="16dp"
                     android:text="Talhão: "
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,7 +105,9 @@
                     android:layout_margin="16dp"
                     android:text="Safra: "
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
