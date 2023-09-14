@@ -13,9 +13,9 @@
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="16dp"
-        android:text="Adicionar tipo"
+        android:gravity="center"
+        android:text="@string/dialog_title_entries"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:text="Tipo de entrada:"
+                android:text="@string/dialog_entries_text_category"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="left"
-                android:text="Descrição:"
+                android:text="@string/dialog_entries_text_description"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +93,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Adicione uma descrição"
+                android:hint="@string/dialog_entries_edit_text_description_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_description"
@@ -116,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="left"
-                android:text="Quantidade:"
+                android:text="@string/dialog_entries_text_quantity"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -128,9 +130,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:inputType="number|numberDecimal"
                 android:digits="0123456789,."
-                android:hint="Adicionar quantidade"
+                android:hint="@string/dialog_entries_edit_quantity_hint"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_quantity"
@@ -153,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="left"
-                android:text="Unidade:"
+                android:text="@string/dialog_entries_text_unity"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -165,7 +168,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Defina a unidade"
+                android:hint="@string/dialog_entries_edit_unity_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_unity"
@@ -188,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="left"
-                android:text="Preço:"
+                android:text="@string/dialog_entries_text_price"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -200,9 +205,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Defina um preço"
-                android:inputType="number|numberDecimal"
                 android:digits="0123456789,."
+                android:hint="@string/dialog_entries_edit_price_hint"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_price"
@@ -234,7 +240,7 @@
             android:paddingTop="3dp"
             android:paddingRight="16dp"
             android:paddingBottom="3dp"
-            android:text="@string/radio_button_budgeted"
+            android:text="@string/radio_button_budgedted"
             android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
@@ -243,13 +249,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/radio_flat_selector"
             android:button="@android:color/transparent"
-            android:gravity="center"
             android:checked="false"
+            android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingTop="3dp"
             android:paddingRight="16dp"
             android:paddingBottom="3dp"
-            android:text="Realizado"
+            android:text="@string/radio_button_accomplished"
             android:textColor="@color/radio_flat_text_selector" />
 
     </RadioGroup>
@@ -271,7 +277,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Voltar" />
+            android:text="@string/dialog_button_text_back" />
 
         <Button
             android:id="@+id/button_submit"
@@ -279,7 +285,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Salvar" />
+            android:text="@string/dialog_button_text_submit" />
 
     </LinearLayout>
 

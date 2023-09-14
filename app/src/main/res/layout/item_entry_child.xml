@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shape_constraint"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.adapter.EntryManageEntriesAdapter"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    tools:context=".ui.adapter.EntryManageEntriesAdapter">
 
-<!--    <TextView-->
-<!--        android:id="@+id/entry_child"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="14sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.099"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.036" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/entry_child"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:textSize="14sp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.099"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.036" />-->
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/entry_child"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/text_view_border"
+        android:gravity="center_horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/text_view_border"
-        android:gravity="center_horizontal"
-        android:visibility="visible">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
@@ -40,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
+            android:text="@string/fragment_entry_child_text_description"
             android:textSize="11sp"
-            android:text="Descrição:"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,9 +49,9 @@
             android:id="@+id/text_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
             android:text=""
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@+id/text_show_descripion"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,9 +59,9 @@
             android:id="@+id/text_show_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
-            android:text="Quantidade:"
+            android:text="@string/fragment_entry_child_text_quantity"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_show_descripion" />
@@ -71,9 +70,9 @@
             android:id="@+id/text_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
             android:text=""
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@+id/text_show_quantity"
             app:layout_constraintTop_toBottomOf="@+id/text_description" />
 
@@ -81,60 +80,60 @@
             android:id="@+id/text_unity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
             android:text=""
+            android:textSize="11sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_quantity"
-            android:visibility="visible"/>
+            app:layout_constraintStart_toEndOf="@+id/text_quantity" />
 
         <TextView
             android:id="@+id/text_show_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
             android:layout_marginStart="8dp"
+            android:padding="4dp"
+            android:text="@string/fragment_entry_child_text_price"
             android:textSize="11sp"
-            android:text="Preço:"
             android:textStyle="bold"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_unity"
-            android:visibility="visible"/>
+            app:layout_constraintStart_toEndOf="@+id/text_unity" />
 
         <TextView
             android:id="@+id/text_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
             android:text=""
+            android:textSize="11sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_show_price"
-            android:visibility="visible"/>
+            app:layout_constraintStart_toEndOf="@+id/text_show_price" />
 
         <TextView
             android:id="@+id/text_show_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:textSize="11sp"
             android:layout_marginStart="8dp"
-            android:text="Total/Há:"
+            android:padding="4dp"
+            android:text="@string/fragment_entry_child_text_total"
+            android:textSize="11sp"
             android:textStyle="bold"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_price"
-            android:visibility="visible"/>
+            app:layout_constraintStart_toEndOf="@+id/text_price" />
 
         <TextView
             android:id="@+id/text_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
             android:padding="4dp"
             android:text=""
+            android:textSize="11sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_show_total"
-            android:visibility="visible"/>
+            app:layout_constraintStart_toEndOf="@+id/text_show_total" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

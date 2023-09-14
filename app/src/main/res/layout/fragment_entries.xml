@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".ui.EntriesFragment"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".ui.EntriesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout_spinners"
@@ -40,10 +38,10 @@
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_margin="16dp"
-                    android:text="Propriedade:"
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_entries_text_property"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,10 +72,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Talhão: "
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_entries_text_area"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,10 +106,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Safra: "
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_entries_text_year"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +128,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RadioGroup
@@ -138,10 +135,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:padding="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout_spinners">
@@ -159,7 +156,7 @@
                 android:paddingTop="3dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="3dp"
-                android:text="Orçado"
+                android:text="@string/radio_button_budgedted"
                 android:textColor="@color/radio_flat_text_selector" />
 
             <RadioButton
@@ -173,7 +170,7 @@
                 android:paddingTop="3dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="3dp"
-                android:text="Realizado"
+                android:text="@string/radio_button_accomplished"
                 android:textColor="@color/radio_flat_text_selector" />
 
         </RadioGroup>
@@ -182,10 +179,10 @@
             android:id="@+id/text_product"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_margin="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@color/gray"
-            android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radio_group_entries">
@@ -195,8 +192,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:text="@string/fragment_entries_text_rv_product"
                 android:textSize="11sp"
-                android:text="Produto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -209,7 +206,8 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -242,8 +240,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:text="@string/fragment_entries_text_rv_seed"
                 android:textSize="11sp"
-                android:text="Sementes"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -256,7 +254,8 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -288,8 +287,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:text="@string/fragment_entries_text_rv_cde"
                 android:textSize="11sp"
-                android:text="Capina, dessecação e pós emergência"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -302,7 +301,8 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -334,7 +334,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Fungicidas, Inseticidas e Foliares"
+                android:text="@string/fragment_entries_text_rv_fif"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -348,7 +348,8 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -380,7 +381,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Operações"
+                android:text="@string/fragment_entries_text_rv_operations"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -394,7 +395,8 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -426,7 +428,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Descritivo"
+                android:text="@string/fragment_entries_text_rv_descritive"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -440,19 +442,20 @@
                 android:src="@drawable/ic_drop_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAccessibility="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_descritive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/text_view_border"
-            android:gravity="center_horizontal"
-            android:visibility="gone"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="32dp"
+            android:background="@drawable/text_view_border"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_descritive">
@@ -463,7 +466,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Administrativo:"
+                android:text="@string/fragment_entries_descritive_text_administrative"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -485,7 +488,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:padding="4dp"
-                android:text="X% total"
+                android:text="@string/fragment_entries_descritive_text_percentage_administrative"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_administrative"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -495,7 +498,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Arrendamento:"
+                android:text="@string/fragment_entries_descritive_text_lease"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -517,7 +520,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:padding="4dp"
-                android:text="X% total"
+                android:text="@string/fragment_entries_descritive_text_percentage_lease"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_lease"
                 app:layout_constraintTop_toBottomOf="@+id/text_percentage_administrative" />
@@ -527,11 +530,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Operações:"
+                android:text="@string/fragment_entries_descritive_text_operations"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/text_show_lease"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_show_lease"
                 tools:layout_editor_absoluteY="44dp" />
 
             <TextView
@@ -541,17 +544,17 @@
                 android:padding="4dp"
                 android:text=""
                 android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@id/text_lease"
                 app:layout_constraintStart_toEndOf="@+id/text_show_operations"
+                app:layout_constraintTop_toBottomOf="@id/text_lease"
                 tools:layout_editor_absoluteY="22dp" />
 
             <TextView
                 android:id="@+id/text_percentage_operations"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_marginStart="16dp"
-                android:text="X% total"
+                android:padding="4dp"
+                android:text="@string/fragment_entries_descritive_text_percentage_operations"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_operations_descritive"
                 app:layout_constraintTop_toBottomOf="@+id/text_percentage_lease" />
@@ -561,7 +564,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Corretivos e Fertilizantes:"
+                android:text="@string/fragment_entries_descritive_text_cf"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -575,15 +578,15 @@
                 android:text=""
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_show_correctives_fertilizers"
-                app:layout_constraintTop_toBottomOf="@id/text_operations_descritive"/>
+                app:layout_constraintTop_toBottomOf="@id/text_operations_descritive" />
 
             <TextView
                 android:id="@+id/text_percentage_corretives_fertilizers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_marginStart="16dp"
-                android:text="X% total"
+                android:padding="4dp"
+                android:text="@string/fragment_entries_descritive_text_percentage_cf"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_correctives_fertilizers"
                 app:layout_constraintTop_toBottomOf="@+id/text_percentage_operations" />
@@ -593,7 +596,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Sementes:"
+                android:text="@string/fragment_entries_descritive_text_seeds"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -614,9 +617,9 @@
                 android:id="@+id/text_percentage_seeds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_marginStart="16dp"
-                android:text="X% total"
+                android:padding="4dp"
+                android:text="@string/fragment_entries_descritive_text_percentage_seeds"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_seeds"
                 app:layout_constraintTop_toBottomOf="@+id/text_percentage_corretives_fertilizers" />
@@ -626,7 +629,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Defensivos:"
+                android:text="@string/fragment_entries_descritive_text_defensives"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -646,9 +649,9 @@
                 android:id="@+id/text_percentage_defensives"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="X% total"
                 android:layout_marginStart="16dp"
+                android:padding="4dp"
+                android:text="@string/fragment_entries_descritive_text_percentage_defensives"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_defensives"
                 app:layout_constraintTop_toBottomOf="@+id/text_percentage_seeds" />
@@ -658,7 +661,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="TOTAL:"
+                android:text="@string/fragment_entries_descritive_text_total"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -669,9 +672,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:textStyle="bold"
                 android:text=""
                 android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/text_show_total"
                 app:layout_constraintTop_toBottomOf="@+id/text_defensives" />
 
@@ -682,7 +685,7 @@
             android:id="@+id/button_edit_entries"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Editar Entradas"
+            android:text="@string/fragment_entries_button_text_edit_entries"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

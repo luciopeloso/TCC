@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".ui.AreaManagerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Sistema Agro"
+                    android:text="@string/app_title"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
 
@@ -44,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:background="@color/green_leaf"
+                android:importantForAccessibility="no"
                 android:paddingHorizontal="8dp"
                 android:src="@drawable/ic_logout"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:background="@color/green_leaf"
+                android:importantForAccessibility="no"
                 android:paddingHorizontal="8dp"
                 android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -76,13 +78,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
-            android:text="Talhões"
+            android:text="@string/fragment_area_manager_text_title"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@id/text_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@id/text_navigation" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_area_entries"
@@ -98,12 +99,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+</ScrollView>

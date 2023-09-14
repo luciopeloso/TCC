@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     tools:context=".ui.auth.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/green_leaf"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <EditText
             android:id="@+id/edit_email"
@@ -21,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="128dp"
             android:background="@color/white"
-            android:hint="Email"
+            android:hint="@string/fragment_login_edit_email_hint"
+            android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:padding="8dp"
@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/white"
-            android:hint="Senha"
+            android:hint="@string/fragment_login_edit_password_hint"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:padding="8dp"
@@ -51,14 +52,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/gray"
+            android:text="@string/fragment_login_button_text_login"
             android:textAllCaps="false"
-            android:textSize="18sp"
-            android:text="Login"
             android:textColor="@color/green_leaf"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_password"
-            />
+            app:layout_constraintTop_toBottomOf="@id/edit_password" />
 
         <TextView
             android:id="@+id/text_register"
@@ -66,13 +66,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:textSize="18sp"
-            android:text="Ainda não é cadastrado? Cadastre-se!"
+            android:text="@string/fragment_login_text_register"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_login"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

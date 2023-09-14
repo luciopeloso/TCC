@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".ui.HomeVisualFragment"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".ui.HomeVisualFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,10 +36,10 @@
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_margin="16dp"
-                    android:text="Propriedade:"
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_visual_home_text_property"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -71,10 +70,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Talhão: "
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_visual_home_text_area"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -103,10 +102,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Safra: "
-                    android:textColor="@color/black"
-                    android:orientation="vertical"
                     android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="@string/fragment_visual_home_text_vintage"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -128,8 +127,8 @@
             android:id="@+id/chart_constraint"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:visibility="gone"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout_spinners">
@@ -138,7 +137,7 @@
                 android:id="@+id/text_chart_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Relação entre Orçado/Realizado"
+                android:text="@string/fragment_visual_home_bar_chart_title"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +164,7 @@
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_margin = "8dp"
+                android:layout_margin="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_chart_title" />
@@ -173,9 +172,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
 </ScrollView>

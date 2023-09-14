@@ -12,9 +12,9 @@
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="16dp"
-        android:text="Adicionar tipo"
+        android:gravity="center"
+        android:text="@string/dialog_title_area"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:padding="16dp"
         android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title">
@@ -50,7 +50,7 @@
                 android:layout_marginStart="8dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Nome:"
+                android:text="@string/dialog_dialog_text_name"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Adicione aqui o nome"
+                android:hint="@string/dialog_area_edit_name_hint"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_name"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,10 +83,10 @@
                 android:id="@+id/text_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:layout_marginStart="8dp"
-                android:text="Área(hectares):"
+                android:text="@string/dialog_area_text_area"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -97,13 +97,14 @@
                 android:id="@+id/edit_area"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="Dimensão da área"
                 android:layout_marginStart="8dp"
-                android:inputType="number|numberDecimal"
                 android:digits="0123456789,."
+                android:hint="@string/dialog_area_edit_area"
+                android:inputType="number|numberDecimal"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_area"
-                tools:layout_editor_absoluteY="24dp" />
+                tools:layout_editor_absoluteY="24dp"
+                android:importantForAutofill="no" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,7 +124,7 @@
                 android:layout_marginStart="8dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Cultura:"
+                android:text="@string/dialog_area_text_crop"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -135,26 +136,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Localização da propriedade"
+                android:hint="@string/dialog_area_spinner_hint_crop"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_crop"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Voltar" />
+            android:text="@string/dialog_button_text_back" />
 
         <Button
             android:id="@+id/button_submit"
@@ -174,9 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Salvar" />
+            android:text="@string/dialog_button_text_submit" />
 
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

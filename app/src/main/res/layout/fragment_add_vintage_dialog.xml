@@ -12,9 +12,9 @@
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="16dp"
-        android:text="Adicionar tipo"
+        android:gravity="center"
+        android:text="@string/dialog_title_vintage"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:padding="16dp"
         android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title">
@@ -52,7 +52,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Descrição:"
+                android:text="@string/dialog_vintage_text_description"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,10 +63,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:hint="Adicione uma descrição"
+                android:hint="@string/dialog_vintage_edit_description_hint"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_description"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -90,7 +92,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Data Início:"
+                android:text="@string/dialog_vintage_text_begin"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,10 +103,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:hint="Selecione uma data"
+                android:hint="@string/dialog_vintage_edit_begin_hint"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_begin"
-                app:layout_constraintTop_toBottomOf="@+id/edit_description" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_description"
+                android:importantForAutofill="no"
+                android:inputType="text" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +130,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Data término:"
+                android:text="@string/dialog_vintage_text_end"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -137,10 +141,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:hint="Selecione uma data"
+                android:hint="@string/dialog_vintage_edit_end_hint"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/text_end"
-                app:layout_constraintTop_toBottomOf="@+id/edit_begin" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_begin"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
 
         </LinearLayout>
@@ -149,9 +155,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Voltar" />
+            android:text="@string/dialog_button_text_back" />
 
         <Button
             android:id="@+id/button_submit"
@@ -171,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Salvar" />
+            android:text="@string/dialog_button_text_submit" />
 
     </LinearLayout>
 

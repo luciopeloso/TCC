@@ -12,9 +12,9 @@
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="16dp"
-        android:text="Adicionar tipo"
+        android:gravity="center"
+        android:text="@string/dialog_title_property"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -49,7 +49,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Nome:"
+                android:text="@string/dialog_property_text_name"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:hint="Adicione aqui o nome"
+                android:hint="@string/dialog_property_edit_name_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_name"
@@ -86,7 +88,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Área(hectares):"
+                android:text="@string/dialog_property_text_area"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -98,9 +100,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:inputType="number|numberDecimal"
                 android:digits="0123456789,."
-                android:hint="Dimensão da área"
+                android:hint="@string/dialog_property_edit_area_hint"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_area"
@@ -124,7 +127,7 @@
                 android:layout_marginEnd="4dp"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Localização:"
+                android:text="@string/dialog_property_text_localization"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -136,7 +139,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:hint="Localização da propriedade"
+                android:hint="@string/dialog_property_edit_localization_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_localization"
@@ -149,9 +154,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Voltar" />
+            android:text="@string/dialog_button_text_back" />
 
         <Button
             android:id="@+id/button_submit"
@@ -171,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:text="Salvar" />
+            android:text="@string/dialog_button_text_submit" />
 
     </LinearLayout>
 

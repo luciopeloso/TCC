@@ -10,7 +10,7 @@
         <item>Propietário</item>
         <item>Gerente</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="page_home">Inicio</string>
@@ -19,10 +19,156 @@
     <string name="page_properties">Propriedades</string>
     <string name="page_property_entries">Entradas</string>
 
-    <!--    BottomSheet-->
+    <!--App Title-->
+    <string name="app_title">Sistema Agro</string>
+
+    <!--BottomSheet-->
     <string name="text_title_bottom_sheet">Atenção</string>
     <string name="text_button_bottom_sheet">Entendi</string>
 
     <string name="radio_button_budgeted">Orçado</string>
+
+    <!--Buttons Dialogs-->
+    <string name="dialog_button_text_back">Voltar</string>
+    <string name="dialog_button_text_submit">Salvar</string>
+
+    <!--Dialog Area-->
+    <string name="dialog_title_area">Adicionar tipo</string>
+    <string name="dialog_dialog_text_name">Nome:</string>
+    <string name="dialog_area_edit_name_hint">Adicione aqui o nome</string>
+    <string name="dialog_area_text_area">Área(hectares):</string>
+    <string name="dialog_area_edit_area">Dimensão da área</string>
+    <string name="dialog_area_text_crop">Cultura:</string>
+    <string name="dialog_area_spinner_hint_crop">Localização da propriedade</string>
+
+    <!--Dialog Entries-->
+    <string name="dialog_title_entries">Adicionar tipo</string>
+    <string name="dialog_entries_text_category">Tipo de entrada:</string>
+    <string name="dialog_entries_text_description">Descrição:</string>
+    <string name="dialog_entries_edit_text_description_hint">Adicione uma descrição</string>
+    <string name="dialog_entries_text_quantity">Quantidade:</string>
+    <string name="dialog_entries_edit_quantity_hint">Adicionar quantidade</string>
+    <string name="dialog_entries_text_unity">Unidade:</string>
+    <string name="dialog_entries_edit_unity_hint">Defina a unidade</string>
+    <string name="dialog_entries_text_price">Preço:</string>
+    <string name="dialog_entries_edit_price_hint">Defina um preço</string>
+
+    <!--Dialog Property-->
+    <string name="dialog_title_property">Adicionar tipo</string>
+    <string name="dialog_property_text_name">Nome:</string>
+    <string name="dialog_property_edit_name_hint">Adicione aqui o nome</string>
+    <string name="dialog_property_text_area">Área(hectares):</string>
+    <string name="dialog_property_edit_area_hint">Dimensão da área</string>
+    <string name="dialog_property_text_localization">Localização:</string>
+    <string name="dialog_property_edit_localization_hint">Localização da propriedade</string>
+
+    <!--Dialog Vintage-->
+    <string name="dialog_title_vintage">Adicionar tipo</string>
+    <string name="dialog_vintage_text_description">Descrição:</string>
+    <string name="dialog_vintage_edit_description_hint">Adicione uma descrição</string>
+    <string name="dialog_vintage_text_begin">Data Início:</string>
+    <string name="dialog_vintage_edit_begin_hint">Selecione uma data</string>
+    <string name="dialog_vintage_text_end">Data término:</string>
+    <string name="dialog_vintage_edit_end_hint">Selecione uma data</string>
+
+    <!--Fragment Area Manager-->
+    <string name="fragment_area_manager_text_title">Talhões</string>
+
+    <!--Fragment Entries-->
+    <string name="fragment_entries_text_property">Propriedade:</string>
+    <string name="fragment_entries_text_area">Talhão:</string>
+    <string name="fragment_entries_text_year">Safra:</string>
+    <string name="fragment_entries_text_rv_product">Produto</string>
+    <string name="fragment_entries_text_rv_seed">Sementes</string>
+    <string name="fragment_entries_text_rv_cde">Capina, dessecação e pós emergência</string>
+    <string name="fragment_entries_text_rv_fif">Fungicidas, Inseticidas e Foliares</string>
+    <string name="fragment_entries_text_rv_operations">Operações</string>
+    <string name="fragment_entries_text_rv_descritive">Descritivo</string>
+    <string name="fragment_entries_descritive_text_administrative">Administrativo:</string>
+    <string name="fragment_entries_descritive_text_percentage_administrative">X% total</string>
+    <string name="fragment_entries_descritive_text_lease">Arrendamento:</string>
+    <string name="fragment_entries_descritive_text_percentage_lease">X% total</string>
+    <string name="fragment_entries_descritive_text_operations">Operações:</string>
+    <string name="fragment_entries_descritive_text_percentage_operations">X% total</string>
+    <string name="fragment_entries_descritive_text_cf">Corretivos e Fertilizantes:</string>
+    <string name="fragment_entries_descritive_text_percentage_cf">X% total</string>
+    <string name="fragment_entries_descritive_text_seeds">Sementes:</string>
+    <string name="fragment_entries_descritive_text_percentage_seeds">X% total</string>
+    <string name="fragment_entries_descritive_text_defensives">Defensivos:</string>
+    <string name="fragment_entries_descritive_text_percentage_defensives">X% total</string>
+    <string name="fragment_entries_descritive_text_total">TOTAL:</string>
+    <string name="fragment_entries_button_text_edit_entries">Editar Entradas</string>
+
+
+    <!--Radio Button Bugdered/Acconplished-->
+    <string name="radio_button_budgedted">Orçado</string>
+    <string name="radio_button_accomplished">Realizado</string>
+
+
+    <!--Fragment Entries Manager-->
+    <string name="fragment_entries_manager_text_product">Produto</string>
+    <string name="fragment_entries_text_seed">Sementes</string>
+    <string name="fragment_entries_text_cde">Capina, dessecação e pós emergência</string>
+    <string name="fragment_entries_text_fif">Fungicidas, Inseticidas e Foliares</string>
+    <string name="fragment_entries_text_operations">Operações</string>
+    <string name="fragment_entries_floating_button_description">Adiciona uma entrada</string>
+
+
+    <!--Fragment Login-->
+    <string name="fragment_login_edit_email_hint">Email</string>
+    <string name="fragment_login_edit_password_hint">Senha</string>
+    <string name="fragment_login_button_text_login">Login</string>
+    <string name="fragment_login_text_register">Ainda não é cadastrado? Cadastre-se!</string>
+
+
+    <!--Fragment Manager-->
+    <string name="fragment_manager_text_property">Propriedades</string>
+
+    <!--Fragment Register-->
+    <string name="fragment_register_text_sign_in">Cadastro</string>
+    <string name="fragment_register_text_first_name">Primeiro nome</string>
+    <string name="fragment_register_edit_first_name_hint">Digite seu primeiro nome</string>
+    <string name="fragment_register_text_last_name">Sobrenome</string>
+    <string name="fragment_register_edit_last_name_hint">Digite seu sobrenome</string>
+    <string name="fragment_register_text_email">Email</string>
+    <string name="fragment_register_edit_email_hint">Digite seu Email</string>
+    <string name="fragment_register_text_password">Senha</string>
+    <string name="fragment_register_edit_password_hint">Digite sua senha</string>
+    <string name="fragment_register_text_repeat_password">Repita sua senha</string>
+    <string name="fragment_register_edit_repeat_password_hint">Digite novamente sua senha</string>
+    <string name="fragment_register_text_confirmation">Tipo de acesso</string>
+    <string name="fragment_register_button_sign_in">Cadastrar</string>
+    <string name="fragment_register_button_back">Voltar</string>
+
+    <!--Fragment Vintage Manager-->
+    <string name="Fragment_vintage_manager_text_vintage">Safras</string>
+
+    <!--Fragment Visual Home-->
+    <string name="fragment_visual_home_text_property">Propriedade:</string>
+    <string name="fragment_visual_home_text_area">Talhão:</string>
+    <string name="fragment_visual_home_text_vintage">Safra:</string>
+    <string name="fragment_visual_home_bar_chart_title">Relação entre Orçado/Realizado</string>
+
+    <!--Item Area-->
+    <string name="item_entry_area_text_name">Nome:</string>
+    <string name="item_entry_area_text_dimension">Dimensão:</string>
+    <string name="item_entry_area_text_culture">Cultura:</string>
+
+    <!--Item Entry Child-->
+    <string name="fragment_entry_child_text_description">Descrição:</string>
+    <string name="fragment_entry_child_text_quantity">Quantidade:</string>
+    <string name="fragment_entry_child_text_price">Preço:</string>
+    <string name="fragment_entry_child_text_total">Total/Há:</string>
+
+    <!--Item Entry Property-->
+    <string name="item_entry_property_text_description">Nome:</string>
+    <string name="item_entry_property_text_dimension">Dimensão:</string>
+    <string name="item_entry_property_text_location">Localização:</string>
+
+    <!--Item Entry Vintage-->
+    <string name="item_entry_vintage_text_description">Descrição:</string>
+    <string name="item_entry_vintage_text_begin">Inicio:</string>
+    <string name="item_entry_vintage_text_end">Término:</string>
+
 
 </resources>
