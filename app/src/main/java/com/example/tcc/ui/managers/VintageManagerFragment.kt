@@ -1,4 +1,4 @@
-package com.example.tcc.ui
+package com.example.tcc.ui.managers
 
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +13,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tcc.R
-import com.example.tcc.databinding.FragmentAreaManagerBinding
 import com.example.tcc.databinding.FragmentVintageManagerBinding
-import com.example.tcc.dialogs.AddAreaDialogFragment
 import com.example.tcc.dialogs.AddPropertyDialogFragment
 import com.example.tcc.dialogs.AddVintageDialogFragment
-import com.example.tcc.model.Area
 import com.example.tcc.model.Vintage
-import com.example.tcc.ui.adapter.EntryManageAreaAdapter
 import com.example.tcc.ui.adapter.EntryManageVintageAdapter
-import com.example.tcc.ui.listeners.EntryListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

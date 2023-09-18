@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/areaManagerFragment"
-        android:name="com.example.tcc.ui.AreaManagerFragment"
+        android:name="com.example.tcc.ui.managers.AreaManagerFragment"
         android:label="fragment_area_manager"
         tools:layout="@layout/fragment_area_manager" >
         <argument
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/managerFragment"
-        android:name="com.example.tcc.ui.ManagerFragment"
+        android:name="com.example.tcc.ui.managers.ManagerFragment"
         android:label="fragment_manager"
         tools:layout="@layout/fragment_manager" >
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/vintageManagerFragment"
-        android:name="com.example.tcc.ui.VintageManagerFragment"
+        android:name="com.example.tcc.ui.managers.VintageManagerFragment"
         android:label="fragment_vintage_manager"
         tools:layout="@layout/fragment_vintage_manager" >
         <action
@@ -112,7 +112,7 @@
     </fragment>
     <fragment
         android:id="@+id/entriesManagerFragment"
-        android:name="com.example.tcc.ui.EntriesManagerFragment"
+        android:name="com.example.tcc.ui.managers.EntriesManagerFragment"
         android:label="fragment_entries_manager"
         tools:layout="@layout/fragment_entries_manager" >
         <action

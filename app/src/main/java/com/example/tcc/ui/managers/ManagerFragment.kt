@@ -1,12 +1,10 @@
-package com.example.tcc.ui
+package com.example.tcc.ui.managers
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
@@ -16,7 +14,6 @@ import com.example.tcc.R
 import com.example.tcc.databinding.FragmentManagerBinding
 import com.example.tcc.dialogs.AddPropertyDialogFragment
 import com.example.tcc.model.Property
-import com.example.tcc.ui.listeners.EntryListener
 import com.example.tcc.ui.adapter.EntryManagePropertyAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
