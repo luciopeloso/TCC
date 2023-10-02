@@ -3,6 +3,8 @@ package com.example.tcc.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
@@ -39,8 +41,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         auth = Firebase.auth
 
@@ -61,6 +65,7 @@ class HomeFragment : Fragment() {
 
         adapter.addFragment(HomeVisualFragment(), R.string.page_home)
         adapter.addFragment(EntriesFragment(), R.string.page_entries)
+        adapter.addFragment(RequestFragment(), R.string.page_requests)
 
         binding.viewPager.offscreenPageLimit = adapter.itemCount
 

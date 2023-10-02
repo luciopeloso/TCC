@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TCC</string>
+    <string name="app_name">Sistema Agro</string>
     <string name="app_toolbar_title">Sistema Agro</string>
     <string name="ERROR_UNEXPECTED">Um erro inesperado ocorreu. Tente novamente mais tarde.</string>
     <string name="ERROR_LOAD_TASK">Erro ao carregar a tarefa.</string>
@@ -15,6 +15,7 @@
 
     <string name="page_home">Inicio</string>
     <string name="page_entries">Entradas</string>
+    <string name="page_requests">Meus Acessos</string>
 
     <string name="page_properties">Propriedades</string>
     <string name="page_property_entries">Entradas</string>
@@ -170,5 +171,17 @@
     <string name="item_entry_vintage_text_begin">Inicio:</string>
     <string name="item_entry_vintage_text_end">Término:</string>
 
+    <!--Item Request Receive/Manage-->
+    <string name="item_receive_request_message">X solicitou acesso aos seus dados.</string>
+    <string name="item_receive_request_text_sender_email">Email do solicitante:</string>
+    <string name="item_receive_request_text_sender_type">Nível de acesso do solicitante:</string>
+    <string name="item_manage_request_status">Status de requisição:</string>
 
+    <!--Request Fragment-->
+    <string name="request_fragment_text_request">Requisições</string>
+    <string name="fragment_request_text_access">Meus acessos</string>
+
+    <!--Menu-->
+    <string name="cutom_menu_title">Menu</string>
+    <string name="custom_menu_item_manage_request">Gerenciar Acessos</string>
 </resources>
