@@ -176,12 +176,15 @@
     <string name="item_receive_request_text_sender_email">Email do solicitante:</string>
     <string name="item_receive_request_text_sender_type">Nível de acesso do solicitante:</string>
     <string name="item_manage_request_status">Status de requisição:</string>
+    <string name="item_sended_request_text_email">Email:</string>
 
     <!--Request Fragment-->
     <string name="request_fragment_text_request">Requisições</string>
     <string name="fragment_request_text_access">Meus acessos</string>
+    <string name="fragment_add_request_dialog_text_email">Email:</string>
+    <string name="fragment_request_radio_received">Recebidos</string>
+    <string name="fragment_request_radio_sended">Enviados</string>
 
-    <!--Menu-->
-    <string name="cutom_menu_title">Menu</string>
-    <string name="custom_menu_item_manage_request">Gerenciar Acessos</string>
+
+
 </resources>

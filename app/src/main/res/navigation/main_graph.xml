@@ -52,9 +52,6 @@
         <argument
             android:name="tabLayout"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_homeFragment_to_requestFragment"
-            app:destination="@id/requestFragment" />
     </fragment>
     <fragment
         android:id="@+id/areaManagerFragment"
@@ -136,16 +133,5 @@
             android:name="propId"
             app:argType="string"
             app:nullable="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/requestFragment"
-        android:name="com.example.tcc.ui.RequestFragment"
-        android:label="RequestFragment" >
-        <action
-            android:id="@+id/action_requestFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_requestFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
