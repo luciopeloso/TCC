@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tcc.databinding.ItemManageReceivedRequestBinding
+import com.example.tcc.databinding.ItemManageSendedRequestBinding
 import com.example.tcc.model.Customer
 import com.example.tcc.model.Request
+import com.example.tcc.ui.listeners.EntryListener
+import com.example.tcc.ui.listeners.RequestDeleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RequestManageReceivedAdapter(val list: MutableList<Request>, customer: Customer?):
-    RecyclerView.Adapter<RequestManageReceivedAdapter.MyViewHolder>() {
+class RequestManageSendedAdapter(val list: MutableList<Request>, custumer: Customer?):
+    RecyclerView.Adapter<RequestManageSendedAdapter.MyViewHolder>() {
+
+    private lateinit var listener: RequestDeleteListener
 
     private var requestList : List<Request> = mutableListOf()
 
@@ -22,7 +26,7 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>, customer: Cus
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemBinding = ItemManageReceivedRequestBinding.inflate(inflater, parent, false)
+        val itemBinding = ItemManageSendedRequestBinding.inflate(inflater, parent, false)
         return MyViewHolder(itemBinding)
     }
 
@@ -32,12 +36,16 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>, customer: Cus
         holder.bindData(requestList[position], position)
     }
 
+    fun attachListener(requestListener: RequestDeleteListener) {
+        listener = requestListener
+    }
+
     fun updateRequests(updatedList: List<Request>) {
         requestList = updatedList
         notifyDataSetChanged()
     }
 
-    inner class MyViewHolder(private val binding: ItemManageReceivedRequestBinding) :
+    inner class MyViewHolder(private val binding: ItemManageSendedRequestBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
