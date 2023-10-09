@@ -83,17 +83,17 @@
             app:layout_constraintTop_toBottomOf="@+id/text_sender_type" />
 
 
-        <ImageView
-            android:id="@+id/image_exclude"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="12dp"
-            android:background="@color/red"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_exclude"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_sender_status" />
+<!--        <ImageView-->
+<!--            android:id="@+id/image_exclude"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_margin="12dp"-->
+<!--            android:background="@color/red"-->
+<!--            android:importantForAccessibility="no"-->
+<!--            android:src="@drawable/ic_exclude"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/text_sender_status" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,7 +10,7 @@ import com.example.tcc.model.Request
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RequestManageReceivedAdapter(val list: MutableList<Request>, customer: Customer?):
+class RequestManageReceivedAdapter(val list: MutableList<Request>):
     RecyclerView.Adapter<RequestManageReceivedAdapter.MyViewHolder>() {
 
     private var requestList : List<Request> = mutableListOf()
@@ -57,10 +57,8 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>, customer: Cus
                     binding.textMessage.text = "${name.toString()} ${lastName.toString()}"
                     binding.textSenderEmail.text = email.toString()
                     binding.textSenderStatus.text = request.status
+                    binding.textSenderType.text = accessType.toString()
                 }
-
-
-
         }
 
     }

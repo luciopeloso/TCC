@@ -33,13 +33,13 @@ class RequestFragment : Fragment() {
     private var _binding: FragmentRequestBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var  requestReceiverAdapter : RequestManageReceivedAdapter
-    private lateinit var  requestManageAdapter : RequestReceivedAdapter
-    private lateinit var  requestSendedAdapter : RequestManageSendedAdapter
+    private lateinit var  requestManageReceivedAdapter : RequestManageReceivedAdapter
+    private lateinit var  requestReceivedAdapter : RequestReceivedAdapter
+    private lateinit var  requestManageSendedAdapter : RequestManageSendedAdapter
 
-    private val requestManageReceiverList = mutableListOf<Request>()
+    private val requestManageReceivedList = mutableListOf<Request>()
     private val requestManageSendedList = mutableListOf<Request>()
-    private val requestSendedList = mutableListOf<Request>()
+    private val requestReceivedList = mutableListOf<Request>()
 
     private lateinit var dialogAdd: AddRequestDialogFragment
 
@@ -66,15 +66,12 @@ class RequestFragment : Fragment() {
     }
 
     private fun initAdapter(senderCustomer: Customer,receiverCustomer: Customer){
-        binding.rvAccessReceived.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRequest.setHasFixedSize(true)
-        requestReceiverAdapter = RequestManageReceivedAdapter(requestManageReceiverList,receiverCustomer)
-        binding.rvAccessReceived.adapter = requestReceiverAdapter
+
 
         binding.rvAccessSended.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAccessSended.setHasFixedSize(true)
-        requestSendedAdapter = RequestManageSendedAdapter(requestManageSendedList,senderCustomer)
-        binding.rvAccessSended.adapter = requestSendedAdapter
+        requestManageSendedAdapter = RequestManageSendedAdapter(requestManageSendedList,senderCustomer)
+        binding.rvAccessSended.adapter = requestManageSendedAdapter
     }
 
     private fun optionSelect(request: Request, select: Int) {
@@ -89,22 +86,26 @@ class RequestFragment : Fragment() {
     }
 
     private fun getEntries() {
-        db.collection("Request").whereEqualTo("sender",auth.currentUser?.uid.toString())
+        db.collection("Request").whereEqualTo("Receiver",auth.currentUser?.uid.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents
                     if (documents != null) {
-                        requestSendedList.clear()
+                        requestReceivedList.clear()
 
                         for (document in documents) {
-                            if(document.get("status").toString() == "Enviado"){
-                                val status = document.get("status").toString()
-                                val accept = document.getBoolean("accept")
-                                val senderExclude = document.getBoolean("senderExlude")
-                                val receiverExclude = document.getBoolean("receiverExclude")
-                                val sender = document.get("sender").toString()
-                                val receiver = document.get("receiver").toString()
 
+                            val status = document.get("status").toString()
+                            val accept = document.getBoolean("accept")
+                            val senderExclude = document.getBoolean("senderExlude")
+                            val receiverExclude = document.getBoolean("receiverExclude")
+                            val sender = document.get("sender").toString()
+                            val receiver = document.get("receiver").toString()
+
+                            val newRequest = Request(status, sender, receiver, accept as Boolean,
+                                senderExclude as Boolean, receiverExclude as Boolean)
+
+                            if(document.get("status").toString() == "Enviado"){
                                 /*db.collection("Customer").document(sender).get().addOnSuccessListener { result ->
                                     val senderObject = Customer(null,null,null,null)
                                     senderObject.name = result.get("name").toString()
@@ -122,19 +123,28 @@ class RequestFragment : Fragment() {
                                 }*/
 
 
-                                //Log.d("db", "ID: ${document.id}  DADOS: ${document.data}")
-                                val newRequest = Request(status, sender, receiver, accept as Boolean,
-                                    senderExclude as Boolean, receiverExclude as Boolean)
-                                requestSendedList.add(newRequest)
+                                requestReceivedList.add(newRequest)
+                            } else if(document.getBoolean("receiverExclude") != false){
+                                requestManageReceivedList.add(newRequest)
                             }
+
+
                         }
+
                         binding.rvRequest.layoutManager = LinearLayoutManager(requireContext())
                         binding.rvRequest.setHasFixedSize(true)
-                        requestManageAdapter = RequestReceivedAdapter { request, select ->
+                        requestReceivedAdapter = RequestReceivedAdapter { request, select ->
                             optionSelect(request,select)
                         }
-                        binding.rvRequest.adapter = requestManageAdapter
-                        requestManageAdapter.updateRequests(requestSendedList)
+                        binding.rvRequest.adapter = requestReceivedAdapter
+                        requestReceivedAdapter.updateRequests(requestReceivedList)
+
+                        binding.rvAccessReceived.layoutManager = LinearLayoutManager(requireContext())
+                        binding.rvRequest.setHasFixedSize(true)
+                        requestManageReceivedAdapter = RequestManageReceivedAdapter(requestManageReceivedList)
+                        binding.rvAccessReceived.adapter = requestManageReceivedAdapter
+                        requestManageReceivedAdapter.updateRequests(requestManageReceivedList)
+
                     }
                 }
             }
