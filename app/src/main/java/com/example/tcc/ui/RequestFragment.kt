@@ -1,5 +1,6 @@
 package com.example.tcc.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.example.tcc.ui.adapter.RequestManageSendedAdapter
 import com.example.tcc.ui.adapter.RequestReceivedAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
@@ -65,17 +67,40 @@ class RequestFragment : Fragment() {
 
     }
 
-    private fun initAdapter(senderCustomer: Customer,receiverCustomer: Customer){
-
-
-        binding.rvAccessSended.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvAccessSended.setHasFixedSize(true)
-        requestManageSendedAdapter = RequestManageSendedAdapter(requestManageSendedList,senderCustomer)
-        binding.rvAccessSended.adapter = requestManageSendedAdapter
-    }
 
     private fun optionSelect(request: Request, select: Int) {
 
+        when(select){
+            RequestReceivedAdapter.SELECT_REFUSE -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Recusar Solicitação")
+                    .setMessage("Você confirma recusar a solicitação?")
+                    .setPositiveButton("Sim") { dialog, which ->
+                        db.collection("Request").whereEqualTo("Receiver", request.receiver)
+                            .get().addOnSuccessListener { document ->
+                                db.collection("Request")
+                                    .document(document.documents[0].id).update("accept", "Recusado")
+                            }
+
+                        requestReceivedList.clear()
+                        getEntries()
+                    }
+                    .setNeutralButton("voltar", null)
+                    .show()
+            }
+
+            RequestReceivedAdapter.SELECT_ACCEPT -> {
+                db.collection("Request").whereEqualTo("Receiver", request.receiver)
+                    .get().addOnSuccessListener { document ->
+                        db.collection("Request")
+                            .document(document.documents[0].id).update("accept", "Aprovado")
+                    }
+
+                /*db.collection("Property").document(request.receiver.toString())
+                    .update("users", FieldValue.arrayUnion(request.receiver.toString()))*/
+
+            }
+        }
     }
 
     private fun initClicks() {
@@ -97,38 +122,16 @@ class RequestFragment : Fragment() {
 
                             val status = document.get("status").toString()
                             val accept = document.getBoolean("accept")
-                            val senderExclude = document.getBoolean("senderExlude")
-                            val receiverExclude = document.getBoolean("receiverExclude")
                             val sender = document.get("sender").toString()
                             val receiver = document.get("receiver").toString()
 
-                            val newRequest = Request(status, sender, receiver, accept as Boolean,
-                                senderExclude as Boolean, receiverExclude as Boolean)
+                            val newRequest = Request(status, sender, receiver, accept as Boolean)
 
                             if(document.get("status").toString() == "Enviado"){
-                                /*db.collection("Customer").document(sender).get().addOnSuccessListener { result ->
-                                    val senderObject = Customer(null,null,null,null)
-                                    senderObject.name = result.get("name").toString()
-                                    senderObject.lastName = result.get("lastName").toString()
-                                    senderObject.acessType = result.get("acessType").toString()
-                                    senderObject.email = result.get("email").toString()
-                                }
-
-                                db.collection("Customer").document(receiver).get().addOnSuccessListener { result ->
-                                    val receiverObject = Customer(null,null,null,null)
-                                    receiverObject.name = result.get("name").toString()
-                                    receiverObject.lastName = result.get("lastName").toString()
-                                    receiverObject.acessType = result.get("acessType").toString()
-                                    receiverObject.email = result.get("email").toString()
-                                }*/
-
-
                                 requestReceivedList.add(newRequest)
-                            } else if(document.getBoolean("receiverExclude") != false){
+                            } else {
                                 requestManageReceivedList.add(newRequest)
                             }
-
-
                         }
 
                         binding.rvRequest.layoutManager = LinearLayoutManager(requireContext())
@@ -144,6 +147,39 @@ class RequestFragment : Fragment() {
                         requestManageReceivedAdapter = RequestManageReceivedAdapter(requestManageReceivedList)
                         binding.rvAccessReceived.adapter = requestManageReceivedAdapter
                         requestManageReceivedAdapter.updateRequests(requestManageReceivedList)
+
+                    }
+                }
+            }
+
+
+        db.collection("Request").whereEqualTo("Sender",auth.currentUser?.uid.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    val documents = snapshot?.documents
+                    if (documents != null) {
+                        requestReceivedList.clear()
+
+                        for (document in documents) {
+
+                            val status = document.get("status").toString()
+                            val accept = document.getBoolean("accept")
+                            val sender = document.get("sender").toString()
+                            val receiver = document.get("receiver").toString()
+
+                            val newRequest = Request(
+                                status, sender, receiver, accept as Boolean)
+
+                            requestManageSendedList.add(newRequest)
+
+
+                        }
+
+                        binding.rvAccessSended.layoutManager = LinearLayoutManager(requireContext())
+                        binding.rvAccessSended.setHasFixedSize(true)
+                        requestManageSendedAdapter = RequestManageSendedAdapter(requestManageSendedList)
+                        binding.rvAccessSended.adapter = requestManageSendedAdapter
+                        requestManageSendedAdapter.updateRequests(requestReceivedList)
 
                     }
                 }

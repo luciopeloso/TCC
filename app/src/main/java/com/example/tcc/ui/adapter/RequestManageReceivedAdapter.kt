@@ -43,16 +43,12 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>):
         @SuppressLint("SetTextI18n")
         fun bindData(request: Request, position: Int) {
 
-            db.collection("Customer").whereEqualTo("sender", request.sender)
+            db.collection("Customer").whereEqualTo("Sender", request.sender)
                 .get().addOnSuccessListener { document ->
                     val name = document.documents[0].get("name")
                     val lastName = document.documents[0].get("lastName")
                     val accessType = document.documents[0].get("acessType")
                     val email = document.documents[0].get("email")
-
-                    if(request.sender == auth.uid){
-                        binding.textShowSenderEmail.text = "Email"
-                    }
 
                     binding.textMessage.text = "${name.toString()} ${lastName.toString()}"
                     binding.textSenderEmail.text = email.toString()

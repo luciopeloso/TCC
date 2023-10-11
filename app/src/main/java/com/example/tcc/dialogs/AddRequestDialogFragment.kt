@@ -23,8 +23,7 @@ class AddRequestDialogFragment() : DialogFragment() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private val newRequest = Request(null, null, null, null,
-        null, null)
+    private val newRequest = Request(null, null, null, null)
 
     companion object {
         const val TAG = "addRequestDialog"
@@ -93,15 +92,11 @@ class AddRequestDialogFragment() : DialogFragment() {
                                         val sender = auth.uid.toString()
                                         val receiver = documents.documents[0].id
                                         val accept = false
-                                        val senderExclude = false
-                                        val receiverExclude = false
 
                                         newRequest.status = status
                                         newRequest.sender = sender
                                         newRequest.receiver = receiver
                                         newRequest.accept = accept
-                                        newRequest.senderExclude = senderExclude
-                                        newRequest.receiverExclude = receiverExclude
 
                                         addRequest(newRequest)
                                     }
@@ -118,9 +113,7 @@ class AddRequestDialogFragment() : DialogFragment() {
             "status" to request.status,
             "sender" to request.sender,
             "receiver" to request.receiver,
-            "accept" to request.accept,
-            "senderExclude" to request.senderExclude,
-            "receiverExclude" to request.receiverExclude
+            "accept" to request.accept
         )
 
         db.collection("Request").add(requestMap).addOnCompleteListener {

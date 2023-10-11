@@ -9,11 +9,14 @@ import com.example.tcc.databinding.ItemManageReceivedRequestBinding
 import com.example.tcc.databinding.ItemReceivedRequestBinding
 import com.example.tcc.model.Property
 import com.example.tcc.model.Request
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RequestReceivedAdapter(val requestSelected: (Request, Int) -> Unit):
     RecyclerView.Adapter<RequestReceivedAdapter.MyViewHolder>() {
 
-
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
     private var requestList: List<Request> = mutableListOf()
 
     var positionSelected = RecyclerView.NO_POSITION
@@ -45,12 +48,17 @@ class RequestReceivedAdapter(val requestSelected: (Request, Int) -> Unit):
 
         @SuppressLint("SetTextI18n")
         fun bindData(request: Request, position: Int) {
-            /*binding.textMessage.text = "${request.name} ${request.lastName} solicitou acesso aos seus dados."
-            binding.textSenderEmail.text = request.email
-            binding.textSenderType.text = request.accessLevel
-            if(request.type == 2L){
-                binding.textShowSenderEmail.text = "Email"
-            }
+            db.collection("Customer").whereEqualTo("Receiver", request.receiver)
+                .get().addOnSuccessListener { document ->
+                    val name = document.documents[0].get("name")
+                    val lastName = document.documents[0].get("lastName")
+                    val accessType = document.documents[0].get("acessType")
+                    val email = document.documents[0].get("email")
+
+                    binding.textMessage.text = "${name.toString()} ${lastName.toString()}"
+                    binding.textSenderEmail.text = email.toString()
+                    binding.textSenderType.text = accessType.toString()
+                }
 
             binding.imageAccept.setOnClickListener {
                 if(positionSelected==position){
@@ -60,19 +68,19 @@ class RequestReceivedAdapter(val requestSelected: (Request, Int) -> Unit):
                 positionSelected = position
                 notifyDataSetChanged()
 
-                requestSelected(request, RequestReceivedAdapter.SELECT_ACCEPT)
+                requestSelected(request, SELECT_ACCEPT)
             }
 
-            binding.imageExclude.setOnClickListener {
+            binding.imageRefuse.setOnClickListener {
                 if(positionSelected==position){
                     positionSelected=RecyclerView.NO_POSITION
                     notifyDataSetChanged()
                 }
                 positionSelected = position
                 notifyDataSetChanged()
-                requestSelected(request, RequestReceivedAdapter.SELECT_REFUSE)
+                requestSelected(request, SELECT_REFUSE)
             }
-        */
+
         }
 
     }

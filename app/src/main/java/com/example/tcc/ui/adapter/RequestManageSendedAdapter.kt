@@ -12,7 +12,7 @@ import com.example.tcc.ui.listeners.RequestDeleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RequestManageSendedAdapter(val list: MutableList<Request>, custumer: Customer?):
+class RequestManageSendedAdapter(val list: MutableList<Request>):
     RecyclerView.Adapter<RequestManageSendedAdapter.MyViewHolder>() {
 
     private lateinit var listener: RequestDeleteListener
@@ -51,20 +51,17 @@ class RequestManageSendedAdapter(val list: MutableList<Request>, custumer: Custo
         @SuppressLint("SetTextI18n")
         fun bindData(request: Request, position: Int) {
 
-            db.collection("Customer").whereEqualTo("sender", request.sender)
+            db.collection("Customer").whereEqualTo("Receiver", request.receiver)
                 .get().addOnSuccessListener { document ->
                     val name = document.documents[0].get("name")
                     val lastName = document.documents[0].get("lastName")
                     val accessType = document.documents[0].get("acessType")
                     val email = document.documents[0].get("email")
 
-                    if(request.sender == auth.uid){
-                        binding.textShowSenderEmail.text = "Email"
-                    }
-
                     binding.textMessage.text = "${name.toString()} ${lastName.toString()}"
                     binding.textSenderEmail.text = email.toString()
                     binding.textSenderStatus.text = request.status
+                    binding.textSenderType.text = accessType.toString()
                 }
 
 
