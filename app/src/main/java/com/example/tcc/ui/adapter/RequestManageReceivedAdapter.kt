@@ -1,6 +1,7 @@
 package com.example.tcc.ui.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -42,13 +43,12 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>):
 
         @SuppressLint("SetTextI18n")
         fun bindData(request: Request, position: Int) {
-
-            db.collection("Customer").whereEqualTo("Sender", request.sender)
+            db.collection("Customer").document(request.sender.toString())
                 .get().addOnSuccessListener { document ->
-                    val name = document.documents[0].get("name")
-                    val lastName = document.documents[0].get("lastName")
-                    val accessType = document.documents[0].get("acessType")
-                    val email = document.documents[0].get("email")
+                    val name = document.get("name")
+                    val lastName = document.get("lastName")
+                    val accessType = document.get("acessType")
+                    val email = document.get("email")
 
                     binding.textMessage.text = "${name.toString()} ${lastName.toString()}"
                     binding.textSenderEmail.text = email.toString()
@@ -56,7 +56,6 @@ class RequestManageReceivedAdapter(val list: MutableList<Request>):
                     binding.textSenderType.text = accessType.toString()
                 }
         }
-
     }
 
 

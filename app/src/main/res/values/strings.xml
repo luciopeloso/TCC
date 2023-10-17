@@ -185,6 +185,7 @@
     <string name="fragment_request_radio_received">Recebidos</string>
     <string name="fragment_request_radio_sended">Enviados</string>
 
-
+    <!--Request Dialog-->
+    <string name="fragment_add_request_dialog_button_submit">Enviar</string>
 
 </resources>

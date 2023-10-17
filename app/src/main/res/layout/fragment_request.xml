@@ -73,7 +73,7 @@
                 android:textColor="@color/radio_flat_text_selector" />
 
             <RadioButton
-                android:id="@+id/radio_accomplished"
+                android:id="@+id/radio_sended"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/radio_flat_selector"

@@ -3,6 +3,7 @@ package com.example.tcc.dialogs
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,6 @@ class AddRequestDialogFragment() : DialogFragment() {
         initClicks()
     }
 
-
     private fun initClicks() {
         binding.buttonBack.setOnClickListener {
             dismiss()
@@ -59,7 +59,7 @@ class AddRequestDialogFragment() : DialogFragment() {
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
                 snackbar.setBackgroundTint(Color.RED)
                 snackbar.show()
-            } else if(email == auth.currentUser?.uid.toString()) {
+            } else if(email == auth.currentUser?.email) {
                 val snackbar = Snackbar.make(it, "Não é possível mandar solicitação para seu email!", Snackbar.LENGTH_SHORT)
                 snackbar.setBackgroundTint(Color.RED)
                 snackbar.show()
@@ -78,11 +78,12 @@ class AddRequestDialogFragment() : DialogFragment() {
                                     var check = false
 
                                     for(i in document){
-                                        if(i.get("receiver") == email){
+                                        if(documents.documents[0].get("email") == email){
                                             check = true
                                             val snackbar = Snackbar.make(it, "Solicitação Existente!", Snackbar.LENGTH_SHORT)
                                             snackbar.setBackgroundTint(Color.RED)
                                             snackbar.show()
+                                            Log.d("db", "i: ${i.get("receiver")} email: ${email}")
                                         }
                                     }
 
@@ -91,14 +92,25 @@ class AddRequestDialogFragment() : DialogFragment() {
                                         val status = "Enviado"
                                         val sender = auth.uid.toString()
                                         val receiver = documents.documents[0].id
-                                        val accept = false
+                                        val accept = "nao"
 
                                         newRequest.status = status
                                         newRequest.sender = sender
                                         newRequest.receiver = receiver
                                         newRequest.accept = accept
 
-                                        addRequest(newRequest)
+                                        val requestMap = hashMapOf(
+                                            "status" to status,
+                                            "sender" to sender,
+                                            "receiver" to receiver,
+                                            "accept" to accept
+                                        )
+
+                                        db.collection("Request").add(requestMap).addOnCompleteListener {
+                                            //Log.d("db", "sucesso ao cadastrar!")
+                                            binding.editEmail.setText("")
+                                            dismiss()
+                                        }
                                     }
                                 }
                         }
@@ -107,21 +119,5 @@ class AddRequestDialogFragment() : DialogFragment() {
         }
     }
 
-    private fun addRequest(request:Request) {
-
-        val requestMap = hashMapOf(
-            "status" to request.status,
-            "sender" to request.sender,
-            "receiver" to request.receiver,
-            "accept" to request.accept
-        )
-
-        db.collection("Request").add(requestMap).addOnCompleteListener {
-            //Log.d("db", "sucesso ao cadastrar!")
-            binding.editEmail.setText("")
-            dismiss()
-        }
-
-    }
 
 }

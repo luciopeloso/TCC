@@ -2,6 +2,7 @@ package com.example.tcc.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,7 +62,23 @@ class RequestFragment : Fragment() {
 
         auth = Firebase.auth
 
+        //initAdapters()
         getEntries()
+
+        binding.radioGroupEntries.setOnCheckedChangeListener { _,checkedId ->
+
+            when(checkedId){
+                R.id.radio_my_access -> {
+                    binding.rvAccessReceived.visibility = View.VISIBLE
+                    binding.rvAccessSended.visibility = View.GONE
+                }
+                R.id.radio_sended -> {
+                    binding.rvAccessSended.visibility = View.VISIBLE
+                    binding.rvAccessReceived.visibility = View.GONE
+                }
+            }
+
+        }
 
         initClicks()
 
@@ -76,28 +93,34 @@ class RequestFragment : Fragment() {
                     .setTitle("Recusar Solicitação")
                     .setMessage("Você confirma recusar a solicitação?")
                     .setPositiveButton("Sim") { dialog, which ->
-                        db.collection("Request").whereEqualTo("Receiver", request.receiver)
+                        db.collection("Request").whereEqualTo("receiver", request.receiver)
                             .get().addOnSuccessListener { document ->
                                 db.collection("Request")
-                                    .document(document.documents[0].id).update("accept", "Recusado")
+                                    .document(document.documents[0].id).update("status", "Recusado")
                             }
 
                         requestReceivedList.clear()
-                        getEntries()
+                        requestManageReceivedList.clear()
+                        requestManageSendedList.clear()
+                        //getEntries()
                     }
                     .setNeutralButton("voltar", null)
                     .show()
             }
 
             RequestReceivedAdapter.SELECT_ACCEPT -> {
-                db.collection("Request").whereEqualTo("Receiver", request.receiver)
+                db.collection("Request").whereEqualTo("receiver", request.receiver)
                     .get().addOnSuccessListener { document ->
                         db.collection("Request")
-                            .document(document.documents[0].id).update("accept", "Aprovado")
+                            .document(document.documents[0].id).update("accept", "sim")
+                        db.collection("Request")
+                            .document(document.documents[0].id).update("status", "Aprovado")
                     }
 
-                /*db.collection("Property").document(request.receiver.toString())
-                    .update("users", FieldValue.arrayUnion(request.receiver.toString()))*/
+                includeSender("Property",request.sender!!)
+                includeSender("Area",request.sender!!)
+                includeSender("Vintage",request.sender!!)
+                includeSender("Entry",request.sender!!)
 
             }
         }
@@ -110,22 +133,62 @@ class RequestFragment : Fragment() {
         }
     }
 
-    private fun getEntries() {
-        db.collection("Request").whereEqualTo("Receiver",auth.currentUser?.uid.toString())
+    private fun includeSender(type: String, sender: String){
+        db.collection(type).whereArrayContains("users", auth.currentUser?.uid.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
                     val documents = snapshot?.documents
                     if (documents != null) {
+                        for (document in documents) {
+                            db.collection(type).document(document.id)
+                                .update("users", FieldValue.arrayUnion(sender))
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun initAdapterManageSended(){
+        binding.rvAccessSended.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAccessSended.setHasFixedSize(true)
+        requestManageSendedAdapter = RequestManageSendedAdapter(requestManageSendedList)
+        binding.rvAccessSended.adapter = requestManageSendedAdapter
+    }
+
+    private fun initAdapterManageReceived(){
+        binding.rvAccessReceived.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvRequest.setHasFixedSize(true)
+        requestManageReceivedAdapter = RequestManageReceivedAdapter(requestManageReceivedList)
+        binding.rvAccessReceived.adapter = requestManageReceivedAdapter
+    }
+
+    private fun initAdapterReceived(){
+        binding.rvRequest.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvRequest.setHasFixedSize(true)
+        requestReceivedAdapter = RequestReceivedAdapter { request, select ->
+            optionSelect(request,select)
+        }
+        binding.rvRequest.adapter = requestReceivedAdapter
+    }
+
+    private fun getEntries() {
+        db.collection("Request").whereEqualTo("receiver",auth.currentUser?.uid.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e == null) {
+                    Log.d("db", "Receivers")
+                    val documents = snapshot?.documents
+
+                    if (documents != null) {
+
                         requestReceivedList.clear()
 
                         for (document in documents) {
-
                             val status = document.get("status").toString()
-                            val accept = document.getBoolean("accept")
+                            val accept = document.get("accept").toString()
                             val sender = document.get("sender").toString()
                             val receiver = document.get("receiver").toString()
 
-                            val newRequest = Request(status, sender, receiver, accept as Boolean)
+                            val newRequest = Request(status, sender, receiver, accept)
 
                             if(document.get("status").toString() == "Enviado"){
                                 requestReceivedList.add(newRequest)
@@ -133,53 +196,41 @@ class RequestFragment : Fragment() {
                                 requestManageReceivedList.add(newRequest)
                             }
                         }
-
-                        binding.rvRequest.layoutManager = LinearLayoutManager(requireContext())
-                        binding.rvRequest.setHasFixedSize(true)
-                        requestReceivedAdapter = RequestReceivedAdapter { request, select ->
-                            optionSelect(request,select)
-                        }
-                        binding.rvRequest.adapter = requestReceivedAdapter
+                        initAdapterReceived()
+                        initAdapterManageReceived()
                         requestReceivedAdapter.updateRequests(requestReceivedList)
-
-                        binding.rvAccessReceived.layoutManager = LinearLayoutManager(requireContext())
-                        binding.rvRequest.setHasFixedSize(true)
-                        requestManageReceivedAdapter = RequestManageReceivedAdapter(requestManageReceivedList)
-                        binding.rvAccessReceived.adapter = requestManageReceivedAdapter
                         requestManageReceivedAdapter.updateRequests(requestManageReceivedList)
-
+                        Log.d("db", "size received: ${requestReceivedList.size} ")
+                        Log.d("db", "size manage received: ${requestManageReceivedList.size} ")
                     }
                 }
             }
 
 
-        db.collection("Request").whereEqualTo("Sender",auth.currentUser?.uid.toString())
+        db.collection("Request").whereEqualTo("sender",auth.currentUser?.uid.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e == null) {
+                    Log.d("db", "Senders")
                     val documents = snapshot?.documents
+                    Log.d("db", "${documents}")
                     if (documents != null) {
                         requestReceivedList.clear()
 
                         for (document in documents) {
 
                             val status = document.get("status").toString()
-                            val accept = document.getBoolean("accept")
+                            val accept = document.get("accept").toString()
                             val sender = document.get("sender").toString()
                             val receiver = document.get("receiver").toString()
 
                             val newRequest = Request(
-                                status, sender, receiver, accept as Boolean)
+                                status, sender, receiver, accept)
 
-                            requestManageSendedList.add(newRequest)
-
-
+                            requestReceivedList.add(newRequest)
                         }
-
-                        binding.rvAccessSended.layoutManager = LinearLayoutManager(requireContext())
-                        binding.rvAccessSended.setHasFixedSize(true)
-                        requestManageSendedAdapter = RequestManageSendedAdapter(requestManageSendedList)
-                        binding.rvAccessSended.adapter = requestManageSendedAdapter
+                        initAdapterManageSended()
                         requestManageSendedAdapter.updateRequests(requestReceivedList)
+                        Log.d("db", "received manage sender: ${requestReceivedList.size} ")
 
                     }
                 }
